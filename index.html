@@ -58,7 +58,7 @@ main{padding:12px 0 60px}
 .acts{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
 .k-study,.k-light{background:var(--study)} .k-class{background:var(--class)} .k-gym,.k-cardio,.k-bjj,.k-surf{background:var(--sport)}
 .k-meal{background:var(--meal)} .k-rest,.k-travel,.k-free,.k-wake,.k-break{background:var(--rest)} .k-work{background:var(--work)}
-.k-event,.k-due{background:var(--fixed)} .k-flex{background:var(--flex)} .k-bed,.k-gf{background:#6b5bd6} .k-typing{background:#4a90a4}
+.k-event,.k-due{background:var(--fixed)} .k-errand{background:var(--work)} .k-flex{background:var(--flex)} .k-bed,.k-gf{background:#6b5bd6} .k-typing{background:#4a90a4}
 .due-row{display:flex;justify-content:space-between;gap:10px;padding:8px 0;border-top:1px solid var(--line)}
 .due-row:first-child{border-top:0}
 .due-row .n{font-weight:700;font-variant-numeric:tabular-nums;white-space:nowrap}
@@ -117,6 +117,7 @@ const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;",
    [start, end, kind, title, slot]
    Fixed kinds never move: class, bjj, work, bed, gf, event, due.
    Flexible kinds shift when something runs late; flex blocks absorb the delay first. */
+const RADD = "You never finish it in class, so this is the home session: 1 h for a normal lab, the full 2 h for a big one. Push to master and check the autograder is green. Finished early? Start the next block early.";
 const FIXED = new Set(["class", "bjj", "work", "bed", "gf", "event", "due"]);
 const TASKED = new Set(["study", "light"]);
 const READ = "In bed. Read for at least 10 min first, then TV with your girlfriend. Phone away.";
@@ -144,17 +145,19 @@ const TEMPLATE = {
     ["23:15", "23:15", "bed", "Lights out"],
   ],
   2: [ // Tuesday: college 9-12 only
-    ["07:30", "08:15", "wake", "Up, get ready, typing 15 min if time (else 14:15)"],
-    ["08:15", "09:00", "travel", "To college"],
+    ["07:30", "08:00", "wake", "Up, get ready"],
+    ["08:00", "08:15", "typing", "Typing practice 15 min"],
+    ["08:25", "09:00", "travel", "Walk to college (25-30 min)"],
     ["09:00", "11:00", "class", "Advanced Games Programming practical (B2313): do the week's lab in class"],
     ["11:00", "12:00", "class", "Rich App Dev lecture (E0011)"],
-    ["12:00", "12:45", "meal", "Lunch in college"],
-    ["12:45", "14:00", "gym", "Gym: Chest & Triceps"],
-    ["14:00", "14:15", "travel", "Home"],
-    ["14:15", "14:30", "typing", "Typing practice 15 min (skip if done this morning)"],
-    ["14:30", "16:30", "study", "Deep work 1", "tue1"],
-    ["16:30", "16:45", "break", "Break"],
-    ["16:45", "18:15", "study", "Deep work 2", "tue2"],
+    ["12:00", "12:40", "meal", "Lunch in college"],
+    ["12:40", "12:50", "travel", "Walk to the Clayton (10 min)"],
+    ["12:50", "13:55", "gym", "Gym at the Clayton: Chest & Triceps"],
+    ["13:55", "14:25", "cardio", "Swim at the Clayton: 20-25 min steady laps (same building, so no extra walk)"],
+    ["14:30", "15:00", "travel", "Walk home from the Clayton (25-30 min)"],
+    ["15:00", "16:45", "study", "Deep work 1", "tue1"],
+    ["16:45", "17:00", "break", "Break"],
+    ["17:00", "18:15", "study", "Deep work 2", "tue2"],
     ["18:15", "19:00", "meal", "Dinner"],
     ["19:00", "20:15", "study", "Deep work 3", "tue3"],
     ["20:15", "21:00", "flex", "Flex / catch-up"],
@@ -165,14 +168,14 @@ const TEMPLATE = {
   3: [ // Wednesday: RAD lab, Prof Dev, AGP lecture, jiu-jitsu
     ["07:30", "08:00", "wake", "Up, get ready"],
     ["08:00", "08:15", "typing", "Typing practice 15 min"],
-    ["08:15", "09:00", "travel", "To college"],
-    ["09:00", "12:00", "class", "Rich App Dev lab (B2306): finish the weekly RAD lab in class"],
+    ["08:25", "09:00", "travel", "Walk to college (25-30 min)"],
+    ["09:00", "12:00", "class", "Rich App Dev lab (B2306): get as far as you can on the weekly RAD lab. Note where you stopped for Thursday"],
     ["12:00", "12:45", "meal", "Lunch in college"],
     ["12:45", "13:55", "study", "Library block", "wed1"],
     ["14:00", "15:00", "class", "Prof Dev lecture (AbbVie Auditorium)"],
     ["15:00", "16:00", "study", "Library block", "wed2"],
     ["16:00", "18:00", "class", "Advanced Games Programming lecture (B2307)"],
-    ["18:00", "18:30", "travel", "Home"],
+    ["18:00", "18:30", "travel", "Walk home (25-30 min)"],
     ["18:30", "19:10", "meal", "Dinner (light-ish, jiu-jitsu at 8)"],
     ["19:10", "19:40", "light", "Light study", "wed3"],
     ["19:40", "20:00", "travel", "Go to jiu-jitsu"],
@@ -183,13 +186,15 @@ const TEMPLATE = {
     ["23:15", "23:15", "bed", "Lights out"],
   ],
   4: [ // Thursday: Software Project Mgmt 9-11 only
-    ["07:30", "08:15", "wake", "Up, get ready"],
-    ["08:15", "09:00", "travel", "To college"],
+    ["07:30", "08:00", "wake", "Up, get ready"],
+    ["08:00", "08:15", "typing", "Typing practice 15 min"],
+    ["08:25", "09:00", "travel", "Walk to college (25-30 min)"],
     ["09:00", "11:00", "class", "Software Project Mgmt (D1031)"],
-    ["11:10", "12:25", "gym", "Gym: Back & Biceps"],
-    ["12:30", "13:15", "meal", "Lunch in college"],
-    ["13:15", "13:30", "travel", "Home"],
-    ["13:30", "13:45", "typing", "Typing practice 15 min"],
+    ["11:00", "11:10", "travel", "Walk to the Clayton (10 min)"],
+    ["11:10", "12:20", "gym", "Gym at the Clayton: Back & Biceps"],
+    ["12:20", "12:30", "travel", "Walk back to college (10 min)"],
+    ["12:30", "13:10", "meal", "Lunch in college"],
+    ["13:10", "13:40", "travel", "Walk home (25-30 min)"],
     ["13:45", "15:45", "study", "Deep work 1", "thu1"],
     ["15:45", "16:00", "break", "Break"],
     ["16:00", "17:30", "study", "Deep work 2", "thu2"],
@@ -202,7 +207,7 @@ const TEMPLATE = {
   ],
   5: [ // Friday: swim, study, surf, work shift
     ["07:30", "07:45", "wake", "Up"],
-    ["07:45", "08:30", "cardio", "Swim: 30 min steady laps"],
+    ["07:45", "08:30", "cardio", "Run: easy 5 km from home (the swim is now Tuesday at the Clayton, since the pool is a long walk from home)"],
     ["08:45", "09:00", "typing", "Typing practice 15 min"],
     ["09:00", "11:00", "study", "Deep work 1", "fri1"],
     ["11:00", "11:15", "break", "Break"],
@@ -232,8 +237,10 @@ const TEMPLATE = {
   0: [ // Sunday: legs, surf or study, girlfriend evening
     ["08:30", "08:45", "wake", "Up"],
     ["08:45", "09:00", "typing", "Typing practice 15 min"],
-    ["09:00", "10:15", "study", "Weekly review (15 min) + deep work", "sun1"],
-    ["10:30", "11:45", "gym", "Gym: Legs"],
+    ["09:00", "10:05", "study", "Weekly review (15 min) + deep work", "sun1"],
+    ["10:05", "10:25", "travel", "Walk to ROM, Cleveragh Retail Park (about 18 min)"],
+    ["10:25", "11:40", "gym", "Gym at ROM: Legs"],
+    ["11:40", "12:00", "travel", "Walk home from ROM"],
     ["12:00", "12:45", "meal", "Lunch"],
     ["13:00", "16:30", "surfopt", "Surf", "sun"],
     ["16:30", "17:30", "flex", "Flex: catch-up, then pack the bag and plan meals for the week"],
@@ -250,8 +257,17 @@ const PLAN = {};
 const EVENTS = {}; // fixed, planned events by date
 function plan(k, slots) { PLAN[k] = Object.assign(PLAN[k] || {}, slots); }
 function ev(k, s, e, kind, title) { (EVENTS[k] = EVENTS[k] || []).push([s, e, kind, title]); }
+const RESHAPE = {}; // per date: routine blocks to drop (by "start-kind" id) and one-off blocks to add
+function reshape(k, drop, add) { RESHAPE[k] = { drop, add }; }
 
 /* Week 1: 9-15 Nov. AGP CA2 Wed, Mobile quiz Thu, Prof Dev report due Mon 16 09:00 */
+reshape("2026-11-09", ["07:45-cardio", "08:20-break", "12:45-meal", "13:30-study", "17:15-flex"], [
+  ["07:45", "08:45", "break", "Shower, coffee, then skim D:\\AGP_CA2_Prep README so the mock starts warm (no coding yet). The run moves to 17:15 so you can wear the new shoes"],
+  ["12:45", "13:15", "errand", "Buy running shoes: Intersport Elverys, The Canopy, O'Connell St (5 min walk, open 9:30-18:00, foot scanning). RunPod on your road is probably CLOSED Mondays (listings say Tue-Sat 10:30-18:00): ring 086 455 0167 before walking over. Ask for a gait check if they offer it"],
+  ["13:15", "13:45", "meal", "Lunch at home"],
+  ["13:45", "15:30", "study", "Deep work 3", "mon3"],
+  ["17:15", "17:55", "cardio", "Run: easy 5 km from home in the new shoes (keep it short, jiu-jitsu tonight)"],
+]);
 plan("2026-11-09", {
   mon1: T("AGP CA2 mock exam, timed", "D:\\AGP_CA2_Mock (Meteor Defence). Treat it as the real thing: 2 h, no notes. Plan sheet first, then EditMode tests, then 1 PlayMode test. Commit \"CA2 mock submission\"."),
   mon2: T("Get the mock graded and learn the gaps", "Ask Claude: \"grade my CA2 mock\". Go through every surviving mutant until you could write the test that kills it."),
@@ -270,14 +286,20 @@ plan("2026-11-11", {
   wed2: T("Calm review before the CA", "Skim 1-Refresher. Eat something. No new material."),
   wed3: T("Mobile CA quiz: one 40-question mock", "Wrong-answers-only round after."),
 });
+ev("2026-11-12", "11:15", "12:30", "event", "Meeting with your lecturer");
+reshape("2026-11-12", ["11:00-travel", "11:10-gym", "12:20-travel", "13:10-travel", "16:00-study", "17:30-flex"], [
+  ["13:10", "13:45", "break", "Stay in college: library seat, typing practice here if you skipped it this morning"],
+  ["16:00", "16:10", "travel", "Walk to the Clayton (10 min)"],
+  ["16:10", "17:15", "gym", "Gym at the Clayton: Back & Biceps (moved from the morning)"],
+  ["17:15", "17:45", "travel", "Walk home from the Clayton (25-30 min)"],
+]);
 ev("2026-11-12", "15:00", "16:00", "event", "Mobile App CA quiz (Moodle MCQ, Compose Units 1-4). Check the exact time on Moodle");
 plan("2026-11-12", {
   thu1: T("Mobile quiz: last review", "Only the questions you've got wrong before. Then go do it."),
-  thu2: T("Prof Dev: editor pass starts", "You're the editor. Pull every teammate's section into the live doc. Check G1-G9 in D:\\ProfDev_Report\\01_Rubric_Checklist.md. Message anyone who's missing."),
-  thu3: T("RAD Week 7 lab: finish and push", "Push to master, then check the autograder passes on GitHub."),
+  thu3: T("RAD Week 7 lab: finish at home and push", "Quiz day moves RAD to tonight (1.5 h). If it is a big lab, finish it in Friday morning first block. Autograder green before you stop."),
 });
 plan("2026-11-13", {
-  fri1: T("Prof Dev editor: consistency", "Harvard references only, figure captions + sources, headings numbered by style, one font (TNR 12)."),
+  fri1: T("Prof Dev editor: pull it together + consistency", "First pull every teammate's section into the live doc and message anyone missing (G1-G9 in D:\\ProfDev_Report\\01_Rubric_Checklist.md). Then: Harvard references only, figure captions + sources, headings numbered by style, TNR 12."),
   fri2: T("Prof Dev editor: structure", "Contents page matches sections, word count 5,000-7,000 on the cover, editor named in 2.4."),
 });
 SWAP["2026-11-09"] = T("Prof Dev report buffer", "Whatever is left on the report. Being ahead here protects Sunday.");
@@ -310,9 +332,9 @@ plan("2026-11-18", {
   wed3: T("Pitch out loud x2", "Timer on."),
 });
 plan("2026-11-19", {
-  thu1: T("Mobile: screenshots + report outline", "Screenshot every screen. Outline the 25-30 page report from the brief's headings."),
+  thu1: T("RAD Week 8 lab: finish at home and push", RADD),
   thu2: T("Interview: full mock with Claude", "Ask for a mock interview from the prep pack. Then check your slides once more."),
-  thu3: T("RAD Week 8 lab: finish and push", "Autograder green before you stop."),
+  thu3: T("Mobile: screenshots + report outline", "Screenshot every screen. Outline the 25-30 page report from the brief's headings."),
 });
 ev("2026-11-20", "10:00", "11:00", "event", "Prof Dev interview (Hello Games pitch + Q&A). Confirm your exact time");
 plan("2026-11-20", {
@@ -348,9 +370,9 @@ plan("2026-11-25", {
   wed3: T("Mobile report: figures + captions", ""),
 });
 plan("2026-11-26", {
-  thu1: T("Mobile: video script (8 min max)", "Scene list: what to show, in what order, what you say."),
+  thu1: T("RAD Week 9 lab: finish at home and push", RADD),
   thu2: T("Split_Shift: interim presentation slides with the team", "Your part: tech lead / architecture."),
-  thu3: T("RAD Week 9 lab: finish and push", ""),
+  thu3: T("Mobile: video script (8 min max)", "Scene list: what to show, in what order, what you say."),
 });
 plan("2026-11-27", {
   fri1: T("Mobile report: full proofread + references", "Check page count 25-30."),
@@ -387,9 +409,9 @@ plan("2026-12-02", {
 });
 ev("2026-12-03", "23:59", "23:59", "due", "DUE 23:59: Mobile Application submission (should already be in)");
 plan("2026-12-03", {
-  thu1: T("PM MCQ: exam mode, full mock", ""),
+  thu1: T("RAD Week 10 lab: finish at home and push", RADD),
   thu2: T("Split_Shift: presentation run-through", ""),
-  thu3: T("RAD Week 10 lab: finish and push", ""),
+  thu3: T("PM MCQ: exam mode, full mock", ""),
 });
 plan("2026-12-04", {
   fri1: T("PM MCQ: drill 2 weakest + mock", ""),
@@ -412,7 +434,7 @@ const DEADLINES = [
   { d: "2026-12-03", t: "23:59", what: "Mobile Application submission. Aim: submit Wed 2", where: "D:\\MobileApp\\Questlog", tbc: false },
   { d: "2026-12-07", t: "", what: "Software Project Mgmt MCQ exam (late Nov / early Dec)", where: "D:\\ProjMgmt_MCQ", tbc: true },
   { d: "2026-12-07", t: "", what: "Split_Shift interim: presentation 10% + prototype 20%", where: "Split_Shift repo", tbc: true },
-  { d: "weekly", t: "", what: "RAD301 lab: finish in Wednesday's class, push to master by Thursday night", where: "D:\\RADWeek6 (Rad301Labs2627.sln)", tbc: false },
+  { d: "weekly", t: "", what: "RAD301 lab: start in Wednesday's class, finish at home Thursday 13:45 (1-2 h), push to master", where: "D:\\RADWeek6 (Rad301Labs2627.sln)", tbc: false },
 ];
 
 /* ---------- saved state (per device) ---------- */
@@ -423,7 +445,9 @@ const save = () => { try { localStorage.setItem(STORE, JSON.stringify(S)); } cat
 const dayState = k => (S.days[k] = S.days[k] || { events: [], late: [], skip: [], done: [] });
 
 /* ---------- build a day ---------- */
-function defaultTask(kind) {
+const SLOT_DEFAULT = { thu1: T("RAD lab: finish at home and push", RADD) };
+function defaultTask(kind, slot) {
+  if (SLOT_DEFAULT[slot]) return SLOT_DEFAULT[slot];
   if (kind === "light") return T("PM MCQ: 20-question practice", "D:\\ProjMgmt_MCQ\\quiz.html, the topic the Progress tab suggests.");
   return T("Next task for the nearest deadline", "Catch-up list first, then the Deadlines tab.");
 }
@@ -433,13 +457,19 @@ function buildDay(k) {
   const surfDay = S.surf[week] || "fri";
   const ds = S.days[k] || { events: [], late: [], skip: [], done: [] };
   let blocks = TEMPLATE[dow].map(([s, e, kind, title, slot]) => ({ id: s + "-" + kind, s: m(s), e: m(e), kind, title, slot }));
+  // one-off changes to the routine on this date
+  const rs = RESHAPE[k];
+  if (rs) {
+    blocks = blocks.filter(b => !rs.drop.includes(b.id));
+    rs.add.forEach(([s, e, kind, title, slot]) => blocks.push({ id: s + "-" + kind + "-x", s: m(s), e: m(e), kind, title, slot }));
+  }
 
   blocks.forEach(b => {
     if (b.kind === "surfopt") {
       if (b.slot === surfDay) { b.kind = "surf"; b.title = "Surf (your surf slot this week)"; }
       else { b.kind = "study"; b.title = "Deep work (not your surf slot this week)"; b.task = SWAP[week] || defaultTask("study"); }
     }
-    if (TASKED.has(b.kind) && !b.task) b.task = (PLAN[k] && PLAN[k][b.slot]) || defaultTask(b.kind);
+    if (TASKED.has(b.kind) && !b.task) b.task = (PLAN[k] && PLAN[k][b.slot]) || defaultTask(b.kind, b.slot);
   });
 
   const fixedEv = (EVENTS[k] || []).map(([s, e, kind, title], i) => ({ id: "plan" + i, s: m(s), e: m(e), kind, title }));
@@ -615,9 +645,17 @@ function renderRules() {
     <li><b>Lights out 23:15</b> (Fri 00:45, Sat 23:45). Bedtime never moves to make room for work. Sleep is what makes the study stick.</li>
     <li><b>Read at least 10 minutes</b> every night before TV.</li>
     <li><b>Typing practice 15 minutes</b> a day (keybr.com or monkeytype.com). It's a warm-up before the first study block.</li>
-    <li><b>Sport:</b> jiu-jitsu Mon, Wed 20:00 and Sat 11:00; Chest & Tris Tue, Back & Bis Thu, Legs Sun; run Mon morning; swim Fri morning; surf Fri or Sun.</li>
+    <li><b>Sport:</b> jiu-jitsu Mon, Wed 20:00 and Sat 11:00; Chest & Tris + swim Tue (Clayton); Back & Bis Thu (Clayton); Legs Sun (ROM); run Mon and Fri mornings; surf Fri or Sun.</li>
+    <li><b>RAD labs:</b> you won't finish in Wednesday's class, so Thursday 13:45 is a 2 h home block for it. Finish early and you start the next thing early.</li>
     <li><b>Food:</b> no breakfast, lunch in college on college days, dinner at home. Dinner is 2 hours before jiu-jitsu, with a protein snack after.</li>
     <li><b>Sunday evening is for your girlfriend.</b> Saturday evening is off.</li>
+  </ul></div>
+  <div class="card"><h3 class="sec">Getting around (walking from Markievicz Rd)</h3><ul class="rules">
+    <li><b>College days</b> (Tue, Wed, Thu): gym and pool at the <b>Clayton</b>, Clarion Rd, about 10 min from ATU. Open 6:30-21:30 weekdays, 8:00-20:00 weekends.</li>
+    <li><b>Home days</b> (Mon, Fri, Sat, Sun): gym at <b>ROM</b>, Cleveragh Retail Park, about 18 min from home. Open 4:00-23:30 weekdays, 4:00-21:20 weekends. Membership runs to mid-December.</li>
+    <li>Home to ATU: about 25-30 min. Home to the Clayton: about 25-30 min, so swim on a college day straight after the gym, not from home.</li>
+    <li>Elverys (The Canopy, O'Connell St): 5 min. RunPod (your road): 2-5 min, probably closed Mondays.</li>
+    <li class="muted small">Walking times are estimates from the addresses (5 km/h), not measured routes. Gym hours are from the gyms' own websites, checked 8 Nov 2026.</li>
   </ul></div>
   <div class="card"><h3 class="sec">Why it's built like this</h3><ul class="rules">
     <li>Every deadline has a planned <b>early submit</b>: report Sun 15, slides Fri 27, Mobile Wed 2. The real deadline is your safety net.</li>
