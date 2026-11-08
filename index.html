@@ -1,0 +1,699 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#11151c">
+<title>Week Planner</title>
+<style>
+:root{
+  --bg:#f6f7f9; --card:#fff; --ink:#1b1f27; --muted:#5d6675; --line:#e2e5ea; --accent:#0e8a7e;
+  --study:#2f6fde; --class:#7a52c7; --sport:#d9572b; --meal:#3f9b4a; --rest:#8a94a6; --work:#b8860b; --fixed:#c2185b; --flex:#0e8a7e;
+  --now:#fff6d6;
+}
+@media (prefers-color-scheme: dark){
+  :root{ --bg:#11151c; --card:#1a2029; --ink:#e7eaf0; --muted:#9aa4b5; --line:#2a313d; --accent:#2fc4b2;
+    --study:#6f9cff; --class:#b08cff; --sport:#ff8a5c; --meal:#6fcf7a; --rest:#8a94a6; --work:#e2b33c; --fixed:#ff5c93; --flex:#2fc4b2; --now:#2c2a1c; }
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;-webkit-text-size-adjust:100%}
+header{position:sticky;top:0;z-index:5;background:var(--bg);border-bottom:1px solid var(--line)}
+.wrap{max-width:880px;margin:0 auto;padding:0 16px}
+.top{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:10px 0 6px}
+.top h1{font-size:18px;margin:0}
+.tabs{display:flex;gap:4px;overflow-x:auto;padding-bottom:8px;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tabs button{flex:0 0 auto;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:999px;padding:7px 14px;font-size:15px}
+.tabs button.on{background:var(--accent);border-color:var(--accent);color:#fff}
+button{font:inherit;cursor:pointer}
+.btn{border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:8px;padding:6px 10px;font-size:14px}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+.btn.small{padding:3px 8px;font-size:13px}
+main{padding:12px 0 60px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin:10px 0}
+.daynav{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.daynav h2{margin:0;font-size:20px;text-align:center;flex:1}
+.muted{color:var(--muted)}
+.small{font-size:13px}
+.nowbox{background:var(--now)}
+.nowbox b{font-size:17px}
+.dl-strip{display:flex;gap:8px;overflow-x:auto;padding:2px 0}
+.dl-chip{flex:0 0 auto;border:1px solid var(--line);border-radius:10px;padding:6px 10px;background:var(--card);font-size:13px}
+.dl-chip b{display:block;font-size:15px}
+.bar{height:8px;border-radius:4px;background:var(--line);overflow:hidden;margin-top:6px}
+.bar i{display:block;height:100%;background:var(--accent)}
+.block{display:flex;gap:10px;padding:9px 0;border-top:1px solid var(--line)}
+.block:first-child{border-top:0}
+.time{flex:0 0 92px;font-variant-numeric:tabular-nums;font-size:14px;color:var(--muted);padding-top:1px}
+.stripe{flex:0 0 4px;border-radius:2px}
+.body{flex:1;min-width:0}
+.body .t{font-weight:600}
+.body .d{font-size:14px;color:var(--muted);margin-top:2px;white-space:pre-line}
+.body .tag{display:inline-block;font-size:11px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);border:1px solid var(--line);border-radius:4px;padding:0 5px;margin-left:6px;vertical-align:1px}
+.block.done .t{text-decoration:line-through;opacity:.6}
+.block.cur{background:var(--now);margin:0 -14px;padding-left:14px;padding-right:14px}
+.block.squeezed .t{opacity:.55}
+.acts{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.k-study,.k-light{background:var(--study)} .k-class{background:var(--class)} .k-gym,.k-cardio,.k-bjj,.k-surf{background:var(--sport)}
+.k-meal{background:var(--meal)} .k-rest,.k-travel,.k-free,.k-wake,.k-break{background:var(--rest)} .k-work{background:var(--work)}
+.k-event,.k-due{background:var(--fixed)} .k-flex{background:var(--flex)} .k-bed,.k-gf{background:#6b5bd6} .k-typing{background:#4a90a4}
+.due-row{display:flex;justify-content:space-between;gap:10px;padding:8px 0;border-top:1px solid var(--line)}
+.due-row:first-child{border-top:0}
+.due-row .n{font-weight:700;font-variant-numeric:tabular-nums;white-space:nowrap}
+.pill{display:inline-block;font-size:12px;border-radius:999px;padding:1px 8px;background:var(--line);color:var(--ink)}
+.pill.red{background:var(--fixed);color:#fff}
+.week{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px}
+.wday{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:6px;font-size:12px;min-width:0}
+.wday h3{margin:0 0 4px;font-size:13px}
+.wday.today{outline:2px solid var(--accent)}
+.wb{display:flex;gap:4px;margin:2px 0}
+.wb .s{flex:0 0 3px;border-radius:2px}
+.wb .x{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+@media (max-width:700px){ .week{grid-template-columns:1fr} .wb .x{white-space:normal} .time{flex-basis:78px;font-size:13px} }
+form.inline{display:grid;gap:8px;grid-template-columns:1fr 1fr;align-items:end}
+form.inline label{display:flex;flex-direction:column;font-size:13px;color:var(--muted);gap:3px}
+form.inline input,form.inline select,textarea{font:inherit;padding:7px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink);width:100%}
+form.inline .full{grid-column:1/-1}
+.carry li{margin:4px 0}
+h3.sec{font-size:16px;margin:4px 0 6px}
+ul.rules{padding-left:18px;margin:6px 0} ul.rules li{margin:4px 0}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.seg button{border:0;background:var(--card);color:var(--ink);padding:5px 10px;font-size:14px}
+.seg button.on{background:var(--accent);color:#fff}
+.hide{display:none}
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <div class="top"><h1>Week Planner</h1><span class="muted small" id="clock"></span></div>
+    <nav class="tabs" id="tabs">
+      <button data-v="today" class="on">Day</button>
+      <button data-v="week">Week</button>
+      <button data-v="deadlines">Deadlines</button>
+      <button data-v="rules">How it works</button>
+      <button data-v="sync">Sync</button>
+    </nav>
+  </div>
+</header>
+<main class="wrap" id="app"></main>
+
+<script>
+"use strict";
+/* ---------- time helpers ---------- */
+const m = s => { const [h, mi] = s.split(":").map(Number); return h * 60 + mi; };
+const hm = n => { n = ((n % 1440) + 1440) % 1440; return String(Math.floor(n / 60)).padStart(2, "0") + ":" + String(n % 60).padStart(2, "0"); };
+const keyOf = d => d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0");
+const parseKey = k => { const [y, mo, d] = k.split("-").map(Number); return new Date(y, mo - 1, d); };
+const addDays = (k, n) => { const d = parseKey(k); d.setDate(d.getDate() + n); return keyOf(d); };
+const mondayOf = k => { const d = parseKey(k); const dow = (d.getDay() + 6) % 7; d.setDate(d.getDate() - dow); return keyOf(d); };
+const DAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+const fmtDay = k => { const d = parseKey(k); return DAYS[d.getDay()] + " " + d.getDate() + " " + d.toLocaleString("en-GB", { month: "short" }); };
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+
+/* ---------- the weekly routine ----------
+   [start, end, kind, title, slot]
+   Fixed kinds never move: class, bjj, work, bed, gf, event, due.
+   Flexible kinds shift when something runs late; flex blocks absorb the delay first. */
+const FIXED = new Set(["class", "bjj", "work", "bed", "gf", "event", "due"]);
+const TASKED = new Set(["study", "light"]);
+const READ = "In bed. Read for at least 10 min first, then TV with your girlfriend. Phone away.";
+const TEMPLATE = {
+  1: [ // Monday: no college, jiu-jitsu at night
+    ["07:30", "07:45", "wake", "Up. Water, get dressed"],
+    ["07:45", "08:20", "cardio", "Run: easy 5 km (chatting pace)"],
+    ["08:20", "08:45", "break", "Shower, coffee"],
+    ["08:45", "09:00", "typing", "Typing practice 15 min"],
+    ["09:00", "11:00", "study", "Deep work 1", "mon1"],
+    ["11:00", "11:15", "break", "Break: stand up, walk, water"],
+    ["11:15", "12:45", "study", "Deep work 2", "mon2"],
+    ["12:45", "13:30", "meal", "Lunch at home (proper meal, protein)"],
+    ["13:30", "15:30", "study", "Deep work 3", "mon3"],
+    ["15:30", "15:45", "break", "Break: outside for 10 min"],
+    ["15:45", "17:15", "study", "Deep work 4", "mon4"],
+    ["17:15", "18:00", "flex", "Flex / catch-up"],
+    ["18:00", "18:45", "meal", "Dinner (2 h before jiu-jitsu)"],
+    ["18:45", "19:40", "light", "Light study", "mon5"],
+    ["19:40", "20:00", "travel", "Go to jiu-jitsu"],
+    ["20:00", "21:00", "bjj", "Jiu-jitsu"],
+    ["21:00", "21:45", "meal", "Home, shower, protein snack"],
+    ["21:45", "22:30", "free", "Free time, guilt-free"],
+    ["22:30", "23:15", "bed", READ],
+    ["23:15", "23:15", "bed", "Lights out"],
+  ],
+  2: [ // Tuesday: college 9-12 only
+    ["07:30", "08:15", "wake", "Up, get ready, typing 15 min if time (else 14:15)"],
+    ["08:15", "09:00", "travel", "To college"],
+    ["09:00", "11:00", "class", "Advanced Games Programming practical (B2313): do the week's lab in class"],
+    ["11:00", "12:00", "class", "Rich App Dev lecture (E0011)"],
+    ["12:00", "12:45", "meal", "Lunch in college"],
+    ["12:45", "14:00", "gym", "Gym: Chest & Triceps"],
+    ["14:00", "14:15", "travel", "Home"],
+    ["14:15", "14:30", "typing", "Typing practice 15 min (skip if done this morning)"],
+    ["14:30", "16:30", "study", "Deep work 1", "tue1"],
+    ["16:30", "16:45", "break", "Break"],
+    ["16:45", "18:15", "study", "Deep work 2", "tue2"],
+    ["18:15", "19:00", "meal", "Dinner"],
+    ["19:00", "20:15", "study", "Deep work 3", "tue3"],
+    ["20:15", "21:00", "flex", "Flex / catch-up"],
+    ["21:00", "22:30", "free", "Free time, guilt-free"],
+    ["22:30", "23:15", "bed", READ],
+    ["23:15", "23:15", "bed", "Lights out"],
+  ],
+  3: [ // Wednesday: RAD lab, Prof Dev, AGP lecture, jiu-jitsu
+    ["07:30", "08:00", "wake", "Up, get ready"],
+    ["08:00", "08:15", "typing", "Typing practice 15 min"],
+    ["08:15", "09:00", "travel", "To college"],
+    ["09:00", "12:00", "class", "Rich App Dev lab (B2306): finish the weekly RAD lab in class"],
+    ["12:00", "12:45", "meal", "Lunch in college"],
+    ["12:45", "13:55", "study", "Library block", "wed1"],
+    ["14:00", "15:00", "class", "Prof Dev lecture (AbbVie Auditorium)"],
+    ["15:00", "16:00", "study", "Library block", "wed2"],
+    ["16:00", "18:00", "class", "Advanced Games Programming lecture (B2307)"],
+    ["18:00", "18:30", "travel", "Home"],
+    ["18:30", "19:10", "meal", "Dinner (light-ish, jiu-jitsu at 8)"],
+    ["19:10", "19:40", "light", "Light study", "wed3"],
+    ["19:40", "20:00", "travel", "Go to jiu-jitsu"],
+    ["20:00", "21:00", "bjj", "Jiu-jitsu"],
+    ["21:00", "21:45", "meal", "Home, shower, protein snack"],
+    ["21:45", "22:30", "free", "Free time, guilt-free"],
+    ["22:30", "23:15", "bed", READ],
+    ["23:15", "23:15", "bed", "Lights out"],
+  ],
+  4: [ // Thursday: Software Project Mgmt 9-11 only
+    ["07:30", "08:15", "wake", "Up, get ready"],
+    ["08:15", "09:00", "travel", "To college"],
+    ["09:00", "11:00", "class", "Software Project Mgmt (D1031)"],
+    ["11:10", "12:25", "gym", "Gym: Back & Biceps"],
+    ["12:30", "13:15", "meal", "Lunch in college"],
+    ["13:15", "13:30", "travel", "Home"],
+    ["13:30", "13:45", "typing", "Typing practice 15 min"],
+    ["13:45", "15:45", "study", "Deep work 1", "thu1"],
+    ["15:45", "16:00", "break", "Break"],
+    ["16:00", "17:30", "study", "Deep work 2", "thu2"],
+    ["17:30", "18:15", "flex", "Flex / catch-up"],
+    ["18:15", "19:00", "meal", "Dinner"],
+    ["19:00", "20:30", "study", "Deep work 3", "thu3"],
+    ["20:30", "22:30", "free", "Free time, guilt-free"],
+    ["22:30", "23:15", "bed", READ],
+    ["23:15", "23:15", "bed", "Lights out"],
+  ],
+  5: [ // Friday: swim, study, surf, work shift
+    ["07:30", "07:45", "wake", "Up"],
+    ["07:45", "08:30", "cardio", "Swim: 30 min steady laps"],
+    ["08:45", "09:00", "typing", "Typing practice 15 min"],
+    ["09:00", "11:00", "study", "Deep work 1", "fri1"],
+    ["11:00", "11:15", "break", "Break"],
+    ["11:15", "12:30", "study", "Deep work 2", "fri2"],
+    ["12:30", "13:15", "meal", "Lunch"],
+    ["13:15", "15:30", "surfopt", "Surf", "fri"],
+    ["15:45", "16:15", "meal", "Dinner before the shift (eat properly, it's a long one)"],
+    ["16:15", "16:45", "travel", "Get ready, go to work"],
+    ["16:45", "24:00", "work", "Work shift"],
+    ["24:00", "24:45", "rest", "Home. Shower, 10 min reading, no screens"],
+    ["24:45", "24:45", "bed", "Lights out (sleep in to 9:00)"],
+  ],
+  6: [ // Saturday: jiu-jitsu morning, study afternoon, evening off
+    ["09:00", "09:30", "wake", "Up, coffee"],
+    ["09:30", "10:30", "light", "Light study", "sat0"],
+    ["10:30", "10:45", "typing", "Typing practice 15 min"],
+    ["10:45", "11:00", "travel", "Go to jiu-jitsu"],
+    ["11:00", "12:00", "bjj", "Jiu-jitsu"],
+    ["12:00", "12:45", "meal", "Lunch"],
+    ["13:00", "15:00", "study", "Deep work 1", "sat1"],
+    ["15:00", "15:15", "break", "Break"],
+    ["15:15", "17:00", "study", "Deep work 2", "sat2"],
+    ["17:00", "23:00", "free", "Evening OFF. Dinner, friends, whatever you like"],
+    ["23:00", "23:45", "bed", READ],
+    ["23:45", "23:45", "bed", "Lights out"],
+  ],
+  0: [ // Sunday: legs, surf or study, girlfriend evening
+    ["08:30", "08:45", "wake", "Up"],
+    ["08:45", "09:00", "typing", "Typing practice 15 min"],
+    ["09:00", "10:15", "study", "Weekly review (15 min) + deep work", "sun1"],
+    ["10:30", "11:45", "gym", "Gym: Legs"],
+    ["12:00", "12:45", "meal", "Lunch"],
+    ["13:00", "16:30", "surfopt", "Surf", "sun"],
+    ["16:30", "17:30", "flex", "Flex: catch-up, then pack the bag and plan meals for the week"],
+    ["17:30", "22:30", "gf", "Evening with your girlfriend (dinner together)"],
+    ["22:30", "23:15", "bed", READ],
+    ["23:15", "23:15", "bed", "Lights out"],
+  ],
+};
+
+/* ---------- what each study slot is for, by date ---------- */
+const T = (t, d) => ({ t, d: d || "" });
+const SWAP = {}; // per week: the task for whichever surf slot is NOT surfed
+const PLAN = {};
+const EVENTS = {}; // fixed, planned events by date
+function plan(k, slots) { PLAN[k] = Object.assign(PLAN[k] || {}, slots); }
+function ev(k, s, e, kind, title) { (EVENTS[k] = EVENTS[k] || []).push([s, e, kind, title]); }
+
+/* Week 1: 9-15 Nov. AGP CA2 Wed, Mobile quiz Thu, Prof Dev report due Mon 16 09:00 */
+plan("2026-11-09", {
+  mon1: T("AGP CA2 mock exam, timed", "D:\\AGP_CA2_Mock (Meteor Defence). Treat it as the real thing: 2 h, no notes. Plan sheet first, then EditMode tests, then 1 PlayMode test. Commit \"CA2 mock submission\"."),
+  mon2: T("Get the mock graded and learn the gaps", "Ask Claude: \"grade my CA2 mock\". Go through every surviving mutant until you could write the test that kills it."),
+  mon3: T("Prof Dev report: your Part A draft", "D:\\ProfDev_Report\\04_Section_Plan.md. Write section by section into the team's live document. A source behind every claim (02_Source_Bank.md)."),
+  mon4: T("Prof Dev report: Part A, keep going", "Aim: Part A fully drafted by Tuesday night."),
+  mon5: T("Mobile CA quiz practice: 40 questions", "D:\\MobileApp\\study\\quiz\\mobile-ca-quiz.html. Note every wrong one."),
+});
+plan("2026-11-10", {
+  tue1: T("AGP CA2 drill, no notes", "From a blank project: set up EditMode + PlayMode test assemblies, write a Testing Plan Sheet (Feature / Risk / Type / Test name + Expected result + Changes). Check against D:\\AGP_CA2_Prep\\README."),
+  tue2: T("Mobile CA quiz: weak areas", "Compose Units 1-4. Re-read quiz-notes-units-1-4.md for the topics you got wrong yesterday."),
+  tue3: T("Prof Dev report: finish Part A draft", "Done = every paragraph has a citation and the word budget fits."),
+});
+ev("2026-11-11", "16:00", "18:00", "event", "AGP CA2: Unity testing (15%), in class");
+plan("2026-11-11", {
+  wed1: T("CA2 final run-through", "README checklist in D:\\AGP_CA2_Prep. Remember: add Expected result and Changes columns on the day (rubric marks both)."),
+  wed2: T("Calm review before the CA", "Skim 1-Refresher. Eat something. No new material."),
+  wed3: T("Mobile CA quiz: one 40-question mock", "Wrong-answers-only round after."),
+});
+ev("2026-11-12", "15:00", "16:00", "event", "Mobile App CA quiz (Moodle MCQ, Compose Units 1-4). Check the exact time on Moodle");
+plan("2026-11-12", {
+  thu1: T("Mobile quiz: last review", "Only the questions you've got wrong before. Then go do it."),
+  thu2: T("Prof Dev: editor pass starts", "You're the editor. Pull every teammate's section into the live doc. Check G1-G9 in D:\\ProfDev_Report\\01_Rubric_Checklist.md. Message anyone who's missing."),
+  thu3: T("RAD Week 7 lab: finish and push", "Push to master, then check the autograder passes on GitHub."),
+});
+plan("2026-11-13", {
+  fri1: T("Prof Dev editor: consistency", "Harvard references only, figure captions + sources, headings numbered by style, one font (TNR 12)."),
+  fri2: T("Prof Dev editor: structure", "Contents page matches sections, word count 5,000-7,000 on the cover, editor named in 2.4."),
+});
+SWAP["2026-11-09"] = T("Prof Dev report buffer", "Whatever is left on the report. Being ahead here protects Sunday.");
+plan("2026-11-14", {
+  sat0: T("PM MCQ: Scrum (T7)", "D:\\ProjMgmt_MCQ: read the T7 notes, then a 20-question practice."),
+  sat1: T("Prof Dev: full read-through edit", "Read the whole report out loud. Fix flow between parts so it reads as one voice."),
+  sat2: T("Prof Dev: fix and chase", "Fix everything from the read-through. Anything a teammate still owes: chase it today, not tomorrow."),
+});
+plan("2026-11-15", {
+  sun1: T("Prof Dev: final proof and SUBMIT TODAY", "Final proof, run Turnitin, submit by 17:00 Sunday. Don't leave it for Monday 9am."),
+});
+ev("2026-11-16", "09:00", "09:00", "due", "DUE 09:00: Prof Dev Group Project Report (Turnitin)");
+
+/* Week 2: 16-22 Nov. Interview Fri 20. Start Mobile deliverables. PM phase 2 */
+plan("2026-11-16", {
+  mon1: T("Interview prep: fill every [RYAN: ...]", "D:\\ProfDevInterview\\Interview Prep.md. Real stories only (a real bug, a real team moment)."),
+  mon2: T("Interview: learn the pitch", "D:\\ProfDevInterview\\Pitch Script.md. Out loud with a timer x5. Target 2:45-2:55."),
+  mon3: T("Mobile: Penpot wireframes", "Every Questlog screen as a wireframe. Follow the brief's design section."),
+  mon4: T("Mobile: Penpot clickable prototype", "Hi-fi screens linked into a working prototype."),
+  mon5: T("PM MCQ: Predictive (T5) on paper", "Forward pass, backward pass, float on the workshop network."),
+});
+plan("2026-11-17", {
+  tue1: T("Split_Shift: next sprint card (guide mode)", "Streaming: ChunkLoadScheduler. Start a session in the Split_Shift folder and type it yourself."),
+  tue2: T("Mobile: IA diagram + instrumented tests", "Draw the information architecture. Run the 12 instrumented tests on your phone over USB and screenshot the results."),
+  tue3: T("Interview: Hello Games research", "Section 3 of the prep pack. Know 5 facts cold, with sources."),
+});
+plan("2026-11-18", {
+  wed1: T("Interview: technical answers", "Section 5. Pick one Paradox of Justice system and learn it line by line."),
+  wed2: T("PM MCQ: Selection (T3) calcs", "PV, NPV, ROI, payback, n(n-1)/2 by hand."),
+  wed3: T("Pitch out loud x2", "Timer on."),
+});
+plan("2026-11-19", {
+  thu1: T("Mobile: screenshots + report outline", "Screenshot every screen. Outline the 25-30 page report from the brief's headings."),
+  thu2: T("Interview: full mock with Claude", "Ask for a mock interview from the prep pack. Then check your slides once more."),
+  thu3: T("RAD Week 8 lab: finish and push", "Autograder green before you stop."),
+});
+ev("2026-11-20", "10:00", "11:00", "event", "Prof Dev interview (Hello Games pitch + Q&A). Confirm your exact time");
+plan("2026-11-20", {
+  fri1: T("Interview warm-up", "Pitch x2, eat, dress well, printed CV, phone off. No new prep."),
+  fri2: T("Mobile report: chapters 1-2", "Intro + planning/requirements."),
+});
+SWAP["2026-11-16"] = T("Split_Shift sprint card", "Next streaming step in guide mode.");
+plan("2026-11-21", {
+  sat0: T("PM MCQ: Value (T9)", "WSJF, theme screening, risk/value quadrants. 20 practice Qs."),
+  sat1: T("Mobile report: design chapter", "Wireframes, prototype, IA diagram, design decisions."),
+  sat2: T("Mobile report: design chapter, finish", ""),
+});
+plan("2026-11-22", {
+  sun1: T("Weekly review + Mobile report: implementation", "Architecture, data layer, key screens. Explain why, not just what."),
+});
+
+/* Week 3: 23-29 Nov. Slides due Mon 30. Mobile report + video. PM mock Sun 29 */
+plan("2026-11-23", {
+  mon1: T("Prof Dev slides: build your 4", "D:\\ProfDev_Report\\05_Slides_Plan.md. One idea per slide, one big number."),
+  mon2: T("Prof Dev slides: sources + send to team", "Caption and source on every figure. Share with the team so the deck matches the report."),
+  mon3: T("Mobile report: implementation, finish", ""),
+  mon4: T("Mobile report: testing chapter", "The 12 instrumented tests: what each proves, results screenshot."),
+  mon5: T("PM MCQ: Lean/Kanban (T8)", "Little's law, PCE, TIMWOOD."),
+});
+plan("2026-11-24", {
+  tue1: T("Split_Shift: sprint card", "Keep the interim prototype in mind: what must work for the demo?"),
+  tue2: T("Split_Shift: interim demo build", "Make a build that shows your streaming work. Test it end to end."),
+  tue3: T("Mobile report: evaluation + conclusion", ""),
+});
+plan("2026-11-25", {
+  wed1: T("Slides: rehearse 3 min, no notes", ""),
+  wed2: T("PM MCQ: T5 practice set to 100%", ""),
+  wed3: T("Mobile report: figures + captions", ""),
+});
+plan("2026-11-26", {
+  thu1: T("Mobile: video script (8 min max)", "Scene list: what to show, in what order, what you say."),
+  thu2: T("Split_Shift: interim presentation slides with the team", "Your part: tech lead / architecture."),
+  thu3: T("RAD Week 9 lab: finish and push", ""),
+});
+plan("2026-11-27", {
+  fri1: T("Mobile report: full proofread + references", "Check page count 25-30."),
+  fri2: T("Prof Dev slides: final, upload early", "Due Mon 09:00. Upload today."),
+});
+SWAP["2026-11-23"] = T("Split_Shift: rehearse your interim part", "");
+plan("2026-11-28", {
+  sat0: T("PM MCQ: weakest topic", "Use the Progress tab."),
+  sat1: T("Mobile video: record", "Record in short clips, one per section."),
+  sat2: T("Mobile video: edit", "Under 8 min. Captions where helpful."),
+});
+plan("2026-11-29", {
+  sun1: T("PM MCQ: first 40-question mock (60 min)", "Baseline score. Note bottom 2 topics."),
+});
+ev("2026-11-30", "09:00", "09:00", "due", "DUE 09:00: Group Project Presentation Slides");
+
+/* Week 4: 30 Nov-6 Dec. Mobile due Thu 3 Dec 23:59. PM exam + Split_Shift interim likely around now */
+plan("2026-11-30", {
+  mon1: T("Mobile: check report against the brief", "Every requirement in the brief ticked off with a page number."),
+  mon2: T("Mobile: video final cut", ""),
+  mon3: T("Split_Shift: polish the interim prototype", ""),
+  mon4: T("Split_Shift: presentation rehearsal", ""),
+  mon5: T("PM MCQ: drill weakest topic", ""),
+});
+plan("2026-12-01", {
+  tue1: T("Mobile: package the submission", "Report PDF, video, repo link, APK. Everything the brief asks for."),
+  tue2: T("Split_Shift: test the demo build on a clean run", ""),
+  tue3: T("PM MCQ: 40-question mock", ""),
+});
+plan("2026-12-02", {
+  wed1: T("Mobile: final check and SUBMIT", "A day early on purpose."),
+  wed2: T("PM MCQ: re-read ⚠ flags in the notes", "Lecturer-vs-Scrum-Guide traps."),
+  wed3: T("PM MCQ: \"last wrong\" mode", ""),
+});
+ev("2026-12-03", "23:59", "23:59", "due", "DUE 23:59: Mobile Application submission (should already be in)");
+plan("2026-12-03", {
+  thu1: T("PM MCQ: exam mode, full mock", ""),
+  thu2: T("Split_Shift: presentation run-through", ""),
+  thu3: T("RAD Week 10 lab: finish and push", ""),
+});
+plan("2026-12-04", {
+  fri1: T("PM MCQ: drill 2 weakest + mock", ""),
+  fri2: T("Split_Shift: whatever the demo still needs", ""),
+});
+SWAP["2026-11-30"] = T("Irish Myth Game: your owed pad playtest", "First time back on the portfolio game. Play the opening, cave and moor with a pad and write notes.");
+plan("2026-12-05", {
+  sat0: T("PM MCQ: \"last wrong\" mode", ""),
+  sat1: T("PM MCQ: mock (aim 95%+)", ""),
+  sat2: T("Split_Shift or PM: whichever is sooner", ""),
+});
+plan("2026-12-06", { sun1: T("Weekly review: confirm exam + presentation dates", "") });
+
+const DEADLINES = [
+  { d: "2026-11-11", t: "16:00", what: "AGP CA2: Unity testing (15%)", where: "D:\\AGP_CA2_Prep, mock D:\\AGP_CA2_Mock", tbc: false },
+  { d: "2026-11-12", t: "15:00", what: "Mobile App CA quiz (Moodle MCQ)", where: "D:\\MobileApp\\study", tbc: true },
+  { d: "2026-11-16", t: "09:00", what: "Prof Dev Group Project Report (Turnitin). Aim: submit Sun 15", where: "D:\\ProfDev_Report", tbc: false },
+  { d: "2026-11-20", t: "10:00", what: "Prof Dev interview (pitch + Q&A)", where: "D:\\ProfDevInterview", tbc: true },
+  { d: "2026-11-30", t: "09:00", what: "Prof Dev Presentation Slides. Aim: upload Fri 27", where: "D:\\ProfDev_Report\\05_Slides_Plan.md", tbc: false },
+  { d: "2026-12-03", t: "23:59", what: "Mobile Application submission. Aim: submit Wed 2", where: "D:\\MobileApp\\Questlog", tbc: false },
+  { d: "2026-12-07", t: "", what: "Software Project Mgmt MCQ exam (late Nov / early Dec)", where: "D:\\ProjMgmt_MCQ", tbc: true },
+  { d: "2026-12-07", t: "", what: "Split_Shift interim: presentation 10% + prototype 20%", where: "Split_Shift repo", tbc: true },
+  { d: "weekly", t: "", what: "RAD301 lab: finish in Wednesday's class, push to master by Thursday night", where: "D:\\RADWeek6 (Rad301Labs2627.sln)", tbc: false },
+];
+
+/* ---------- saved state (per device) ---------- */
+const STORE = "weekplanner.v1";
+let S = { days: {}, carry: [], surf: {}, extraDl: [] };
+try { const raw = localStorage.getItem(STORE); if (raw) S = Object.assign(S, JSON.parse(raw)); } catch (e) {}
+const save = () => { try { localStorage.setItem(STORE, JSON.stringify(S)); } catch (e) {} };
+const dayState = k => (S.days[k] = S.days[k] || { events: [], late: [], skip: [], done: [] });
+
+/* ---------- build a day ---------- */
+function defaultTask(kind) {
+  if (kind === "light") return T("PM MCQ: 20-question practice", "D:\\ProjMgmt_MCQ\\quiz.html, the topic the Progress tab suggests.");
+  return T("Next task for the nearest deadline", "Catch-up list first, then the Deadlines tab.");
+}
+function buildDay(k) {
+  const dow = parseKey(k).getDay();
+  const week = mondayOf(k);
+  const surfDay = S.surf[week] || "fri";
+  const ds = S.days[k] || { events: [], late: [], skip: [], done: [] };
+  let blocks = TEMPLATE[dow].map(([s, e, kind, title, slot]) => ({ id: s + "-" + kind, s: m(s), e: m(e), kind, title, slot }));
+
+  blocks.forEach(b => {
+    if (b.kind === "surfopt") {
+      if (b.slot === surfDay) { b.kind = "surf"; b.title = "Surf (your surf slot this week)"; }
+      else { b.kind = "study"; b.title = "Deep work (not your surf slot this week)"; b.task = SWAP[week] || defaultTask("study"); }
+    }
+    if (TASKED.has(b.kind) && !b.task) b.task = (PLAN[k] && PLAN[k][b.slot]) || defaultTask(b.kind);
+  });
+
+  const fixedEv = (EVENTS[k] || []).map(([s, e, kind, title], i) => ({ id: "plan" + i, s: m(s), e: m(e), kind, title }));
+  const userEv = ds.events.map((x, i) => ({ id: "user" + i, s: m(x.s), e: m(x.e), kind: "event", title: x.title, user: i }));
+  // a planned exam in a class slot replaces that class
+  fixedEv.forEach(f => { blocks = blocks.filter(b => !(b.kind === "class" && b.s === f.s)); });
+  blocks = blocks.filter(b => !ds.skip.includes(b.id));
+
+  // ran late: extend that block, shift later flexible blocks, flex absorbs first
+  ds.late.forEach(L => {
+    const target = blocks.find(b => b.id === L.id);
+    if (!target) return;
+    target.e += L.min; target.late = (target.late || 0) + L.min;
+    let push = L.min;
+    blocks.filter(b => b.s > target.s && !FIXED.has(b.kind)).sort((a, b) => a.s - b.s).forEach(b => {
+      if (push <= 0) return;
+      if (b.kind === "flex") {
+        const ns = b.s + push;
+        if (ns < b.e) { b.s = ns; push = 0; } else { push = ns - b.e; b.s = b.e; b.gone = true; }
+      } else { b.s += push; b.e += push; }
+    });
+  });
+
+  // fixed things win: trim flexible blocks around them
+  const hard = blocks.filter(b => FIXED.has(b.kind) && b.e > b.s).concat(fixedEv, userEv).filter(b => b.e > b.s);
+  blocks.forEach(b => {
+    if (FIXED.has(b.kind) || b.gone) return;
+    hard.forEach(h => {
+      if (h === b) return;
+      if (h.s <= b.s && h.e > b.s) b.s = Math.min(h.e, b.e);
+      else if (h.s > b.s && h.s < b.e) b.e = h.s;
+    });
+    if (TASKED.has(b.kind)) { if (b.e - b.s < 15) b.squeezed = true; }
+    else if (b.e <= b.s && b.kind !== "bed") b.gone = true;
+  });
+
+  let all = blocks.filter(b => !b.gone).concat(fixedEv, userEv);
+  all.sort((a, b) => a.s - b.s || (a.e - a.s) - (b.e - b.s));
+  all.forEach(b => { b.done = ds.done.includes(b.id); });
+  return all;
+}
+
+/* ---------- rendering ---------- */
+let view = "today";
+let cur = keyOf(new Date());
+let openForm = null;
+const app = document.getElementById("app");
+
+function nowMin() { const d = new Date(); return d.getHours() * 60 + d.getMinutes(); }
+function daysTo(k) { const a = parseKey(keyOf(new Date())), b = parseKey(k); return Math.round((b - a) / 864e5); }
+
+function deadlineStrip() {
+  const today = keyOf(new Date());
+  const list = DEADLINES.filter(x => x.d !== "weekly" && x.d >= today).concat(S.extraDl.filter(x => x.d >= today))
+    .sort((a, b) => (a.d + a.t).localeCompare(b.d + b.t)).slice(0, 4);
+  return '<div class="dl-strip">' + list.map(x => {
+    const n = daysTo(x.d);
+    return `<div class="dl-chip"><b>${n === 0 ? "TODAY" : n === 1 ? "Tomorrow" : n + " days"}${x.tbc ? " (tbc)" : ""}</b>${esc(x.what.split(".")[0])}</div>`;
+  }).join("") + "</div>";
+}
+
+function renderToday() {
+  const blocks = buildDay(cur);
+  const isToday = cur === keyOf(new Date());
+  const now = nowMin();
+  const study = blocks.filter(b => TASKED.has(b.kind) && !b.squeezed);
+  const doneN = study.filter(b => b.done).length;
+  const curB = isToday ? blocks.find(b => b.s <= now && now < b.e && b.e > b.s) : null;
+  const nextB = isToday ? blocks.find(b => b.s > now) : null;
+  const week = mondayOf(cur);
+  const surf = S.surf[week] || "fri";
+  const openCarry = S.carry.filter(c => !c.done);
+
+  let h = `<div class="card daynav">
+    <button class="btn" data-a="prev">‹</button><h2>${fmtDay(cur)}${isToday ? "" : ' <span class="small muted">(not today)</span>'}</h2>
+    <button class="btn" data-a="next">›</button></div>`;
+  if (!isToday) h += `<div style="text-align:center"><button class="btn small" data-a="gotoday">Back to today</button></div>`;
+  h += deadlineStrip();
+  if (isToday) {
+    h += `<div class="card nowbox"><div class="small muted">Now</div><b>${curB ? esc(curB.task ? curB.task.t : curB.title) : "Between blocks"}</b>
+      ${curB ? `<div class="small muted">${curB.task ? esc(curB.title) + " · " : ""}until ${hm(curB.e)}</div>` : ""}
+      ${nextB ? `<div class="small" style="margin-top:6px">Next at ${hm(nextB.s)}: ${esc(nextB.task ? nextB.task.t : nextB.title)}</div>` : ""}</div>`;
+  }
+  h += `<div class="card"><div class="small">Study blocks done: <b>${doneN}/${study.length}</b>${doneN === study.length && study.length ? " · Day's work is done. Everything else tonight is guilt-free." : ""}</div>
+    <div class="bar"><i style="width:${study.length ? (doneN / study.length * 100) : 0}%"></i></div>
+    <div class="acts">
+      <button class="btn primary" data-a="addev">Something came up</button>
+      <span class="seg" title="Surf slot this week"><button data-a="surf" data-v="fri" class="${surf === "fri" ? "on" : ""}">Surf Fri</button><button data-a="surf" data-v="sun" class="${surf === "sun" ? "on" : ""}">Surf Sun</button></span>
+      <button class="btn" data-a="reset">Reset this day</button>
+    </div>
+    <div id="evform" class="${openForm === "ev" ? "" : "hide"}" style="margin-top:10px">
+      <form class="inline" id="evf">
+        <label class="full">What's happening<input name="title" required placeholder="e.g. Team meeting, dentist, sick"></label>
+        <label>From<input type="time" name="s" required value="${hm(Math.max(now, 480) - (Math.max(now,480) % 15))}"></label>
+        <label>To<input type="time" name="e" required></label>
+        <div class="full acts"><button class="btn primary">Add it, move my day around it</button><button type="button" class="btn" data-a="cancel">Cancel</button></div>
+      </form>
+      <div class="small muted" style="margin-top:6px">Fixed things (class, jiu-jitsu, work, bedtime) stay put. Study blocks get trimmed around it. Anything squeezed out can go on the catch-up list.</div>
+    </div></div>`;
+  if (openCarry.length) {
+    h += `<div class="card"><h3 class="sec">Catch-up list (${openCarry.length})</h3><div class="small muted">Do these in Flex blocks first, oldest first.</div><ul class="carry">` +
+      openCarry.map(c => `<li><b>${esc(c.t)}</b> <span class="small muted">from ${fmtDay(c.from)}</span> <button class="btn small" data-a="cdone" data-id="${c.id}">Done</button> <button class="btn small" data-a="cdrop" data-id="${c.id}">Drop</button>${c.d ? `<div class="small muted">${esc(c.d)}</div>` : ""}</li>`).join("") + "</ul></div>";
+  }
+  h += `<div class="card">` + blocks.map(b => {
+    const isCur = curB === b;
+    const zero = b.e === b.s;
+    const timeTxt = zero ? hm(b.s) : hm(b.s) + "–" + hm(b.e);
+    const task = b.task;
+    const tag = b.late ? `<span class="tag">+${b.late} min</span>` : b.squeezed ? `<span class="tag">squeezed out</span>` : "";
+    let acts = "";
+    if (!zero && !["bed", "free", "travel", "wake", "break", "due"].includes(b.kind)) {
+      acts += `<button class="btn small" data-a="done" data-id="${b.id}">${b.done ? "Undo" : "Done"}</button>`;
+      if (!FIXED.has(b.kind)) acts += `<button class="btn small" data-a="late" data-id="${b.id}">Ran late</button>`;
+      if (!FIXED.has(b.kind)) acts += `<button class="btn small" data-a="skip" data-id="${b.id}">Can't do it</button>`;
+    }
+    if (b.squeezed && task) acts = `<button class="btn small" data-a="tocarry" data-id="${b.id}">Put on catch-up list</button>`;
+    if (b.user !== undefined) acts = `<button class="btn small" data-a="delev" data-i="${b.user}">Remove</button>`;
+    const lateMenu = openForm === "late:" + b.id ? `<div class="acts">${[15, 30, 45, 60].map(n => `<button class="btn small primary" data-a="lateby" data-id="${b.id}" data-n="${n}">+${n} min</button>`).join("")}</div>` : "";
+    return `<div class="block ${b.done ? "done" : ""} ${isCur ? "cur" : ""} ${b.squeezed ? "squeezed" : ""}">
+      <div class="time">${timeTxt}</div><div class="stripe k-${b.kind}"></div>
+      <div class="body"><div class="t">${esc(task ? task.t : b.title)}${tag}</div>
+      ${task ? `<div class="d">${esc(b.title)}${task.d ? " · " + esc(task.d) : ""}</div>` : ""}
+      ${b.kind === "flex" && openCarry.length ? `<div class="d">Catch-up first: ${esc(openCarry[0].t)}</div>` : ""}
+      ${acts ? `<div class="acts">${acts}</div>` : ""}${lateMenu}</div></div>`;
+  }).join("") + `</div>`;
+  return h;
+}
+
+function renderWeek() {
+  const mon = mondayOf(cur);
+  const today = keyOf(new Date());
+  let h = `<div class="card daynav"><button class="btn" data-a="pweek">‹</button><h2>Week of ${fmtDay(mon)}</h2><button class="btn" data-a="nweek">›</button></div>`;
+  h += `<div class="small muted" style="margin:4px 0 8px">Tap a day to open it. Showing study, sport, class and fixed events.</div><div class="week">`;
+  for (let i = 0; i < 7; i++) {
+    const k = addDays(mon, i);
+    const bl = buildDay(k).filter(b => !["wake", "break", "travel", "free", "meal", "typing"].includes(b.kind) && !(b.kind === "bed" && b.e === b.s));
+    h += `<div class="wday ${k === today ? "today" : ""}" data-a="open" data-k="${k}"><h3>${fmtDay(k)}</h3>` +
+      bl.map(b => `<div class="wb"><span class="s k-${b.kind}"></span><span class="x">${hm(b.s)} ${esc(b.task ? b.task.t : b.title)}</span></div>`).join("") + `</div>`;
+  }
+  return h + "</div>";
+}
+
+function renderDeadlines() {
+  const all = DEADLINES.concat(S.extraDl.map((x, i) => Object.assign({ user: i }, x)));
+  const dated = all.filter(x => x.d !== "weekly").sort((a, b) => (a.d + a.t).localeCompare(b.d + b.t));
+  const today = keyOf(new Date());
+  let h = `<div class="card"><h3 class="sec">Coming up</h3>` + dated.map(x => {
+    const n = daysTo(x.d), past = x.d < today;
+    return `<div class="due-row" style="${past ? "opacity:.45" : ""}"><div><b>${esc(x.what)}</b> ${x.tbc ? '<span class="pill">date to confirm</span>' : ""}
+      <div class="small muted">${fmtDay(x.d)}${x.t ? " " + x.t : ""} · ${esc(x.where || "")}</div>
+      ${x.user !== undefined ? `<button class="btn small" data-a="deldl" data-i="${x.user}">Remove</button>` : ""}</div>
+      <div class="n">${past ? "done" : n === 0 ? '<span class="pill red">TODAY</span>' : n + " d"}</div></div>`;
+  }).join("") + `</div>`;
+  h += `<div class="card"><h3 class="sec">Every week</h3>` + all.filter(x => x.d === "weekly").map(x => `<div><b>${esc(x.what)}</b><div class="small muted">${esc(x.where)}</div></div>`).join("") +
+    `<div style="margin-top:6px"><b>AGP practical:</b> do the week's lab in Tuesday's class.</div><div><b>PM MCQ:</b> 20-40 min on light-study slots, following D:\\ProjMgmt_MCQ\\03_STUDY_PLAN.md.</div></div>`;
+  h += `<div class="card"><h3 class="sec">Add or fix a date</h3><form class="inline" id="dlf">
+    <label class="full">What<input name="what" required placeholder="e.g. PM MCQ exam"></label>
+    <label>Date<input type="date" name="d" required></label><label>Time<input type="time" name="t"></label>
+    <div class="full"><button class="btn primary">Add deadline</button></div></form>
+    <div class="small muted" style="margin-top:6px">Once you know the PM exam and Split_Shift interim dates, add them here. Tell Claude too, and the study blocks get re-planned around them.</div></div>`;
+  return h;
+}
+
+function renderRules() {
+  return `<div class="card"><h3 class="sec">How to use it</h3><ul class="rules">
+    <li>Open <b>Day</b>. Do the block that says <b>Now</b>. Tap <b>Done</b> when it's done.</li>
+    <li><b>Ran late</b> pushes the rest of your day back. Flex blocks soak it up first, so a short overrun usually costs nothing.</li>
+    <li><b>Something came up</b> puts a fixed event in. Study blocks shrink around it; anything squeezed out can go on the catch-up list.</li>
+    <li><b>Can't do it</b> takes the block out and puts its task on the catch-up list. Flex blocks show the oldest catch-up item.</li>
+    <li>Surf depends on the weather: pick <b>Surf Fri</b> or <b>Surf Sun</b> each week. The other slot turns into a study block.</li>
+  </ul></div>
+  <div class="card"><h3 class="sec">The non-negotiables</h3><ul class="rules">
+    <li><b>Lights out 23:15</b> (Fri 00:45, Sat 23:45). Bedtime never moves to make room for work. Sleep is what makes the study stick.</li>
+    <li><b>Read at least 10 minutes</b> every night before TV.</li>
+    <li><b>Typing practice 15 minutes</b> a day (keybr.com or monkeytype.com). It's a warm-up before the first study block.</li>
+    <li><b>Sport:</b> jiu-jitsu Mon, Wed 20:00 and Sat 11:00; Chest & Tris Tue, Back & Bis Thu, Legs Sun; run Mon morning; swim Fri morning; surf Fri or Sun.</li>
+    <li><b>Food:</b> no breakfast, lunch in college on college days, dinner at home. Dinner is 2 hours before jiu-jitsu, with a protein snack after.</li>
+    <li><b>Sunday evening is for your girlfriend.</b> Saturday evening is off.</li>
+  </ul></div>
+  <div class="card"><h3 class="sec">Why it's built like this</h3><ul class="rules">
+    <li>Every deadline has a planned <b>early submit</b>: report Sun 15, slides Fri 27, Mobile Wed 2. The real deadline is your safety net.</li>
+    <li>Hard thinking (writing, coding) goes in the morning blocks; quizzes and flashcards go in the short evening "light" slots.</li>
+    <li>If every study block is ticked, the rest of the day is <b>guilt-free</b>. That's the deal.</li>
+    <li>Sunday's first block starts with a 15-min weekly review: check the Deadlines tab and the catch-up list.</li>
+  </ul></div>`;
+}
+
+function renderSync() {
+  return `<div class="card"><h3 class="sec">Move your changes between devices</h3>
+  <p class="small">Changes (done ticks, events, catch-up list, surf day) are saved on this device only. To carry them to your phone or a college PC: copy the code here, then paste it on the other device.</p>
+  <textarea id="code" rows="4" readonly>${esc(btoa(unescape(encodeURIComponent(JSON.stringify(S)))))}</textarea>
+  <div class="acts"><button class="btn primary" data-a="copy">Copy code</button></div>
+  <h3 class="sec" style="margin-top:14px">Paste a code from another device</h3>
+  <textarea id="paste" rows="4" placeholder="Paste here"></textarea>
+  <div class="acts"><button class="btn" data-a="load">Load it (replaces this device's changes)</button></div>
+  <p class="small muted">The plan itself (blocks and tasks) is the same everywhere. Only your changes need syncing.</p></div>`;
+}
+
+function render() {
+  document.querySelectorAll("#tabs button").forEach(b => b.classList.toggle("on", b.dataset.v === view));
+  app.innerHTML = view === "today" ? renderToday() : view === "week" ? renderWeek() : view === "deadlines" ? renderDeadlines() : view === "rules" ? renderRules() : renderSync();
+  const d = new Date();
+  document.getElementById("clock").textContent = DAYS[d.getDay()] + " " + hm(d.getHours() * 60 + d.getMinutes());
+}
+
+/* ---------- actions ---------- */
+document.getElementById("tabs").addEventListener("click", e => { const b = e.target.closest("button"); if (!b) return; view = b.dataset.v; openForm = null; render(); scrollTo(0, 0); });
+app.addEventListener("click", e => {
+  const el = e.target.closest("[data-a]"); if (!el) return;
+  const a = el.dataset.a, id = el.dataset.id, ds = () => dayState(cur);
+  const findBlock = () => buildDay(cur).find(b => b.id === id);
+  if (a === "prev") cur = addDays(cur, -1);
+  else if (a === "next") cur = addDays(cur, 1);
+  else if (a === "gotoday") cur = keyOf(new Date());
+  else if (a === "pweek") cur = addDays(cur, -7);
+  else if (a === "nweek") cur = addDays(cur, 7);
+  else if (a === "open") { cur = el.dataset.k; view = "today"; }
+  else if (a === "addev") openForm = openForm === "ev" ? null : "ev";
+  else if (a === "cancel") openForm = null;
+  else if (a === "surf") { S.surf[mondayOf(cur)] = el.dataset.v; save(); }
+  else if (a === "reset") { if (confirm("Clear every change you made to " + fmtDay(cur) + "?")) { delete S.days[cur]; save(); } }
+  else if (a === "done") { const d = ds(); d.done = d.done.includes(id) ? d.done.filter(x => x !== id) : d.done.concat(id); save(); }
+  else if (a === "late") openForm = openForm === "late:" + id ? null : "late:" + id;
+  else if (a === "lateby") { ds().late.push({ id, min: +el.dataset.n }); openForm = null; save(); }
+  else if (a === "skip" || a === "tocarry") {
+    const b = findBlock();
+    if (b && b.task) S.carry.push({ id: Date.now().toString(36), t: b.task.t, d: b.task.d, from: cur, done: false });
+    if (a === "skip") ds().skip.push(id); else ds().done.push(id);
+    save();
+  }
+  else if (a === "delev") { ds().events.splice(+el.dataset.i, 1); save(); }
+  else if (a === "cdone" || a === "cdrop") { const c = S.carry.find(x => x.id === id); if (c) { if (a === "cdone") c.done = true; else S.carry = S.carry.filter(x => x !== c); } save(); }
+  else if (a === "deldl") { S.extraDl.splice(+el.dataset.i, 1); save(); }
+  else if (a === "copy") { const t = document.getElementById("code"); t.select(); try { navigator.clipboard.writeText(t.value); } catch (x) { document.execCommand("copy"); } el.textContent = "Copied"; return; }
+  else if (a === "load") {
+    try { const v = JSON.parse(decodeURIComponent(escape(atob(document.getElementById("paste").value.trim())))); S = Object.assign({ days: {}, carry: [], surf: {}, extraDl: [] }, v); save(); alert("Loaded."); }
+    catch (x) { alert("That code didn't work. Copy it again from the other device."); return; }
+  }
+  render();
+});
+app.addEventListener("submit", e => {
+  e.preventDefault();
+  const f = new FormData(e.target);
+  if (e.target.id === "evf") {
+    const s = f.get("s"), en = f.get("e");
+    if (m(en) <= m(s)) { alert("The end time needs to be after the start."); return; }
+    dayState(cur).events.push({ title: f.get("title"), s, e: en }); openForm = null;
+  } else if (e.target.id === "dlf") {
+    S.extraDl.push({ d: f.get("d"), t: f.get("t") || "", what: f.get("what"), where: "", tbc: false });
+  }
+  save(); render();
+});
+render();
+setInterval(() => { if (view === "today" && !openForm) render(); }, 60000);
+</script>
+</body>
+</html>
