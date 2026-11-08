@@ -2,98 +2,143 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="robots" content="noindex, nofollow">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="theme-color" content="#11151c">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#f3f5f8">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0b0f15">
 <title>Week Planner</title>
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon-180.png">
+<link rel="icon" type="image/png" href="icon-192.png">
+<meta name="apple-mobile-web-app-title" content="Planner">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
 <style>
 :root{
-  --bg:#f6f7f9; --card:#fff; --ink:#1b1f27; --muted:#5d6675; --line:#e2e5ea; --accent:#0e8a7e;
-  --study:#2f6fde; --class:#7a52c7; --sport:#d9572b; --meal:#3f9b4a; --rest:#8a94a6; --work:#b8860b; --fixed:#c2185b; --flex:#0e8a7e;
-  --now:#fff6d6;
+  --bg:#f3f5f8; --card:#ffffff; --ink:#151a22; --muted:#5b6575; --line:#e1e5eb; --soft:#eef1f5;
+  --accent:#0a8f84; --accent-ink:#ffffff; --glow:rgba(10,143,132,.18);
+  --study:#2f6fde; --class:#7a52c7; --sport:#e0602f; --meal:#3f9b4a; --rest:#8b95a7; --work:#b8860b; --fixed:#d81b60; --flex:#0a8f84; --bedc:#6b5bd6; --typing:#2b8fb0;
+  --now:#fff7dc; --amber:#c77800; --red:#d81b60;
 }
 @media (prefers-color-scheme: dark){
-  :root{ --bg:#11151c; --card:#1a2029; --ink:#e7eaf0; --muted:#9aa4b5; --line:#2a313d; --accent:#2fc4b2;
-    --study:#6f9cff; --class:#b08cff; --sport:#ff8a5c; --meal:#6fcf7a; --rest:#8a94a6; --work:#e2b33c; --fixed:#ff5c93; --flex:#2fc4b2; --now:#2c2a1c; }
+  :root{ --bg:#0b0f15; --card:#141a23; --ink:#e9edf3; --muted:#9aa5b6; --line:#232b37; --soft:#1a212c;
+    --accent:#22d3c0; --accent-ink:#04211e; --glow:rgba(34,211,192,.22);
+    --study:#6f9cff; --class:#b590ff; --sport:#ff8a5c; --meal:#6fd27b; --rest:#7f8a9c; --work:#e9b949; --fixed:#ff5c93; --flex:#22d3c0; --bedc:#9c8cff; --typing:#5cc7e8;
+    --now:#1d2a2a; --amber:#f0a73a; --red:#ff5c93; }
 }
 *{box-sizing:border-box}
-html,body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;-webkit-text-size-adjust:100%}
-header{position:sticky;top:0;z-index:5;background:var(--bg);border-bottom:1px solid var(--line)}
-.wrap{max-width:880px;margin:0 auto;padding:0 16px}
-.top{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:10px 0 6px}
-.top h1{font-size:18px;margin:0}
-.tabs{display:flex;gap:4px;overflow-x:auto;padding-bottom:8px;scrollbar-width:none}
+html,body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;-webkit-text-size-adjust:100%}
+header{position:sticky;top:0;z-index:5;padding-top:env(safe-area-inset-top);background:var(--bg);border-bottom:1px solid var(--line);box-shadow:0 1px 0 var(--glow)}
+.wrap{max-width:820px;margin:0 auto;padding:0 16px}
+.top{display:flex;align-items:baseline;justify-content:space-between;gap:8px;padding:10px 0 6px}
+.top h1{font-size:19px;margin:0;letter-spacing:.02em}
+.top h1 span{color:var(--accent)}
+.clock{font-variant-numeric:tabular-nums;color:var(--muted);font-size:15px}
+.tabs{display:flex;gap:4px;overflow-x:auto;padding-bottom:9px;scrollbar-width:none}
 .tabs::-webkit-scrollbar{display:none}
-.tabs button{flex:0 0 auto;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:999px;padding:7px 14px;font-size:15px}
-.tabs button.on{background:var(--accent);border-color:var(--accent);color:#fff}
-button{font:inherit;cursor:pointer}
-.btn{border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:8px;padding:6px 10px;font-size:14px}
-.btn.primary{background:var(--accent);border-color:var(--accent);color:#fff}
-.btn.small{padding:3px 8px;font-size:13px}
-main{padding:12px 0 60px}
-.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin:10px 0}
+.tabs button{flex:0 0 auto;min-height:40px;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:999px;padding:7px 11px;font-size:14px}
+.tabs button.on{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);font-weight:600}
+button{font:inherit;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.btn{min-height:44px;border:1px solid var(--line);background:var(--soft);color:var(--ink);border-radius:9px;padding:7px 12px;font-size:15px}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);font-weight:600}
+.btn.small{min-height:40px;padding:6px 12px;font-size:14px}
+.btn.ghost{background:transparent}
+main{padding:10px 0 70px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:13px 15px;margin:10px 0}
 .daynav{display:flex;align-items:center;justify-content:space-between;gap:8px}
 .daynav h2{margin:0;font-size:20px;text-align:center;flex:1}
+.daynav .btn{min-width:44px;font-size:20px;line-height:1}
 .muted{color:var(--muted)}
-.small{font-size:13px}
-.nowbox{background:var(--now)}
-.nowbox b{font-size:17px}
-.dl-strip{display:flex;gap:8px;overflow-x:auto;padding:2px 0}
-.dl-chip{flex:0 0 auto;border:1px solid var(--line);border-radius:10px;padding:6px 10px;background:var(--card);font-size:13px}
-.dl-chip b{display:block;font-size:15px}
-.bar{height:8px;border-radius:4px;background:var(--line);overflow:hidden;margin-top:6px}
+.small{font-size:14px}
+h3.sec{font-size:16px;margin:0 0 8px;letter-spacing:.01em}
+.nowcard{border-color:var(--accent);box-shadow:0 0 0 3px var(--glow)}
+.nowcard .lbl{font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--accent);font-weight:700}
+.nowcard .big{font-size:21px;font-weight:700;line-height:1.25;margin:3px 0}
+.nowcard .next{margin-top:10px;padding-top:9px;border-top:1px solid var(--line);font-size:15px}
+.bar{height:7px;border-radius:4px;background:var(--soft);overflow:hidden;margin-top:8px}
 .bar i{display:block;height:100%;background:var(--accent)}
-.block{display:flex;gap:10px;padding:9px 0;border-top:1px solid var(--line)}
+.dl-strip{display:flex;gap:8px;overflow-x:auto;padding:2px 0;scrollbar-width:none}
+.dl-strip::-webkit-scrollbar{display:none}
+.dl-chip{flex:0 0 auto;border:1px solid var(--line);border-left:4px solid var(--rest);border-radius:10px;padding:6px 10px;background:var(--card);font-size:13px;max-width:220px}
+.dl-chip b{display:block;font-size:15px}
+.dl-chip.amber{border-left-color:var(--amber)} .dl-chip.red{border-left-color:var(--red)}
+.pack{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.pack span{background:var(--soft);border:1px solid var(--line);border-radius:999px;padding:3px 10px;font-size:14px}
+.block{display:flex;gap:11px;padding:11px 0;border-top:1px solid var(--line)}
 .block:first-child{border-top:0}
-.time{flex:0 0 92px;font-variant-numeric:tabular-nums;font-size:14px;color:var(--muted);padding-top:1px}
+.time{flex:0 0 70px;font-variant-numeric:tabular-nums;padding-top:1px;line-height:1.2}
+.time b{display:block;font-size:16px;font-weight:600}
+.time span{font-size:13px;color:var(--muted)}
+.time small,.ap{font-size:.72em;font-weight:500;margin-left:1px;color:var(--muted)}
 .stripe{flex:0 0 4px;border-radius:2px}
 .body{flex:1;min-width:0}
-.body .t{font-weight:600}
-.body .d{font-size:14px;color:var(--muted);margin-top:2px;white-space:pre-line}
-.body .tag{display:inline-block;font-size:11px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);border:1px solid var(--line);border-radius:4px;padding:0 5px;margin-left:6px;vertical-align:1px}
-.block.done .t{text-decoration:line-through;opacity:.6}
-.block.cur{background:var(--now);margin:0 -14px;padding-left:14px;padding-right:14px}
+.body .t{font-weight:600;font-size:17px;line-height:1.3}
+.body .d{font-size:14px;color:var(--muted);margin-top:3px;white-space:pre-line;overflow-wrap:anywhere}
+.tag{display:inline-block;font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);border:1px solid var(--line);border-radius:4px;padding:0 5px;margin-left:6px;vertical-align:2px;font-weight:600}
+.block.done .t{text-decoration:line-through;opacity:.55}
+.block.done .d{opacity:.6}
+.block.cur{background:var(--now);margin:0 -15px;padding-left:15px;padding-right:15px;box-shadow:inset 3px 0 0 var(--accent)}
 .block.squeezed .t{opacity:.55}
-.acts{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.block.fixed .t::after{content:"fixed";display:inline-block;font-size:10px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);border:1px solid var(--line);border-radius:4px;padding:0 4px;margin-left:7px;vertical-align:2px;font-weight:600}
+.acts{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.past-toggle{width:100%;text-align:left;background:transparent;border:0;color:var(--accent);padding:4px 0 10px;font-size:15px;font-weight:600}
 .k-study,.k-light{background:var(--study)} .k-class{background:var(--class)} .k-gym,.k-cardio,.k-bjj,.k-surf{background:var(--sport)}
-.k-meal{background:var(--meal)} .k-rest,.k-travel,.k-free,.k-wake,.k-break{background:var(--rest)} .k-work{background:var(--work)}
-.k-event,.k-due{background:var(--fixed)} .k-errand{background:var(--work)} .k-flex{background:var(--flex)} .k-bed,.k-gf{background:#6b5bd6} .k-typing{background:#4a90a4}
-.due-row{display:flex;justify-content:space-between;gap:10px;padding:8px 0;border-top:1px solid var(--line)}
+.k-meal{background:var(--meal)} .k-rest,.k-travel,.k-free,.k-wake,.k-break{background:var(--rest)} .k-work,.k-errand{background:var(--work)}
+.k-event,.k-due{background:var(--fixed)} .k-flex{background:var(--flex)} .k-bed,.k-gf{background:var(--bedc)} .k-typing{background:var(--typing)}
+.due-row{display:flex;justify-content:space-between;gap:10px;padding:10px 0;border-top:1px solid var(--line)}
 .due-row:first-child{border-top:0}
 .due-row .n{font-weight:700;font-variant-numeric:tabular-nums;white-space:nowrap}
-.pill{display:inline-block;font-size:12px;border-radius:999px;padding:1px 8px;background:var(--line);color:var(--ink)}
-.pill.red{background:var(--fixed);color:#fff}
+.pill{display:inline-block;font-size:12px;border-radius:999px;padding:1px 8px;background:var(--soft);border:1px solid var(--line);color:var(--ink)}
+.pill.red{background:#c2185b;border-color:#c2185b;color:#fff}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.stat{background:var(--soft);border-radius:10px;padding:8px;text-align:center}
+.stat b{display:block;font-size:20px;font-variant-numeric:tabular-nums}
+.stat span{font-size:12px;color:var(--muted)}
 .week{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px}
-.wday{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:6px;font-size:12px;min-width:0}
-.wday h3{margin:0 0 4px;font-size:13px}
-.wday.today{outline:2px solid var(--accent)}
-.wb{display:flex;gap:4px;margin:2px 0}
-.wb .s{flex:0 0 3px;border-radius:2px}
+.wday{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:8px;font-size:13px;min-width:0;cursor:pointer}
+.wday h3{margin:0 0 5px;font-size:14px;display:flex;justify-content:space-between}
+.wday.today{border-color:var(--accent);box-shadow:0 0 0 2px var(--glow)}
+.wb{display:flex;gap:6px;margin:3px 0;align-items:baseline}
+.wb .s{flex:0 0 3px;align-self:stretch;border-radius:2px}
+.wb .tm{flex:0 0 52px;color:var(--muted);font-variant-numeric:tabular-nums}
 .wb .x{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-@media (max-width:700px){ .week{grid-template-columns:1fr} .wb .x{white-space:normal} .time{flex-basis:78px;font-size:13px} }
+@media (max-width:760px){ .week{grid-template-columns:1fr} .wb .x{white-space:normal} .stats{grid-template-columns:repeat(2,1fr)} }
 form.inline{display:grid;gap:8px;grid-template-columns:1fr 1fr;align-items:end}
 form.inline label{display:flex;flex-direction:column;font-size:13px;color:var(--muted);gap:3px}
-form.inline input,form.inline select,textarea{font:inherit;padding:7px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink);width:100%}
+input,select,textarea{font:inherit;font-size:16px;padding:8px;border:1px solid var(--line);border-radius:9px;background:var(--bg);color:var(--ink);width:100%}
 form.inline .full{grid-column:1/-1}
-.carry li{margin:4px 0}
-h3.sec{font-size:16px;margin:4px 0 6px}
-ul.rules{padding-left:18px;margin:6px 0} ul.rules li{margin:4px 0}
-.seg{display:inline-flex;border:1px solid var(--line);border-radius:8px;overflow:hidden}
-.seg button{border:0;background:var(--card);color:var(--ink);padding:5px 10px;font-size:14px}
-.seg button.on{background:var(--accent);color:#fff}
+.carry li{margin:6px 0}
+ul.rules{padding-left:18px;margin:6px 0} ul.rules li{margin:6px 0}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:9px;overflow:hidden}
+.seg button{min-height:44px;border:0;background:var(--soft);color:var(--ink);padding:6px 11px;font-size:14px}
+.seg button.on{background:var(--accent);color:var(--accent-ink);font-weight:600}
+.legend{display:flex;flex-wrap:wrap;gap:10px;font-size:13px;color:var(--muted)}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:4px;vertical-align:-1px}
 .hide{display:none}
+a{color:var(--accent);font-weight:600}
+#toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(16px + env(safe-area-inset-bottom));z-index:20;display:flex;align-items:center;gap:12px;background:var(--ink);color:var(--bg);border-radius:12px;padding:8px 8px 8px 14px;box-shadow:0 6px 24px rgba(0,0,0,.3);max-width:calc(100% - 32px);font-size:15px}
+#toast .btn{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);font-weight:700}
+.check{display:flex;align-items:center;gap:10px;padding:9px 0;border-top:1px solid var(--line);min-height:44px;cursor:pointer}
+.check:first-of-type{border-top:0}
+.check input{width:22px;height:22px;flex:0 0 22px;accent-color:var(--accent);margin:0}
+.check.on span{text-decoration:line-through;color:var(--muted)}
+.check small{color:var(--muted);margin-left:auto;white-space:nowrap;font-variant-numeric:tabular-nums}
+.shop-h{font-size:13px;text-transform:uppercase;letter-spacing:.06em;color:var(--accent);font-weight:700;margin:14px 0 2px}
+table.meals{width:100%;border-collapse:collapse;font-size:14px}
+table.meals td,table.meals th{text-align:left;padding:6px 4px;border-top:1px solid var(--line);vertical-align:top}
+table.meals th{color:var(--muted);font-weight:600}
 </style>
 </head>
 <body>
 <header>
   <div class="wrap">
-    <div class="top"><h1>Week Planner</h1><span class="muted small" id="clock"></span></div>
+    <div class="top"><h1>Week <span>Planner</span></h1><span class="clock" id="clock"></span></div>
     <nav class="tabs" id="tabs">
       <button data-v="today" class="on">Day</button>
       <button data-v="week">Week</button>
-      <button data-v="deadlines">Deadlines</button>
-      <button data-v="rules">How it works</button>
+      <button data-v="deadlines">Due</button>
+      <button data-v="shop">Shop</button>
+      <button data-v="rules">Help</button>
       <button data-v="sync">Sync</button>
     </nav>
   </div>
@@ -122,43 +167,45 @@ const FIXED = new Set(["class", "bjj", "work", "bed", "gf", "event", "due"]);
 const TASKED = new Set(["study", "light"]);
 const READ = "In bed. Read for at least 10 min first, then TV with your girlfriend. Phone away.";
 const TEMPLATE = {
-  1: [ // Monday: no college, jiu-jitsu at night
-    ["07:30", "07:45", "wake", "Up. Water, get dressed"],
-    ["07:45", "08:20", "cardio", "Run: easy 5 km (chatting pace)"],
-    ["08:20", "08:45", "break", "Shower, coffee"],
+  1: [ // Monday: no college. Run first thing, jiu-jitsu at night
+    ["07:30", "07:40", "wake", "Up, glass of water, running gear on"],
+    ["07:40", "08:15", "cardio", "Run: easy 5 km from home (chatting pace)"],
+    ["08:15", "08:40", "break", "Shower, get dressed, coffee"],
     ["08:45", "09:00", "typing", "Typing practice 15 min"],
     ["09:00", "11:00", "study", "Deep work 1", "mon1"],
     ["11:00", "11:15", "break", "Break: stand up, walk, water"],
     ["11:15", "12:45", "study", "Deep work 2", "mon2"],
-    ["12:45", "13:30", "meal", "Lunch at home (proper meal, protein)"],
+    ["12:45", "13:30", "meal", "Lunch: a pot portion from Sunday's batch cook + rice, glass of milk"],
     ["13:30", "15:30", "study", "Deep work 3", "mon3"],
     ["15:30", "15:45", "break", "Break: outside for 10 min"],
     ["15:45", "17:15", "study", "Deep work 4", "mon4"],
     ["17:15", "18:00", "flex", "Flex / catch-up"],
-    ["18:00", "18:45", "meal", "Dinner (2 h before jiu-jitsu)"],
-    ["18:45", "19:40", "light", "Light study", "mon5"],
+    ["18:00", "18:45", "meal", "Dinner: porridge with yogurt + toppings (2 h before jiu-jitsu)"],
+    ["18:45", "19:25", "light", "Light study", "mon5"],
+    ["19:25", "19:40", "break", "Quick shower, pack your gi"],
     ["19:40", "20:00", "travel", "Go to jiu-jitsu"],
     ["20:00", "21:00", "bjj", "Jiu-jitsu"],
-    ["21:00", "21:45", "meal", "Home, shower, protein snack"],
+    ["21:00", "21:45", "meal", "Home, shower. 300g Greek 0% yogurt, banana, honey + glass of milk"],
     ["21:45", "22:30", "free", "Free time, guilt-free"],
     ["22:30", "23:15", "bed", READ],
     ["23:15", "23:15", "bed", "Lights out"],
   ],
-  2: [ // Tuesday: college 9-12 only
-    ["07:30", "08:00", "wake", "Up, get ready"],
+  2: [ // Tuesday: college 9-12, then gym + swim at the Clayton
+    ["07:30", "08:00", "wake", "Up, shower, get dressed"],
     ["08:00", "08:15", "typing", "Typing practice 15 min"],
-    ["08:25", "09:00", "travel", "Walk to college (25-30 min)"],
+    ["08:25", "09:00", "travel", "Walk to college (25-30 min). Gym bag + togs with you"],
     ["09:00", "11:00", "class", "Advanced Games Programming practical (B2313): do the week's lab in class"],
     ["11:00", "12:00", "class", "Rich App Dev lecture (E0011)"],
     ["12:00", "12:40", "meal", "Lunch in college"],
     ["12:40", "12:50", "travel", "Walk to the Clayton (10 min)"],
-    ["12:50", "13:55", "gym", "Gym at the Clayton: Chest & Triceps"],
-    ["13:55", "14:25", "cardio", "Swim at the Clayton: 20-25 min steady laps (same building, so no extra walk)"],
+    ["12:50", "13:50", "gym", "Gym at the Clayton: Chest & Triceps"],
+    ["13:50", "14:15", "cardio", "Swim at the Clayton: 20 min steady laps"],
+    ["14:15", "14:30", "break", "Shower at the Clayton"],
     ["14:30", "15:00", "travel", "Walk home from the Clayton (25-30 min)"],
     ["15:00", "16:45", "study", "Deep work 1", "tue1"],
     ["16:45", "17:00", "break", "Break"],
     ["17:00", "18:15", "study", "Deep work 2", "tue2"],
-    ["18:15", "19:00", "meal", "Dinner"],
+    ["18:15", "19:00", "meal", "Dinner: 5 scrambled eggs, spinach, half an avocado, 2 toast, milk"],
     ["19:00", "20:15", "study", "Deep work 3", "tue3"],
     ["20:15", "21:00", "flex", "Flex / catch-up"],
     ["21:00", "22:30", "free", "Free time, guilt-free"],
@@ -166,7 +213,7 @@ const TEMPLATE = {
     ["23:15", "23:15", "bed", "Lights out"],
   ],
   3: [ // Wednesday: RAD lab, Prof Dev, AGP lecture, jiu-jitsu
-    ["07:30", "08:00", "wake", "Up, get ready"],
+    ["07:30", "08:00", "wake", "Up, shower, get dressed"],
     ["08:00", "08:15", "typing", "Typing practice 15 min"],
     ["08:25", "09:00", "travel", "Walk to college (25-30 min)"],
     ["09:00", "12:00", "class", "Rich App Dev lab (B2306): get as far as you can on the weekly RAD lab. Note where you stopped for Thursday"],
@@ -176,75 +223,83 @@ const TEMPLATE = {
     ["15:00", "16:00", "study", "Library block", "wed2"],
     ["16:00", "18:00", "class", "Advanced Games Programming lecture (B2307)"],
     ["18:00", "18:30", "travel", "Walk home (25-30 min)"],
-    ["18:30", "19:10", "meal", "Dinner (light-ish, jiu-jitsu at 8)"],
-    ["19:10", "19:40", "light", "Light study", "wed3"],
+    ["18:30", "19:05", "meal", "Dinner: porridge with yogurt + toppings (jiu-jitsu at 8)"],
+    ["19:05", "19:30", "light", "Light study", "wed3"],
+    ["19:30", "19:40", "break", "Quick shower, pack your gi"],
     ["19:40", "20:00", "travel", "Go to jiu-jitsu"],
     ["20:00", "21:00", "bjj", "Jiu-jitsu"],
-    ["21:00", "21:45", "meal", "Home, shower, protein snack"],
+    ["21:00", "21:45", "meal", "Home, shower. 300g Greek 0% yogurt, banana, honey + glass of milk"],
     ["21:45", "22:30", "free", "Free time, guilt-free"],
     ["22:30", "23:15", "bed", READ],
     ["23:15", "23:15", "bed", "Lights out"],
   ],
-  4: [ // Thursday: Software Project Mgmt 9-11 only
-    ["07:30", "08:00", "wake", "Up, get ready"],
+  4: [ // Thursday: Software Project Mgmt 9-11, gym straight after, RAD at home
+    ["07:30", "08:00", "wake", "Up, shower, get dressed"],
     ["08:00", "08:15", "typing", "Typing practice 15 min"],
-    ["08:25", "09:00", "travel", "Walk to college (25-30 min)"],
+    ["08:25", "09:00", "travel", "Walk to college (25-30 min). Gym bag with you"],
     ["09:00", "11:00", "class", "Software Project Mgmt (D1031)"],
     ["11:00", "11:10", "travel", "Walk to the Clayton (10 min)"],
-    ["11:10", "12:20", "gym", "Gym at the Clayton: Back & Biceps"],
+    ["11:10", "12:05", "gym", "Gym at the Clayton: Back & Biceps"],
+    ["12:05", "12:20", "break", "Shower at the Clayton"],
     ["12:20", "12:30", "travel", "Walk back to college (10 min)"],
     ["12:30", "13:10", "meal", "Lunch in college"],
-    ["13:10", "13:40", "travel", "Walk home (25-30 min)"],
+    ["13:10", "13:40", "travel", "Walk home through town. Quick Tesco top-up on the way if the fridge needs it"],
     ["13:45", "15:45", "study", "Deep work 1", "thu1"],
     ["15:45", "16:00", "break", "Break"],
     ["16:00", "17:30", "study", "Deep work 2", "thu2"],
     ["17:30", "18:15", "flex", "Flex / catch-up"],
-    ["18:15", "19:00", "meal", "Dinner"],
+    ["18:15", "19:00", "meal", "Dinner: 5 scrambled eggs, spinach, half an avocado, 2 toast, milk"],
     ["19:00", "20:30", "study", "Deep work 3", "thu3"],
     ["20:30", "22:30", "free", "Free time, guilt-free"],
     ["22:30", "23:15", "bed", READ],
     ["23:15", "23:15", "bed", "Lights out"],
   ],
-  5: [ // Friday: swim, study, surf, work shift
-    ["07:30", "07:45", "wake", "Up"],
-    ["07:45", "08:30", "cardio", "Run: easy 5 km from home (the swim is now Tuesday at the Clayton, since the pool is a long walk from home)"],
+  5: [ // Friday: run first, study, surf, work shift
+    ["07:30", "07:40", "wake", "Up, glass of water, running gear on"],
+    ["07:40", "08:15", "cardio", "Run: easy 5 km from home"],
+    ["08:15", "08:40", "break", "Shower, get dressed, coffee"],
     ["08:45", "09:00", "typing", "Typing practice 15 min"],
     ["09:00", "11:00", "study", "Deep work 1", "fri1"],
     ["11:00", "11:15", "break", "Break"],
     ["11:15", "12:30", "study", "Deep work 2", "fri2"],
-    ["12:30", "13:15", "meal", "Lunch"],
+    ["12:30", "13:15", "meal", "Lunch: mackerel on toast + 3 eggs, milk"],
     ["13:15", "15:30", "surfopt", "Surf", "fri"],
-    ["15:45", "16:15", "meal", "Dinner before the shift (eat properly, it's a long one)"],
+    ["15:45", "16:15", "meal", "Dinner before the shift: big plate of pot + rice + veg. Pack 2 peanut butter sandwiches + a banana"],
     ["16:15", "16:45", "travel", "Get ready, go to work"],
     ["16:45", "24:00", "work", "Work shift"],
-    ["24:00", "24:45", "rest", "Home. Shower, 10 min reading, no screens"],
-    ["24:45", "24:45", "bed", "Lights out (sleep in to 9:00)"],
   ],
   6: [ // Saturday: jiu-jitsu morning, study afternoon, evening off
-    ["09:00", "09:30", "wake", "Up, coffee"],
-    ["09:30", "10:30", "light", "Light study", "sat0"],
-    ["10:30", "10:45", "typing", "Typing practice 15 min"],
-    ["10:45", "11:00", "travel", "Go to jiu-jitsu"],
+    ["00:00", "00:45", "bed", "Home from work: shower, read 10 min, no screens"],
+    ["00:45", "00:45", "bed", "Lights out (sleep in until 9am)"],
+    ["09:00", "09:15", "wake", "Up, coffee"],
+    ["09:15", "09:30", "typing", "Typing practice 15 min"],
+    ["09:30", "10:20", "light", "Light study", "sat0"],
+    ["10:20", "10:35", "break", "Morning shower (counts as your pre-jiu-jitsu shower), pack your gi"],
+    ["10:40", "11:00", "travel", "Go to jiu-jitsu"],
     ["11:00", "12:00", "bjj", "Jiu-jitsu"],
-    ["12:00", "12:45", "meal", "Lunch"],
-    ["13:00", "15:00", "study", "Deep work 1", "sat1"],
+    ["12:00", "12:20", "travel", "Home from jiu-jitsu"],
+    ["12:20", "12:35", "break", "Shower"],
+    ["12:35", "13:10", "meal", "Lunch: a pot portion + rice, glass of milk"],
+    ["13:10", "15:00", "study", "Deep work 1", "sat1"],
     ["15:00", "15:15", "break", "Break"],
     ["15:15", "17:00", "study", "Deep work 2", "sat2"],
     ["17:00", "23:00", "free", "Evening OFF. Dinner, friends, whatever you like"],
     ["23:00", "23:45", "bed", READ],
     ["23:45", "23:45", "bed", "Lights out"],
   ],
-  0: [ // Sunday: legs, surf or study, girlfriend evening
-    ["08:30", "08:45", "wake", "Up"],
-    ["08:45", "09:00", "typing", "Typing practice 15 min"],
-    ["09:00", "10:05", "study", "Weekly review (15 min) + deep work", "sun1"],
-    ["10:05", "10:25", "travel", "Walk to ROM, Cleveragh Retail Park (about 18 min)"],
-    ["10:25", "11:40", "gym", "Gym at ROM: Legs"],
-    ["11:40", "12:00", "travel", "Walk home from ROM"],
-    ["12:00", "12:45", "meal", "Lunch"],
-    ["13:00", "16:30", "surfopt", "Surf", "sun"],
-    ["16:30", "17:30", "flex", "Flex: catch-up, then pack the bag and plan meals for the week"],
-    ["17:30", "22:30", "gf", "Evening with your girlfriend (dinner together)"],
+  0: [ // Sunday: legs first thing, study, surf or study, food shop, girlfriend evening
+    ["08:30", "08:45", "wake", "Up, glass of water, gym gear on"],
+    ["08:45", "09:05", "travel", "Walk to ROM, Cleveragh Retail Park (about 18 min)"],
+    ["09:05", "10:15", "gym", "Gym at ROM: Legs"],
+    ["10:15", "10:30", "break", "Shower at ROM"],
+    ["10:30", "10:50", "travel", "Walk home from ROM"],
+    ["10:50", "11:05", "typing", "Typing practice 15 min"],
+    ["11:05", "12:20", "study", "Weekly review (15 min) + deep work", "sun1"],
+    ["12:20", "13:00", "meal", "Lunch, glass of milk"],
+    ["13:00", "16:15", "surfopt", "Surf", "sun"],
+    ["16:15", "17:00", "errand", "Weekly food shop at Tesco (The Canopy, 5 min walk). Plan the week's dinners first, list on your phone"],
+    ["17:00", "17:30", "flex", "Flex: catch-up, then pack your bag for Monday"],
+    ["17:30", "22:30", "gf", "Evening with your girlfriend. Cook together: roast chicken for dinner + the lentil pot for the week"],
     ["22:30", "23:15", "bed", READ],
     ["23:15", "23:15", "bed", "Lights out"],
   ],
@@ -260,13 +315,15 @@ function ev(k, s, e, kind, title) { (EVENTS[k] = EVENTS[k] || []).push([s, e, ki
 const RESHAPE = {}; // per date: routine blocks to drop (by "start-kind" id) and one-off blocks to add
 function reshape(k, drop, add) { RESHAPE[k] = { drop, add }; }
 
-/* Week 1: 9-15 Nov. AGP CA2 Wed, Mobile quiz Thu, Prof Dev report due Mon 16 09:00 */
-reshape("2026-11-09", ["07:45-cardio", "08:20-break", "12:45-meal", "13:30-study", "17:15-flex"], [
-  ["07:45", "08:45", "break", "Shower, coffee, then skim D:\\AGP_CA2_Prep README so the mock starts warm (no coding yet). The run moves to 17:15 so you can wear the new shoes"],
-  ["12:45", "13:15", "errand", "Buy running shoes: Intersport Elverys, The Canopy, O'Connell St (5 min walk, open 9:30-18:00, foot scanning). RunPod on your road is probably CLOSED Mondays (listings say Tue-Sat 10:30-18:00): ring 086 455 0167 before walking over. Ask for a gait check if they offer it"],
-  ["13:15", "13:45", "meal", "Lunch at home"],
+/* Week 1: 9-15 Nov. AGP CA2 Wed, Mobile quiz Thu, Prof Dev report due Mon 16, 9am */
+reshape("2026-11-09", ["07:30-wake", "07:40-cardio", "08:15-break", "12:45-meal", "13:30-study", "17:15-flex"], [
+  ["07:30", "07:40", "wake", "Up, glass of water"],
+  ["07:40", "08:40", "break", "Shower, dressed, coffee, skim CA2 notes", "", "Read D:\\AGP_CA2_Prep README so the mock starts warm (no coding yet). Today's run moves to 5:15pm so you can wear the new shoes."],
+  ["12:45", "13:15", "errand", "Buy running shoes (Elverys, The Canopy)", "", "5 min walk, open 9:30am-6pm, has foot scanning. RunPod on your road is probably closed Mondays (Tue-Sat 10:30am-6pm): ring 086 455 0167 before walking over. Ask for a gait check."],
+  ["13:15", "13:45", "meal", "Lunch at home, glass of milk"],
   ["13:45", "15:30", "study", "Deep work 3", "mon3"],
-  ["17:15", "17:55", "cardio", "Run: easy 5 km from home in the new shoes (keep it short, jiu-jitsu tonight)"],
+  ["17:15", "17:45", "cardio", "Run: easy 5 km in the new shoes", "", "Keep it short, jiu-jitsu tonight."],
+  ["17:45", "18:00", "break", "Shower"],
 ]);
 plan("2026-11-09", {
   mon1: T("AGP CA2 mock exam, timed", "D:\\AGP_CA2_Mock (Meteor Defence). Treat it as the real thing: 2 h, no notes. Plan sheet first, then EditMode tests, then 1 PlayMode test. Commit \"CA2 mock submission\"."),
@@ -287,11 +344,12 @@ plan("2026-11-11", {
   wed3: T("Mobile CA quiz: one 40-question mock", "Wrong-answers-only round after."),
 });
 ev("2026-11-12", "11:15", "12:30", "event", "Meeting with your lecturer");
-reshape("2026-11-12", ["11:00-travel", "11:10-gym", "12:20-travel", "13:10-travel", "16:00-study", "17:30-flex"], [
+reshape("2026-11-12", ["11:00-travel", "11:10-gym", "12:05-break", "12:20-travel", "13:10-travel", "16:00-study", "17:30-flex"], [
   ["13:10", "13:45", "break", "Stay in college: library seat, typing practice here if you skipped it this morning"],
   ["16:00", "16:10", "travel", "Walk to the Clayton (10 min)"],
-  ["16:10", "17:15", "gym", "Gym at the Clayton: Back & Biceps (moved from the morning)"],
-  ["17:15", "17:45", "travel", "Walk home from the Clayton (25-30 min)"],
+  ["16:10", "17:05", "gym", "Gym at the Clayton: Back & Biceps (moved from the morning)"],
+  ["17:05", "17:20", "break", "Shower at the Clayton"],
+  ["17:20", "17:50", "travel", "Walk home from the Clayton (25-30 min). Tesco top-up on the way if needed"],
 ]);
 ev("2026-11-12", "15:00", "16:00", "event", "Mobile App CA quiz (Moodle MCQ, Compose Units 1-4). Check the exact time on Moodle");
 plan("2026-11-12", {
@@ -309,9 +367,9 @@ plan("2026-11-14", {
   sat2: T("Prof Dev: fix and chase", "Fix everything from the read-through. Anything a teammate still owes: chase it today, not tomorrow."),
 });
 plan("2026-11-15", {
-  sun1: T("Prof Dev: final proof and SUBMIT TODAY", "Final proof, run Turnitin, submit by 17:00 Sunday. Don't leave it for Monday 9am."),
+  sun1: T("Prof Dev: final proof and SUBMIT TODAY", "Final proof, run Turnitin, submit by 5pm Sunday. Don't leave it for Monday 9am."),
 });
-ev("2026-11-16", "09:00", "09:00", "due", "DUE 09:00: Prof Dev Group Project Report (Turnitin)");
+ev("2026-11-16", "09:00", "09:00", "due", "DUE 9am: Prof Dev Group Project Report (Turnitin)");
 
 /* Week 2: 16-22 Nov. Interview Fri 20. Start Mobile deliverables. PM phase 2 */
 plan("2026-11-16", {
@@ -337,6 +395,12 @@ plan("2026-11-19", {
   thu3: T("Mobile: screenshots + report outline", "Screenshot every screen. Outline the 25-30 page report from the brief's headings."),
 });
 ev("2026-11-20", "10:00", "11:00", "event", "Prof Dev interview (Hello Games pitch + Q&A). Confirm your exact time");
+reshape("2026-11-20", ["09:00-study", "11:00-break", "11:15-study"], [
+  ["09:00", "09:25", "study", "Interview warm-up", "fri1"],
+  ["09:25", "10:00", "travel", "Walk to college", "", "Dressed well, printed CV, phone on silent"],
+  ["11:00", "11:30", "travel", "Walk home"],
+  ["11:30", "12:30", "study", "Deep work 2", "fri2"],
+]);
 plan("2026-11-20", {
   fri1: T("Interview warm-up", "Pitch x2, eat, dress well, printed CV, phone off. No new prep."),
   fri2: T("Mobile report: chapters 1-2", "Intro + planning/requirements."),
@@ -376,7 +440,7 @@ plan("2026-11-26", {
 });
 plan("2026-11-27", {
   fri1: T("Mobile report: full proofread + references", "Check page count 25-30."),
-  fri2: T("Prof Dev slides: final, upload early", "Due Mon 09:00. Upload today."),
+  fri2: T("Prof Dev slides: final, upload early", "Due Mon 9am. Upload today."),
 });
 SWAP["2026-11-23"] = T("Split_Shift: rehearse your interim part", "");
 plan("2026-11-28", {
@@ -387,7 +451,7 @@ plan("2026-11-28", {
 plan("2026-11-29", {
   sun1: T("PM MCQ: first 40-question mock (60 min)", "Baseline score. Note bottom 2 topics."),
 });
-ev("2026-11-30", "09:00", "09:00", "due", "DUE 09:00: Group Project Presentation Slides");
+ev("2026-11-30", "09:00", "09:00", "due", "DUE 9am: Group Project Presentation Slides");
 
 /* Week 4: 30 Nov-6 Dec. Mobile due Thu 3 Dec 23:59. PM exam + Split_Shift interim likely around now */
 plan("2026-11-30", {
@@ -407,7 +471,7 @@ plan("2026-12-02", {
   wed2: T("PM MCQ: re-read ⚠ flags in the notes", "Lecturer-vs-Scrum-Guide traps."),
   wed3: T("PM MCQ: \"last wrong\" mode", ""),
 });
-ev("2026-12-03", "23:59", "23:59", "due", "DUE 23:59: Mobile Application submission (should already be in)");
+ev("2026-12-03", "23:59", "23:59", "due", "DUE 11:59pm: Mobile Application submission (should already be in)");
 plan("2026-12-03", {
   thu1: T("RAD Week 10 lab: finish at home and push", RADD),
   thu2: T("Split_Shift: presentation run-through", ""),
@@ -434,12 +498,12 @@ const DEADLINES = [
   { d: "2026-12-03", t: "23:59", what: "Mobile Application submission. Aim: submit Wed 2", where: "D:\\MobileApp\\Questlog", tbc: false },
   { d: "2026-12-07", t: "", what: "Software Project Mgmt MCQ exam (late Nov / early Dec)", where: "D:\\ProjMgmt_MCQ", tbc: true },
   { d: "2026-12-07", t: "", what: "Split_Shift interim: presentation 10% + prototype 20%", where: "Split_Shift repo", tbc: true },
-  { d: "weekly", t: "", what: "RAD301 lab: start in Wednesday's class, finish at home Thursday 13:45 (1-2 h), push to master", where: "D:\\RADWeek6 (Rad301Labs2627.sln)", tbc: false },
+  { d: "weekly", t: "", what: "RAD301 lab: start in Wednesday's class, finish at home Thursday 1:45pm (1-2 h), push to master", where: "D:\\RADWeek6 (Rad301Labs2627.sln)", tbc: false },
 ];
 
 /* ---------- saved state (per device) ---------- */
 const STORE = "weekplanner.v1";
-let S = { days: {}, carry: [], surf: {}, extraDl: [] };
+let S = { days: {}, carry: [], surf: {}, extraDl: [], notes: {}, prep: {}, shop: {} };
 try { const raw = localStorage.getItem(STORE); if (raw) S = Object.assign(S, JSON.parse(raw)); } catch (e) {}
 const save = () => { try { localStorage.setItem(STORE, JSON.stringify(S)); } catch (e) {} };
 const dayState = k => (S.days[k] = S.days[k] || { events: [], late: [], skip: [], done: [] });
@@ -457,11 +521,11 @@ function buildDay(k) {
   const surfDay = S.surf[week] || "fri";
   const ds = S.days[k] || { events: [], late: [], skip: [], done: [] };
   let blocks = TEMPLATE[dow].map(([s, e, kind, title, slot]) => ({ id: s + "-" + kind, s: m(s), e: m(e), kind, title, slot }));
-  // one-off changes to the routine on this date
+  // one-off changes to the routine on this date: [start, end, kind, short title, slot, details]
   const rs = RESHAPE[k];
   if (rs) {
     blocks = blocks.filter(b => !rs.drop.includes(b.id));
-    rs.add.forEach(([s, e, kind, title, slot]) => blocks.push({ id: s + "-" + kind + "-x", s: m(s), e: m(e), kind, title, slot }));
+    rs.add.forEach(([s, e, kind, title, slot, detail]) => blocks.push({ id: s + "-" + kind + "-x", s: m(s), e: m(e), kind, title, slot: slot || undefined, detail }));
   }
 
   blocks.forEach(b => {
@@ -478,29 +542,39 @@ function buildDay(k) {
   fixedEv.forEach(f => { blocks = blocks.filter(b => !(b.kind === "class" && b.s === f.s)); });
   blocks = blocks.filter(b => !ds.skip.includes(b.id));
 
-  // ran late: extend that block, shift later flexible blocks, flex absorbs first
+  const hard = blocks.filter(b => FIXED.has(b.kind) && b.e > b.s).concat(fixedEv, userEv).filter(b => b.e > b.s);
+
+  // ran late: extend that block, then ripple forward. Gaps and flex blocks absorb the delay,
+  // and the ripple stops at the next fixed thing (class, jiu-jitsu, work, exam, bed).
   ds.late.forEach(L => {
     const target = blocks.find(b => b.id === L.id);
-    if (!target) return;
+    if (!target || FIXED.has(target.kind)) return;
     target.e += L.min; target.late = (target.late || 0) + L.min;
-    let push = L.min;
-    blocks.filter(b => b.s > target.s && !FIXED.has(b.kind)).sort((a, b) => a.s - b.s).forEach(b => {
-      if (push <= 0) return;
+    let prevEnd = target.e;
+    const later = blocks.filter(b => b !== target && b.s >= target.s && !b.gone && !FIXED.has(b.kind) && b.e > b.s)
+      .concat(hard.filter(h => h.s >= target.s))
+      .sort((a, b) => a.s - b.s);
+    for (const b of later) {
+      if (hard.includes(b)) break;
+      const shift = Math.max(0, prevEnd - b.s);
+      if (!shift) break;
       if (b.kind === "flex") {
-        const ns = b.s + push;
-        if (ns < b.e) { b.s = ns; push = 0; } else { push = ns - b.e; b.s = b.e; b.gone = true; }
-      } else { b.s += push; b.e += push; }
-    });
+        const ns = b.s + shift;
+        if (ns < b.e) { b.s = ns; break; }
+        b.s = b.e; b.gone = true; prevEnd = ns;
+      } else { b.s += shift; b.e += shift; prevEnd = b.e; }
+    }
   });
 
-  // fixed things win: trim flexible blocks around them
-  const hard = blocks.filter(b => FIXED.has(b.kind) && b.e > b.s).concat(fixedEv, userEv).filter(b => b.e > b.s);
+  // fixed things win: trim flexible blocks around them, keeping the longer part
   blocks.forEach(b => {
     if (FIXED.has(b.kind) || b.gone) return;
     hard.forEach(h => {
       if (h === b) return;
       if (h.s <= b.s && h.e > b.s) b.s = Math.min(h.e, b.e);
-      else if (h.s > b.s && h.s < b.e) b.e = h.s;
+      else if (h.s > b.s && h.s < b.e) {
+        if (b.e - h.e > h.s - b.s) b.s = h.e; else b.e = h.s;
+      }
     });
     if (TASKED.has(b.kind)) { if (b.e - b.s < 15) b.squeezed = true; }
     else if (b.e <= b.s && b.kind !== "bed") b.gone = true;
@@ -516,19 +590,141 @@ function buildDay(k) {
 let view = "today";
 let cur = keyOf(new Date());
 let openForm = null;
+let showPast = false;
+let scrollToNow = true;
 const app = document.getElementById("app");
+
+// 12-hour display. hm() stays for 24-hour form inputs.
+function clock12(n) { n = ((n % 1440) + 1440) % 1440; const h = Math.floor(n / 60), mi = n % 60; return { t: (h % 12 || 12) + ":" + String(mi).padStart(2, "0"), ap: h < 12 ? "am" : "pm" }; }
+const fmt = n => { const c = clock12(n); return c.t + c.ap; };
+const fmtH = n => { const c = clock12(n); return c.t + '<small>' + c.ap + "</small>"; };
+const fmtStr = s => s ? fmt(m(s)) : "";
+const dur = n => n >= 60 ? Math.floor(n / 60) + " h" + (n % 60 ? " " + (n % 60) + " min" : "") : n + " min";
 
 function nowMin() { const d = new Date(); return d.getHours() * 60 + d.getMinutes(); }
 function daysTo(k) { const a = parseKey(keyOf(new Date())), b = parseKey(k); return Math.round((b - a) / 864e5); }
+const label = b => b.task ? b.task.t : b.title;
+// escape, then make Irish phone numbers tappable
+const linkify = s => esc(s).replace(/\b(0\d{2}) (\d{3}) (\d{4})\b/g, (x, a, b, c) => `<a href="tel:${a}${b}${c}">${x}</a>`);
+
+/* ---------- undo: snapshot the saved state before anything you might regret ---------- */
+let undoSnap = null, undoTimer = null;
+function snapshot(msg) {
+  undoSnap = { state: JSON.stringify(S), msg };
+  clearTimeout(undoTimer);
+  undoTimer = setTimeout(() => { undoSnap = null; drawToast(); }, 8000);
+}
+function drawToast() {
+  let t = document.getElementById("toast");
+  if (!undoSnap) { if (t) t.remove(); return; }
+  if (!t) { t = document.createElement("div"); t.id = "toast"; document.body.appendChild(t); }
+  t.innerHTML = `<span>${esc(undoSnap.msg)}</span><button class="btn small" id="undo">Undo</button>`;
+  t.querySelector("#undo").onclick = () => { S = JSON.parse(undoSnap.state); save(); undoSnap = null; drawToast(); render(); };
+}
+const NO_DONE = new Set(["free", "travel", "wake", "break", "due", "gf"]);
+const SPORT = new Set(["gym", "cardio", "bjj", "surf"]);
+
+/* What to have with you, read off a day's blocks */
+function packList(k) {
+  const items = ["Phone + headphones on charge"];
+  const bl = buildDay(k);
+  const has = f => bl.some(f);
+  const dow = parseKey(k).getDay();
+  if (has(b => b.kind === "class")) items.push("Laptop + charger in your bag");
+  if (has(b => b.kind === "gym" && /Clayton/.test(b.title))) items.push("Gym bag: clothes, towel, shower stuff" + (has(b => /Swim/.test(b.title)) ? ", togs + goggles" : ""));
+  if (has(b => b.kind === "gym" && /ROM/.test(b.title))) items.push("Gym bag for ROM: clothes, towel, shower stuff");
+  if (has(b => b.kind === "cardio" && /Run/.test(b.title))) items.push("Running gear + shoes out");
+  if (has(b => b.kind === "bjj")) items.push("Gi + belt clean and dry");
+  if (has(b => b.kind === "surf")) items.push("Wetsuit + board ready");
+  if (has(b => b.kind === "work")) items.push("Work clothes ready");
+  if ([2, 3, 4].includes(dow)) items.push("Tuna sandwich made for tomorrow afternoon");
+  if (has(b => b.kind === "errand" && /Tesco/.test(b.title))) items.push("Check the Shop tab list");
+  return items;
+}
+// The night-before checklist. Ticks are stored against the day you're packing for.
+function packHtml(k, heading) {
+  const p = packList(k);
+  const got = (S.prep && S.prep[k]) || [];
+  const n = p.filter(x => got.includes(x)).length;
+  return `<div class="small muted" style="margin-top:10px">${heading} · ${n}/${p.length}</div>` +
+    p.map(x => `<label class="check ${got.includes(x) ? "on" : ""}"><input type="checkbox" data-prep="${k}" data-item="${esc(x)}" ${got.includes(x) ? "checked" : ""}><span>${esc(x)}</span></label>`).join("");
+}
+
+/* ---------- weekly Tesco list (prices from search copies of tesco.ie, Nov 2026: check in the app) ---------- */
+const SHOP = [
+  ["Dairy & eggs", [
+    ["Full fat milk 3L (Aldi Price Match)", 2, 3.25],
+    ["Greek Style yoghurt 1kg, the 0% one (7.3g protein/100g)", 3, 1.85],
+    ["Medium Irish eggs 18 pack", 1, 3.75],
+    ["Butter 454g", 1, 3.99, true],
+  ]],
+  ["Meat & fish", [
+    ["Whole chicken 1.5kg (Sunday roast + pot)", 1, 4.68],
+    ["Mackerel in sunflower oil 125g (omega-3)", 2, 1.00],
+    ["Tuna chunks in brine 145g (Stockwell & Co)", 4, 0.77],
+  ]],
+  ["Cupboard", [
+    ["Porridge oats 1kg", 1, 0.79, true],
+    ["Red split lentils 500g", 1, 0.99],
+    ["Long grain rice 1kg", 1, 1.19, true],
+    ["Chopped tomatoes 400g", 2, 0.39],
+    ["Peanut butter 340g (100% peanuts)", 1, 1.49],
+    ["Clear honey 454g", 1, 2.00, true],
+  ]],
+  ["Bread", [["Wholemeal sliced 800g (freeze one)", 2, 0.95]]],
+  ["Fruit & veg", [
+    ["Bananas, loose", 7, 0.28],
+    ["Avocados twin pack", 1, 2.19],
+    ["Onions 1kg", 1, 1.29, true],
+    ["Rooster potatoes 2kg", 1, 3.79],
+  ]],
+  ["Frozen", [
+    ["Mixed vegetables 1kg", 1, 1.09],
+    ["Leaf spinach 900g", 1, 1.40],
+    ["Blueberries 350g", 1, 2.49],
+  ]],
+  ["Brain toppings", [
+    ["Walnut halves 100g", 1, 0.95],
+    ["Pumpkin seeds 150g", 1, 1.50, true],
+    ["Dried cranberries 200g", 1, 2.50, true],
+    ["85% dark chocolate 100g", 1, 0.95],
+  ]],
+  ["Drinks", [["Monster Ultra White 4 x 500ml (8-pack €12.50 is cheaper per can)", 1, 7.75]]],
+];
 
 function deadlineStrip() {
   const today = keyOf(new Date());
   const list = DEADLINES.filter(x => x.d !== "weekly" && x.d >= today).concat(S.extraDl.filter(x => x.d >= today))
-    .sort((a, b) => (a.d + a.t).localeCompare(b.d + b.t)).slice(0, 4);
+    .sort((a, b) => (a.d + a.t).localeCompare(b.d + b.t)).slice(0, 5);
   return '<div class="dl-strip">' + list.map(x => {
     const n = daysTo(x.d);
-    return `<div class="dl-chip"><b>${n === 0 ? "TODAY" : n === 1 ? "Tomorrow" : n + " days"}${x.tbc ? " (tbc)" : ""}</b>${esc(x.what.split(".")[0])}</div>`;
+    const cls = n <= 2 ? "red" : n <= 7 ? "amber" : "";
+    return `<div class="dl-chip ${cls}"><b>${n === 0 ? "Today" : n === 1 ? "Tomorrow" : n + " days"}${x.tbc ? " · tbc" : ""}</b>${esc(x.what.split(".")[0])}</div>`;
   }).join("") + "</div>";
+}
+
+function blockHtml(b, curB, openCarry) {
+  const zero = b.e === b.s;
+  const task = b.task;
+  const tag = b.late ? `<span class="tag">+${b.late} min</span>` : b.squeezed ? `<span class="tag">squeezed out</span>` : "";
+  let acts = "";
+  if (!zero && !NO_DONE.has(b.kind)) {
+    acts += `<button class="btn small" data-a="done" data-id="${b.id}">${b.done ? "Undo" : "✓ Done"}</button>`;
+    if (!FIXED.has(b.kind)) acts += `<button class="btn small ghost" data-a="late" data-id="${b.id}">Ran late</button>`;
+    if (!FIXED.has(b.kind)) acts += `<button class="btn small ghost" data-a="skip" data-id="${b.id}">Can't do it</button>`;
+  }
+  if (b.squeezed && task) acts = b.done ? `<span class="small muted">On the catch-up list</span>` : `<button class="btn small" data-a="tocarry" data-id="${b.id}">Put on catch-up list</button>`;
+  if (b.user !== undefined) acts = `<button class="btn small" data-a="delev" data-i="${b.user}">Remove</button>`;
+  const lateMenu = openForm === "late:" + b.id ? `<div class="acts"><span class="small muted" style="align-self:center">Took longer by</span>${[15, 30, 45, 60].map(n => `<button class="btn small primary" data-a="lateby" data-id="${b.id}" data-n="${n}">+${n}</button>`).join("")}</div>` : "";
+  const timeTxt = zero ? `<b>${fmtH(b.s)}</b>` : `<b>${fmtH(b.s)}</b><span>to ${fmt(b.e)}</span>`;
+  const fixed = FIXED.has(b.kind) && !zero && ["class", "event"].includes(b.kind);
+  return `<div class="block ${b.done ? "done" : ""} ${curB === b ? "cur" : ""} ${b.squeezed ? "squeezed" : ""} ${fixed ? "fixed" : ""}">
+    <div class="time">${timeTxt}</div><div class="stripe k-${b.kind}"></div>
+    <div class="body"><div class="t">${esc(label(b))}${tag}</div>
+    ${task ? `<div class="d">${esc(b.title)} · ${dur(b.e - b.s)}${task.d ? "\n" + linkify(task.d) : ""}</div>` : ""}
+    ${b.detail ? `<div class="d">${linkify(b.detail)}</div>` : ""}
+    ${b.kind === "flex" && openCarry.length ? `<div class="d">Catch-up first: ${esc(openCarry[0].t)}</div>` : ""}
+    ${acts ? `<div class="acts">${acts}</div>` : ""}${lateMenu}</div></div>`;
 }
 
 function renderToday() {
@@ -537,77 +733,104 @@ function renderToday() {
   const now = nowMin();
   const study = blocks.filter(b => TASKED.has(b.kind) && !b.squeezed);
   const doneN = study.filter(b => b.done).length;
-  const curB = isToday ? blocks.find(b => b.s <= now && now < b.e && b.e > b.s) : null;
-  const nextB = isToday ? blocks.find(b => b.s > now) : null;
-  const week = mondayOf(cur);
-  const surf = S.surf[week] || "fri";
+  const curB = isToday ? blocks.find(b => b.s <= now && now < b.e) : null;
+  const nextB = isToday ? blocks.find(b => b.s > now && b.e >= b.s) : null;
+  const surf = S.surf[mondayOf(cur)] || "fri";
   const openCarry = S.carry.filter(c => !c.done);
+  const allDone = study.length && doneN === study.length;
 
   let h = `<div class="card daynav">
-    <button class="btn" data-a="prev">‹</button><h2>${fmtDay(cur)}${isToday ? "" : ' <span class="small muted">(not today)</span>'}</h2>
-    <button class="btn" data-a="next">›</button></div>`;
+    <button class="btn" data-a="prev" aria-label="Previous day">‹</button>
+    <h2>${isToday ? "Today · " : ""}${fmtDay(cur)}</h2>
+    <button class="btn" data-a="next" aria-label="Next day">›</button></div>`;
   if (!isToday) h += `<div style="text-align:center"><button class="btn small" data-a="gotoday">Back to today</button></div>`;
   h += deadlineStrip();
+
   if (isToday) {
-    h += `<div class="card nowbox"><div class="small muted">Now</div><b>${curB ? esc(curB.task ? curB.task.t : curB.title) : "Between blocks"}</b>
-      ${curB ? `<div class="small muted">${curB.task ? esc(curB.title) + " · " : ""}until ${hm(curB.e)}</div>` : ""}
-      ${nextB ? `<div class="small" style="margin-top:6px">Next at ${hm(nextB.s)}: ${esc(nextB.task ? nextB.task.t : nextB.title)}</div>` : ""}</div>`;
+    const left = curB ? curB.e - now : 0;
+    const pct = curB && curB.e > curB.s ? Math.round((now - curB.s) / (curB.e - curB.s) * 100) : 0;
+    h += `<div class="card nowcard"><div class="lbl">${curB ? "Now · " + dur(left) + " left" : "Between blocks"}</div>
+      <div class="big">${curB ? esc(label(curB)) : nextB ? "Next up at " + fmt(nextB.s) : "Day's over. Sleep well."}</div>
+      ${curB ? `<div class="small muted">${curB.task ? esc(curB.title) + " · " : ""}until ${fmt(curB.e)}</div><div class="bar"><i style="width:${pct}%"></i></div>` : ""}
+      ${curB && nextB ? `<div class="next"><span class="muted">Next at ${fmt(nextB.s)}:</span> ${esc(label(nextB))}</div>` : !curB && nextB ? `<div class="next">${esc(label(nextB))}</div>` : ""}
+    </div>`;
+    if (now >= 19 * 60) h += `<div class="card"><h3 class="sec">Ready for tomorrow</h3>${packHtml(addDays(cur, 1), "Two minutes before bed")}</div>`;
   }
-  h += `<div class="card"><div class="small">Study blocks done: <b>${doneN}/${study.length}</b>${doneN === study.length && study.length ? " · Day's work is done. Everything else tonight is guilt-free." : ""}</div>
+
+  h += `<div class="card"><div class="small">Study blocks done: <b>${doneN}/${study.length}</b>${allDone ? " · Work's done. The rest of today is guilt-free." : ""}</div>
     <div class="bar"><i style="width:${study.length ? (doneN / study.length * 100) : 0}%"></i></div>
     <div class="acts">
-      <button class="btn primary" data-a="addev">Something came up</button>
+      <button class="btn primary" data-a="addev">+ Something came up</button>
+      ${isToday && !allDone ? `<button class="btn" data-a="stop">I'm done for today</button>` : ""}
       <span class="seg" title="Surf slot this week"><button data-a="surf" data-v="fri" class="${surf === "fri" ? "on" : ""}">Surf Fri</button><button data-a="surf" data-v="sun" class="${surf === "sun" ? "on" : ""}">Surf Sun</button></span>
-      <button class="btn" data-a="reset">Reset this day</button>
+      <button class="btn ghost" data-a="reset">Reset day</button>
     </div>
-    <div id="evform" class="${openForm === "ev" ? "" : "hide"}" style="margin-top:10px">
+    <div class="${openForm === "ev" ? "" : "hide"}" style="margin-top:12px">
       <form class="inline" id="evf">
         <label class="full">What's happening<input name="title" required placeholder="e.g. Team meeting, dentist, sick"></label>
-        <label>From<input type="time" name="s" required value="${hm(Math.max(now, 480) - (Math.max(now,480) % 15))}"></label>
+        <label>From<input type="time" name="s" required value="${hm(Math.min(Math.max(now, 480) - (Math.max(now, 480) % 15), 1425))}"></label>
         <label>To<input type="time" name="e" required></label>
         <div class="full acts"><button class="btn primary">Add it, move my day around it</button><button type="button" class="btn" data-a="cancel">Cancel</button></div>
       </form>
-      <div class="small muted" style="margin-top:6px">Fixed things (class, jiu-jitsu, work, bedtime) stay put. Study blocks get trimmed around it. Anything squeezed out can go on the catch-up list.</div>
+      <div class="small muted" style="margin-top:6px">Class, jiu-jitsu, work and bedtime stay put. Study blocks shrink around the event, and anything squeezed out can go on the catch-up list.</div>
     </div></div>`;
+
   if (openCarry.length) {
-    h += `<div class="card"><h3 class="sec">Catch-up list (${openCarry.length})</h3><div class="small muted">Do these in Flex blocks first, oldest first.</div><ul class="carry">` +
-      openCarry.map(c => `<li><b>${esc(c.t)}</b> <span class="small muted">from ${fmtDay(c.from)}</span> <button class="btn small" data-a="cdone" data-id="${c.id}">Done</button> <button class="btn small" data-a="cdrop" data-id="${c.id}">Drop</button>${c.d ? `<div class="small muted">${esc(c.d)}</div>` : ""}</li>`).join("") + "</ul></div>";
+    h += `<div class="card"><h3 class="sec">Catch-up list · ${openCarry.length}</h3><div class="small muted">Do these in Flex blocks, oldest first.</div><ul class="carry">` +
+      openCarry.map(c => `<li><b>${esc(c.t)}</b> <span class="small muted">from ${fmtDay(c.from)}</span>${c.d ? `<div class="small muted">${esc(c.d)}</div>` : ""}<div class="acts"><button class="btn small" data-a="cdone" data-id="${c.id}">✓ Done</button><button class="btn small ghost" data-a="cdrop" data-id="${c.id}">Drop it</button></div></li>`).join("") + "</ul></div>";
   }
-  h += `<div class="card">` + blocks.map(b => {
-    const isCur = curB === b;
-    const zero = b.e === b.s;
-    const timeTxt = zero ? hm(b.s) : hm(b.s) + "–" + hm(b.e);
-    const task = b.task;
-    const tag = b.late ? `<span class="tag">+${b.late} min</span>` : b.squeezed ? `<span class="tag">squeezed out</span>` : "";
-    let acts = "";
-    if (!zero && !["bed", "free", "travel", "wake", "break", "due"].includes(b.kind)) {
-      acts += `<button class="btn small" data-a="done" data-id="${b.id}">${b.done ? "Undo" : "Done"}</button>`;
-      if (!FIXED.has(b.kind)) acts += `<button class="btn small" data-a="late" data-id="${b.id}">Ran late</button>`;
-      if (!FIXED.has(b.kind)) acts += `<button class="btn small" data-a="skip" data-id="${b.id}">Can't do it</button>`;
-    }
-    if (b.squeezed && task) acts = `<button class="btn small" data-a="tocarry" data-id="${b.id}">Put on catch-up list</button>`;
-    if (b.user !== undefined) acts = `<button class="btn small" data-a="delev" data-i="${b.user}">Remove</button>`;
-    const lateMenu = openForm === "late:" + b.id ? `<div class="acts">${[15, 30, 45, 60].map(n => `<button class="btn small primary" data-a="lateby" data-id="${b.id}" data-n="${n}">+${n} min</button>`).join("")}</div>` : "";
-    return `<div class="block ${b.done ? "done" : ""} ${isCur ? "cur" : ""} ${b.squeezed ? "squeezed" : ""}">
-      <div class="time">${timeTxt}</div><div class="stripe k-${b.kind}"></div>
-      <div class="body"><div class="t">${esc(task ? task.t : b.title)}${tag}</div>
-      ${task ? `<div class="d">${esc(b.title)}${task.d ? " · " + esc(task.d) : ""}</div>` : ""}
-      ${b.kind === "flex" && openCarry.length ? `<div class="d">Catch-up first: ${esc(openCarry[0].t)}</div>` : ""}
-      ${acts ? `<div class="acts">${acts}</div>` : ""}${lateMenu}</div></div>`;
-  }).join("") + `</div>`;
+
+  const past = isToday ? blocks.filter(b => b.e <= now && b !== curB && !(b.e === b.s && b.s > now)) : [];
+  const shown = showPast ? blocks : blocks.filter(b => !past.includes(b));
+  h += `<div class="card">` +
+    (past.length ? `<button class="past-toggle" data-a="past">${showPast ? "Hide earlier blocks" : "Show " + past.length + " earlier block" + (past.length > 1 ? "s" : "")}</button>` : "") +
+    shown.map(b => blockHtml(b, curB, openCarry)).join("") + `</div>`;
+
+  const note = (S.notes && S.notes[cur]) || "";
+  h += `<div class="card"><h3 class="sec">Notes for ${isToday ? "today" : fmtDay(cur)}</h3>
+    <textarea id="note" rows="3" placeholder="e.g. RAD lab: stopped at step 6. Ask Neil about PlayMode setup.">${esc(note)}</textarea></div>`;
   return h;
+}
+
+function weekStats(mon) {
+  const today = keyOf(new Date());
+  const st = { study: 0, studyAll: 0, sport: 0, sportAll: 0, typing: 0, reading: 0, days: 0 };
+  const readDays = new Set();
+  for (let i = 0; i < 7; i++) {
+    const k = addDays(mon, i);
+    if (k > today) continue;
+    st.days++;
+    buildDay(k).forEach(b => {
+      if (TASKED.has(b.kind) && !b.squeezed) { st.studyAll++; if (b.done) st.study++; }
+      if (SPORT.has(b.kind)) { st.sportAll++; if (b.done) st.sport++; }
+      if (b.kind === "typing" && b.done) st.typing++;
+      if (b.kind === "bed" && b.e > b.s && b.done) readDays.add(k);
+    });
+  }
+  st.reading = readDays.size;
+  return st;
 }
 
 function renderWeek() {
   const mon = mondayOf(cur);
   const today = keyOf(new Date());
-  let h = `<div class="card daynav"><button class="btn" data-a="pweek">‹</button><h2>Week of ${fmtDay(mon)}</h2><button class="btn" data-a="nweek">›</button></div>`;
-  h += `<div class="small muted" style="margin:4px 0 8px">Tap a day to open it. Showing study, sport, class and fixed events.</div><div class="week">`;
+  const st = weekStats(mon);
+  let h = `<div class="card daynav"><button class="btn" data-a="pweek" aria-label="Previous week">‹</button><h2>Week of ${fmtDay(mon)}</h2><button class="btn" data-a="nweek" aria-label="Next week">›</button></div>`;
+  if (st.days) {
+    h += `<div class="card"><h3 class="sec">This week so far</h3><div class="stats">
+      <div class="stat"><b>${st.study}/${st.studyAll}</b><span>study blocks</span></div>
+      <div class="stat"><b>${st.sport}/${st.sportAll}</b><span>sport sessions</span></div>
+      <div class="stat"><b>${st.typing}/${st.days}</b><span>typing days</span></div>
+      <div class="stat"><b>${st.reading}/${st.days}</b><span>reading nights</span></div>
+    </div><div class="small muted" style="margin-top:8px">Counts only what you ticked ✓ Done.</div></div>`;
+  }
+  h += `<div class="legend" style="margin:6px 2px 8px"><span><i class="k-study"></i>Study</span><span><i class="k-class"></i>Class</span><span><i class="k-gym"></i>Sport</span><span><i class="k-event"></i>Exam / due</span><span><i class="k-work"></i>Work / errand</span><span><i class="k-flex"></i>Flex</span></div><div class="week">`;
   for (let i = 0; i < 7; i++) {
     const k = addDays(mon, i);
-    const bl = buildDay(k).filter(b => !["wake", "break", "travel", "free", "meal", "typing"].includes(b.kind) && !(b.kind === "bed" && b.e === b.s));
-    h += `<div class="wday ${k === today ? "today" : ""}" data-a="open" data-k="${k}"><h3>${fmtDay(k)}</h3>` +
-      bl.map(b => `<div class="wb"><span class="s k-${b.kind}"></span><span class="x">${hm(b.s)} ${esc(b.task ? b.task.t : b.title)}</span></div>`).join("") + `</div>`;
+    const bl = buildDay(k).filter(b => !["wake", "break", "travel", "free", "meal", "typing", "rest"].includes(b.kind) && !(b.kind === "bed"));
+    const studyDone = bl.filter(b => TASKED.has(b.kind) && b.done).length, studyAll = bl.filter(b => TASKED.has(b.kind)).length;
+    h += `<div class="wday ${k === today ? "today" : ""}" data-a="open" data-k="${k}"><h3><span>${fmtDay(k)}</span><span class="muted small">${studyDone ? studyDone + "/" + studyAll + " ✓" : ""}</span></h3>` +
+      bl.map(b => `<div class="wb"><span class="s k-${b.kind}"></span><span class="tm">${fmt(b.s)}</span><span class="x">${esc(label(b))}</span></div>`).join("") + `</div>`;
   }
   return h + "</div>";
 }
@@ -619,104 +842,220 @@ function renderDeadlines() {
   let h = `<div class="card"><h3 class="sec">Coming up</h3>` + dated.map(x => {
     const n = daysTo(x.d), past = x.d < today;
     return `<div class="due-row" style="${past ? "opacity:.45" : ""}"><div><b>${esc(x.what)}</b> ${x.tbc ? '<span class="pill">date to confirm</span>' : ""}
-      <div class="small muted">${fmtDay(x.d)}${x.t ? " " + x.t : ""} · ${esc(x.where || "")}</div>
-      ${x.user !== undefined ? `<button class="btn small" data-a="deldl" data-i="${x.user}">Remove</button>` : ""}</div>
+      <div class="small muted">${fmtDay(x.d)}${x.t ? " · " + fmtStr(x.t) : ""}${x.where ? " · " + esc(x.where) : ""}</div>
+      ${x.user !== undefined ? `<div class="acts"><button class="btn small" data-a="deldl" data-i="${x.user}">Remove</button></div>` : ""}</div>
       <div class="n">${past ? "done" : n === 0 ? '<span class="pill red">TODAY</span>' : n + " d"}</div></div>`;
   }).join("") + `</div>`;
   h += `<div class="card"><h3 class="sec">Every week</h3>` + all.filter(x => x.d === "weekly").map(x => `<div><b>${esc(x.what)}</b><div class="small muted">${esc(x.where)}</div></div>`).join("") +
-    `<div style="margin-top:6px"><b>AGP practical:</b> do the week's lab in Tuesday's class.</div><div><b>PM MCQ:</b> 20-40 min on light-study slots, following D:\\ProjMgmt_MCQ\\03_STUDY_PLAN.md.</div></div>`;
-  h += `<div class="card"><h3 class="sec">Add or fix a date</h3><form class="inline" id="dlf">
+    `<div style="margin-top:8px"><b>AGP practical:</b> do the week's lab in Tuesday's class.</div><div style="margin-top:4px"><b>PM MCQ:</b> 20-40 min in the light-study slots, following D:\\ProjMgmt_MCQ\\03_STUDY_PLAN.md.</div></div>`;
+  h += `<div class="card"><h3 class="sec">Add a date</h3><form class="inline" id="dlf">
     <label class="full">What<input name="what" required placeholder="e.g. PM MCQ exam"></label>
     <label>Date<input type="date" name="d" required></label><label>Time<input type="time" name="t"></label>
     <div class="full"><button class="btn primary">Add deadline</button></div></form>
-    <div class="small muted" style="margin-top:6px">Once you know the PM exam and Split_Shift interim dates, add them here. Tell Claude too, and the study blocks get re-planned around them.</div></div>`;
+    <div class="small muted" style="margin-top:6px">Once you know the PM exam and Split_Shift interim dates, add them here and tell Claude too, so the study blocks get re-planned around them.</div></div>`;
   return h;
 }
 
 function renderRules() {
   return `<div class="card"><h3 class="sec">How to use it</h3><ul class="rules">
-    <li>Open <b>Day</b>. Do the block that says <b>Now</b>. Tap <b>Done</b> when it's done.</li>
-    <li><b>Ran late</b> pushes the rest of your day back. Flex blocks soak it up first, so a short overrun usually costs nothing.</li>
-    <li><b>Something came up</b> puts a fixed event in. Study blocks shrink around it; anything squeezed out can go on the catch-up list.</li>
-    <li><b>Can't do it</b> takes the block out and puts its task on the catch-up list. Flex blocks show the oldest catch-up item.</li>
-    <li>Surf depends on the weather: pick <b>Surf Fri</b> or <b>Surf Sun</b> each week. The other slot turns into a study block.</li>
+    <li>Open <b>Day</b> and do whatever the <b>Now</b> card says. Tap <b>✓ Done</b> when you finish a block.</li>
+    <li><b>Ran late</b> pushes the rest of your day back. <b>Flex</b> blocks soak up the delay first, so a short overrun usually costs nothing.</li>
+    <li><b>+ Something came up</b> adds an event. Study blocks shrink around it, and anything squeezed out can go on the catch-up list.</li>
+    <li><b>Can't do it</b> takes one block out and puts its task on the catch-up list. <b>I'm done for today</b> does that for everything left today (sick, wrecked, or life happened). No guilt: it's all still on the list.</li>
+    <li>Pick <b>Surf Fri</b> or <b>Surf Sun</b> each week, depending on the forecast. The slot you don't use becomes a study block.</li>
+    <li>From 7pm a short <b>Ready for tomorrow</b> checklist appears: charge your phone and headphones, pack the bag, make any food. Two minutes, then your evening's yours.</li>
+    <li>Made a mistake? Skip, Ran late, I'm done for today and Reset all show an <b>Undo</b> button for a few seconds.</li>
+  </ul></div>
+  <div class="card"><h3 class="sec">What Flex blocks are for</h3><ul class="rules">
+    <li>They're buffers. When something runs over, or something comes up, the time comes out of Flex first, so the rest of your day and your bedtime don't move.</li>
+    <li>If the catch-up list has anything on it, Flex is when you do it.</li>
+    <li>If nothing went wrong and the list is empty, Flex is yours: get ahead, or take the time off.</li>
   </ul></div>
   <div class="card"><h3 class="sec">The non-negotiables</h3><ul class="rules">
-    <li><b>Lights out 23:15</b> (Fri 00:45, Sat 23:45). Bedtime never moves to make room for work. Sleep is what makes the study stick.</li>
-    <li><b>Read at least 10 minutes</b> every night before TV.</li>
-    <li><b>Typing practice 15 minutes</b> a day (keybr.com or monkeytype.com). It's a warm-up before the first study block.</li>
-    <li><b>Sport:</b> jiu-jitsu Mon, Wed 20:00 and Sat 11:00; Chest & Tris + swim Tue (Clayton); Back & Bis Thu (Clayton); Legs Sun (ROM); run Mon and Fri mornings; surf Fri or Sun.</li>
-    <li><b>RAD labs:</b> you won't finish in Wednesday's class, so Thursday 13:45 is a 2 h home block for it. Finish early and you start the next thing early.</li>
-    <li><b>Food:</b> no breakfast, lunch in college on college days, dinner at home. Dinner is 2 hours before jiu-jitsu, with a protein snack after.</li>
+    <li><b>Lights out 11:15pm</b> (Fri 12:45am after work, Sat 11:45pm). Bedtime never moves to make room for work. Sleep is what makes the study stick.</li>
+    <li><b>Read at least 10 minutes</b> every night before TV. Tick it so the week counts it.</li>
+    <li><b>Typing practice 15 minutes</b> a day (keybr.com or monkeytype.com).</li>
+    <li><b>Sport early:</b> run first thing Mon and Fri; legs first thing Sun; Clayton gym straight after class Tue and Thu. Jiu-jitsu Mon and Wed 8pm, Sat 11am.</li>
+    <li><b>Showers:</b> every morning, quick ones before and after jiu-jitsu, and after the gym (at the Clayton or ROM).</li>
+    <li><b>Food:</b> no breakfast, lunch in college on college days, dinner at home, protein snack after jiu-jitsu. Weekly shop at Tesco on Sunday afternoon.</li>
+    <li><b>RAD labs:</b> you won't finish in Wednesday's class, so Thursday 1:45pm is a 2-hour home block for it. If you finish early, start the next thing early.</li>
     <li><b>Sunday evening is for your girlfriend.</b> Saturday evening is off.</li>
   </ul></div>
   <div class="card"><h3 class="sec">Getting around (walking from Markievicz Rd)</h3><ul class="rules">
-    <li><b>College days</b> (Tue, Wed, Thu): gym and pool at the <b>Clayton</b>, Clarion Rd, about 10 min from ATU. Open 6:30-21:30 weekdays, 8:00-20:00 weekends.</li>
-    <li><b>Home days</b> (Mon, Fri, Sat, Sun): gym at <b>ROM</b>, Cleveragh Retail Park, about 18 min from home. Open 4:00-23:30 weekdays, 4:00-21:20 weekends. Membership runs to mid-December.</li>
-    <li>Home to ATU: about 25-30 min. Home to the Clayton: about 25-30 min, so swim on a college day straight after the gym, not from home.</li>
-    <li>Elverys (The Canopy, O'Connell St): 5 min. RunPod (your road): 2-5 min, probably closed Mondays.</li>
-    <li class="muted small">Walking times are estimates from the addresses (5 km/h), not measured routes. Gym hours are from the gyms' own websites, checked 8 Nov 2026.</li>
+    <li><b>College days</b> (Tue, Thu): gym, pool and showers at the <b>Clayton</b>, Clarion Rd, about 10 min from ATU. Open 6:30am-9:30pm weekdays, 8am-8pm weekends.</li>
+    <li><b>Home days</b> (Sun, or any extra session): <b>ROM</b>, Cleveragh Retail Park, about 18 min from home. Open 4am-11:30pm weekdays, 4am-9:20pm weekends. Membership runs to mid-December.</li>
+    <li>Home to ATU: about 25-30 min. Home to the Clayton: about 25-30 min, so swim on a college day, not from home.</li>
+    <li>Tesco and Elverys (The Canopy, O'Connell St): 5 min. RunPod (your road): 2-5 min, probably closed Mondays (086 455 0167).</li>
+    <li class="muted small">Walking times are estimates from the addresses at 5 km/h, not measured routes. Gym hours are from the gyms' own websites, checked 8 Nov 2026.</li>
   </ul></div>
   <div class="card"><h3 class="sec">Why it's built like this</h3><ul class="rules">
     <li>Every deadline has a planned <b>early submit</b>: report Sun 15, slides Fri 27, Mobile Wed 2. The real deadline is your safety net.</li>
-    <li>Hard thinking (writing, coding) goes in the morning blocks; quizzes and flashcards go in the short evening "light" slots.</li>
-    <li>If every study block is ticked, the rest of the day is <b>guilt-free</b>. That's the deal.</li>
-    <li>Sunday's first block starts with a 15-min weekly review: check the Deadlines tab and the catch-up list.</li>
+    <li>Hard thinking (writing, coding) goes in the long morning and afternoon blocks; quizzes and flashcards go in the short evening "light" slots.</li>
+    <li>Tick every study block and the rest of the day is <b>guilt-free</b>. That's the deal.</li>
+    <li>Sunday's study block starts with a 15-min weekly review: check the Deadlines tab, the catch-up list and the week's stats.</li>
+  </ul></div>`;
+}
+
+// a week's shop runs Sunday to Saturday, so ticks from Sunday's shop last until the next Sunday
+function shopKey() { const d = parseKey(keyOf(new Date())); d.setDate(d.getDate() - d.getDay()); return keyOf(d); }
+function renderShop() {
+  const wk = shopKey();
+  const got = (S.shop && S.shop[wk]) || [];
+  let total = 0, weekly = 0, left = 0;
+  const rows = SHOP.map(([aisle, items]) => `<div class="shop-h">${aisle}</div>` + items.map(([name, qty, price, lasts]) => {
+    const line = qty * price; total += line; if (!lasts) weekly += line;
+    const on = got.includes(name); if (!on) left += line;
+    return `<label class="check ${on ? "on" : ""}"><input type="checkbox" data-shop="${wk}" data-item="${esc(name)}" ${on ? "checked" : ""}><span>${qty > 1 ? qty + " × " : ""}${esc(name)}${lasts ? ' <span class="muted small">(lasts 2+ weeks)</span>' : ""}</span><small>€${line.toFixed(2)}</small></label>`;
+  }).join("")).join("");
+  return `<div class="card"><h3 class="sec">Tesco list · this week</h3>
+    <div class="small muted">Tesco at The Canopy, 5 min walk. Sunday 4:15pm. Tick as you go.</div>
+    <div class="stats" style="margin-top:10px">
+      <div class="stat"><b>€${total.toFixed(0)}</b><span>full list</span></div>
+      <div class="stat"><b>€${weekly.toFixed(0)}</b><span>most weeks</span></div>
+      <div class="stat"><b>€${left.toFixed(0)}</b><span>left to get</span></div>
+      <div class="stat"><b>~170g</b><span>protein a day</span></div>
+    </div>
+    ${rows}
+    <div class="acts"><button class="btn" data-a="shopreset">Untick everything</button></div>
+    <p class="small muted">Prices are from search copies of tesco.ie (the site blocks direct checks), so treat them as close, not exact. Most of the cheapest lines are "Aldi Price Match", which is the same price with or without Clubcard. Open the Clubcard app before you go: the "Any 3 for €10" meat deal runs to 18 Dec.</p>
+    <p class="small"><b>If money's tight, cut in this order:</b> cranberries, potatoes (use rice), avocado, the 3rd yogurt, the 2nd loaf. <b>Never cut:</b> eggs, milk, chicken, lentils, oats, mackerel, the first 2 yogurts.</p></div>
+
+  <div class="card"><h3 class="sec">What it turns into</h3>
+    <table class="meals"><tr><th>Day</th><th>Lunch</th><th>Dinner</th></tr>
+      <tr><td>Mon</td><td>Pot + rice</td><td>Porridge</td></tr>
+      <tr><td>Tue</td><td>College lunch</td><td>Eggs, spinach, avocado, toast</td></tr>
+      <tr><td>Wed</td><td>College lunch</td><td>Porridge</td></tr>
+      <tr><td>Thu</td><td>College lunch</td><td>Eggs, spinach, avocado, toast</td></tr>
+      <tr><td>Fri</td><td>Mackerel on toast + 3 eggs</td><td>3:45pm: pot + rice + veg</td></tr>
+      <tr><td>Sat</td><td>Pot + rice</td><td>Porridge</td></tr>
+      <tr><td>Sun</td><td>Lunch</td><td>Roast chicken with your girlfriend</td></tr>
+    </table>
+    <ul class="rules small">
+      <li><b>Porridge:</b> 100g oats in 400ml milk, then stir in 100g Greek 0% yogurt. Top with pumpkin seeds, walnuts, dark chocolate, blueberries, honey, a few cranberries. About 42g protein.</li>
+      <li><b>Tue-Thu afternoon:</b> tuna sandwich (tuna + 2 spoons of yogurt instead of mayo, wholemeal bread). About 33g protein. Make it the night before.</li>
+      <li><b>After jiu-jitsu:</b> 300g Greek yogurt, banana, honey, glass of milk.</li>
+      <li><b>Friday shift:</b> 2 peanut butter sandwiches + a banana.</li>
+      <li><b>Sunday cook (with your girlfriend):</b> roast the whole chicken with potatoes (200°C, about 1 h 20). Meanwhile fry 2 onions, add curry spices, 400g lentils, 2 tins of tomatoes, 1.2L water or stock, frozen spinach; simmer 20 min, stir in the leftover chicken. That's 4 portions for Mon, Fri, Sat + a spare.</li>
+      <li><b>Milk</b> with most meals: about 850ml a day including the porridge.</li>
+    </ul></div>
+
+  <div class="card"><h3 class="sec">White Monster</h3><ul class="rules small">
+    <li>About 160mg caffeine a can (check yours). <b>One a day, two at the very most.</b></li>
+    <li><b>None after 2pm.</b> Half of it is still in you 5 hours later, and bad sleep costs more focus than the can gives you. Friday is the exception: one around 4:30pm before the shift.</li>
+    <li>The 8-pack (€12.50) is the cheapest per can. Return the cans for the 15c deposit.</li>
   </ul></div>`;
 }
 
 function renderSync() {
-  return `<div class="card"><h3 class="sec">Move your changes between devices</h3>
-  <p class="small">Changes (done ticks, events, catch-up list, surf day) are saved on this device only. To carry them to your phone or a college PC: copy the code here, then paste it on the other device.</p>
+  return `<div class="card"><h3 class="sec">Put it on your phone's home screen</h3>
+  <p class="small">iPhone: open this page in Safari → Share → <b>Add to Home Screen</b>. It then opens full-screen like an app.</p></div>
+  <div class="card"><h3 class="sec">Move your changes between devices</h3>
+  <p class="small">Your changes (ticks, events, notes, catch-up list, surf day) are saved on this device only. To carry them to another device, copy the code here and paste it there.</p>
   <textarea id="code" rows="4" readonly>${esc(btoa(unescape(encodeURIComponent(JSON.stringify(S)))))}</textarea>
   <div class="acts"><button class="btn primary" data-a="copy">Copy code</button></div>
-  <h3 class="sec" style="margin-top:14px">Paste a code from another device</h3>
+  <h3 class="sec" style="margin-top:16px">Paste a code from another device</h3>
   <textarea id="paste" rows="4" placeholder="Paste here"></textarea>
   <div class="acts"><button class="btn" data-a="load">Load it (replaces this device's changes)</button></div>
-  <p class="small muted">The plan itself (blocks and tasks) is the same everywhere. Only your changes need syncing.</p></div>`;
+  <p class="small muted">The plan itself is the same on every device. Only your changes need moving.</p></div>`;
 }
 
 function render() {
   document.querySelectorAll("#tabs button").forEach(b => b.classList.toggle("on", b.dataset.v === view));
-  app.innerHTML = view === "today" ? renderToday() : view === "week" ? renderWeek() : view === "deadlines" ? renderDeadlines() : view === "rules" ? renderRules() : renderSync();
+  app.innerHTML = view === "today" ? renderToday() : view === "week" ? renderWeek() : view === "deadlines" ? renderDeadlines() : view === "rules" ? renderRules() : view === "shop" ? renderShop() : renderSync();
   const d = new Date();
-  document.getElementById("clock").textContent = DAYS[d.getDay()] + " " + hm(d.getHours() * 60 + d.getMinutes());
+  document.getElementById("clock").textContent = DAYS[d.getDay()] + " " + fmt(d.getHours() * 60 + d.getMinutes());
+  drawToast();
+  if (scrollToNow && view === "today") {
+    scrollToNow = false;
+    const el = app.querySelector(".block.cur");
+    if (el) { const y = el.getBoundingClientRect().top + window.pageYOffset - 140; window.scrollTo(0, Math.max(0, y)); }
+  }
 }
 
 /* ---------- actions ---------- */
-document.getElementById("tabs").addEventListener("click", e => { const b = e.target.closest("button"); if (!b) return; view = b.dataset.v; openForm = null; render(); scrollTo(0, 0); });
+document.getElementById("tabs").addEventListener("click", e => {
+  const b = e.target.closest("button"); if (!b) return;
+  view = b.dataset.v; openForm = null; render(); window.scrollTo(0, 0);
+});
 app.addEventListener("click", e => {
   const el = e.target.closest("[data-a]"); if (!el) return;
   const a = el.dataset.a, id = el.dataset.id, ds = () => dayState(cur);
   const findBlock = () => buildDay(cur).find(b => b.id === id);
-  if (a === "prev") cur = addDays(cur, -1);
-  else if (a === "next") cur = addDays(cur, 1);
-  else if (a === "gotoday") cur = keyOf(new Date());
+  const toCarry = (b, via) => {
+    if (!b || !b.task) return;
+    if (S.carry.some(c => !c.done && c.from === cur && c.blockId === b.id)) return;
+    S.carry.push({ id: Date.now().toString(36) + Math.random().toString(36).slice(2, 5), t: b.task.t, d: b.task.d, from: cur, blockId: b.id, via, done: false });
+  };
+  if (a === "prev") { cur = addDays(cur, -1); showPast = false; }
+  else if (a === "next") { cur = addDays(cur, 1); showPast = false; }
+  else if (a === "gotoday") { cur = keyOf(new Date()); scrollToNow = true; }
   else if (a === "pweek") cur = addDays(cur, -7);
   else if (a === "nweek") cur = addDays(cur, 7);
-  else if (a === "open") { cur = el.dataset.k; view = "today"; }
+  else if (a === "open") { cur = el.dataset.k; view = "today"; showPast = false; window.scrollTo(0, 0); scrollToNow = cur === keyOf(new Date()); }
+  else if (a === "past") showPast = !showPast;
   else if (a === "addev") openForm = openForm === "ev" ? null : "ev";
   else if (a === "cancel") openForm = null;
   else if (a === "surf") { S.surf[mondayOf(cur)] = el.dataset.v; save(); }
-  else if (a === "reset") { if (confirm("Clear every change you made to " + fmtDay(cur) + "?")) { delete S.days[cur]; save(); } }
-  else if (a === "done") { const d = ds(); d.done = d.done.includes(id) ? d.done.filter(x => x !== id) : d.done.concat(id); save(); }
-  else if (a === "late") openForm = openForm === "late:" + id ? null : "late:" + id;
-  else if (a === "lateby") { ds().late.push({ id, min: +el.dataset.n }); openForm = null; save(); }
-  else if (a === "skip" || a === "tocarry") {
-    const b = findBlock();
-    if (b && b.task) S.carry.push({ id: Date.now().toString(36), t: b.task.t, d: b.task.d, from: cur, done: false });
-    if (a === "skip") ds().skip.push(id); else ds().done.push(id);
+  else if (a === "reset") {
+    snapshot("Day reset");
+    delete S.days[cur];
+    S.carry = S.carry.filter(c => c.done || c.from !== cur || !c.blockId);
     save();
   }
-  else if (a === "delev") { ds().events.splice(+el.dataset.i, 1); save(); }
+  else if (a === "done") { const d = ds(); d.done = d.done.includes(id) ? d.done.filter(x => x !== id) : d.done.concat(id); save(); }
+  else if (a === "late") openForm = openForm === "late:" + id ? null : "late:" + id;
+  else if (a === "lateby") { snapshot("Moved your day back " + el.dataset.n + " min"); ds().late.push({ id, min: +el.dataset.n }); openForm = null; save(); }
+  else if (a === "skip" || a === "tocarry") {
+    const d = ds();
+    if (d.skip.includes(id) || (a === "tocarry" && d.done.includes(id))) return;
+    snapshot("Moved to the catch-up list");
+    toCarry(findBlock(), a);
+    if (a === "skip") d.skip.push(id); else d.done.push(id);
+    save();
+  }
+  else if (a === "stop") {
+    const now = nowMin();
+    const left = buildDay(cur).filter(b => TASKED.has(b.kind) && !b.done && b.e > now);
+    snapshot(left.length ? left.length + " block" + (left.length > 1 ? "s" : "") + " moved to catch-up. Rest up." : "Called it a day");
+    left.forEach(b => { toCarry(b, "skip"); ds().skip.push(b.id); });
+    save();
+  }
+  else if (a === "delev") {
+    snapshot("Event removed");
+    ds().events.splice(+el.dataset.i, 1);
+    // blocks that event squeezed out come back, so take their catch-up copies back too
+    const back = S.carry.filter(c => !c.done && c.from === cur && c.via === "tocarry").map(c => c.blockId);
+    S.carry = S.carry.filter(c => !(back.includes(c.blockId) && c.from === cur && !c.done && c.via === "tocarry"));
+    ds().done = ds().done.filter(x => !back.includes(x));
+    save();
+  }
   else if (a === "cdone" || a === "cdrop") { const c = S.carry.find(x => x.id === id); if (c) { if (a === "cdone") c.done = true; else S.carry = S.carry.filter(x => x !== c); } save(); }
   else if (a === "deldl") { S.extraDl.splice(+el.dataset.i, 1); save(); }
-  else if (a === "copy") { const t = document.getElementById("code"); t.select(); try { navigator.clipboard.writeText(t.value); } catch (x) { document.execCommand("copy"); } el.textContent = "Copied"; return; }
+  else if (a === "shopreset") { S.shop = S.shop || {}; delete S.shop[shopKey()]; save(); }
+  else if (a === "copy") {
+    const t = document.getElementById("code"); t.select();
+    try { navigator.clipboard.writeText(t.value).catch(() => document.execCommand("copy")); } catch (x) { document.execCommand("copy"); }
+    el.textContent = "Copied"; return;
+  }
   else if (a === "load") {
-    try { const v = JSON.parse(decodeURIComponent(escape(atob(document.getElementById("paste").value.trim())))); S = Object.assign({ days: {}, carry: [], surf: {}, extraDl: [] }, v); save(); alert("Loaded."); }
+    try { const v = JSON.parse(decodeURIComponent(escape(atob(document.getElementById("paste").value.trim())))); S = Object.assign({ days: {}, carry: [], surf: {}, extraDl: [], notes: {} }, v); save(); alert("Loaded."); }
     catch (x) { alert("That code didn't work. Copy it again from the other device."); return; }
   }
   render();
+});
+// tick boxes: night-before checklist and the Tesco list
+app.addEventListener("change", e => {
+  const t = e.target;
+  if (!t.dataset || (!t.dataset.prep && !t.dataset.shop)) return;
+  const bucket = t.dataset.prep ? "prep" : "shop";
+  const key = t.dataset.prep || t.dataset.shop;
+  S[bucket] = S[bucket] || {};
+  const list = S[bucket][key] || [];
+  S[bucket][key] = t.checked ? list.concat(t.dataset.item) : list.filter(x => x !== t.dataset.item);
+  save(); render();
+});
+app.addEventListener("input", e => {
+  if (e.target.id === "note") { S.notes = S.notes || {}; const v = e.target.value; if (v) S.notes[cur] = v; else delete S.notes[cur]; save(); }
 });
 app.addEventListener("submit", e => {
   e.preventDefault();
@@ -730,8 +1069,28 @@ app.addEventListener("submit", e => {
   }
   save(); render();
 });
+let lastSeenToday = keyOf(new Date());
+// follow the date over midnight if you were looking at "today"
+function rollDate() {
+  const t = keyOf(new Date());
+  if (t === lastSeenToday) return false;
+  if (cur === lastSeenToday) { cur = t; openForm = null; showPast = false; scrollToNow = true; }
+  lastSeenToday = t;
+  return true;
+}
+function tick() {
+  const d = new Date();
+  document.getElementById("clock").textContent = DAYS[d.getDay()] + " " + fmt(d.getHours() * 60 + d.getMinutes());
+  const rolled = rollDate();
+  const typing = document.activeElement && /INPUT|TEXTAREA|SELECT/.test(document.activeElement.tagName);
+  if (view === "today" && (rolled || (!openForm && !typing))) render();
+}
 render();
-setInterval(() => { if (view === "today" && !openForm) render(); }, 60000);
+setInterval(tick, 60000);
+document.addEventListener("visibilitychange", () => {
+  if (document.visibilityState !== "visible") return;
+  if (rollDate() || view === "today") { scrollToNow = view === "today"; if (!openForm) render(); else tick(); }
+});
 </script>
 </body>
 </html>
