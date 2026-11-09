@@ -30,10 +30,28 @@
 html,body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;-webkit-text-size-adjust:100%}
 header{position:sticky;top:0;z-index:5;padding-top:env(safe-area-inset-top);background:var(--bg);border-bottom:1px solid var(--line);box-shadow:0 1px 0 var(--glow)}
 .wrap{max-width:820px;margin:0 auto;padding:0 16px}
-.top{display:flex;align-items:baseline;justify-content:space-between;gap:8px;padding:10px 0 6px}
+.top{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:10px 0 6px}
 .top h1{font-size:19px;margin:0;letter-spacing:.02em}
 .top h1 span{color:var(--accent)}
 .clock{font-variant-numeric:tabular-nums;color:var(--muted);font-size:15px}
+.top-r{display:flex;align-items:center;gap:10px}
+.iconbtn{display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:999px;border:1px solid var(--line);background:var(--card);color:var(--ink);padding:0}
+.iconbtn.on{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.chips button{border:1px solid var(--line);background:var(--soft);color:var(--ink);border-radius:999px;padding:6px 12px;font-size:14px;min-height:36px}
+.chips button.on{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);font-weight:600}
+.frow{display:flex;gap:10px;padding:9px 0;border-top:1px solid var(--line);cursor:pointer}
+.frow:first-child{border-top:0}
+.frow .tm{flex:0 0 66px;font-variant-numeric:tabular-nums;font-weight:600}
+.frow .x{flex:1;min-width:0}
+.frow .x b{font-weight:600}
+.fday{font-size:13px;text-transform:uppercase;letter-spacing:.06em;color:var(--accent);font-weight:700;margin:12px 0 2px}
+.fday:first-child{margin-top:0}
+.big-n{font-size:30px;font-weight:700;line-height:1;font-variant-numeric:tabular-nums}
+.tgrid{display:grid;grid-template-columns:1fr auto;gap:2px 10px}
+.trow{display:contents;cursor:pointer}
+.trow>div{padding:9px 0;border-top:1px solid var(--line)}
+.trow:first-child>div{border-top:0}
 .tabs{display:flex;gap:4px;overflow-x:auto;padding-bottom:9px;scrollbar-width:none}
 .tabs::-webkit-scrollbar{display:none}
 .tabs button{flex:0 0 auto;min-height:40px;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:999px;padding:7px 11px;font-size:14px}
@@ -132,7 +150,7 @@ table.meals th{color:var(--muted);font-weight:600}
 <body>
 <header>
   <div class="wrap">
-    <div class="top"><h1>Week <span>Planner</span></h1><span class="clock" id="clock"></span></div>
+    <div class="top"><h1>Week <span>Planner</span></h1><span class="top-r"><span class="clock" id="clock"></span><button class="iconbtn" id="findbtn" aria-label="Search the plan"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M20 20l-4.8-4.8"/></svg></button></span></div>
     <nav class="tabs" id="tabs">
       <button data-v="today" class="on">Day</button>
       <button data-v="week">Week</button>
@@ -329,12 +347,12 @@ plan("2026-11-09", {
   mon1: T("AGP CA2 mock exam, timed", "D:\\AGP_CA2_Mock (Meteor Defence). Treat it as the real thing: 2 h, no notes. Plan sheet first, then EditMode tests, then 1 PlayMode test. Commit \"CA2 mock submission\"."),
   mon2: T("Get the mock graded and learn the gaps", "Ask Claude: \"grade my CA2 mock\". Go through every surviving mutant until you could write the test that kills it."),
   mon3: T("Prof Dev report: your Part A draft", "D:\\ProfDev_Report\\04_Section_Plan.md. Write section by section into the team's live document. A source behind every claim (02_Source_Bank.md)."),
-  mon4: T("Prof Dev report: Part A, keep going", "Aim: Part A fully drafted by Tuesday night."),
-  mon5: T("Mobile CA quiz practice: 40 questions", "D:\\MobileApp\\study\\quiz\\mobile-ca-quiz.html. Note every wrong one."),
+  mon4: T("Split_Shift streaming M1 step 3: explicit chunk states", "D:\\Split_ShiftS9, branch RyanBarry(Car-AI) (last commit af457a8). Open a Claude session in that folder and say \"guide me through streaming M1 step 3\". Failing EditMode test first, then the chunk state enum (Unloaded / Loading / Loaded / Unloading) in the scheduler. All tests green, then commit. Thursday's lecturer meeting is the target."),
+  mon5: T("Mobile CA quiz practice: 40 questions", "D:\\MobileApp\\study\\quiz\\mobile-ca-quiz.html. Note every wrong one, then re-read quiz-notes-units-1-4.md for those topics."),
 });
 plan("2026-11-10", {
   tue1: T("AGP CA2 drill, no notes", "From a blank project: set up EditMode + PlayMode test assemblies, write a Testing Plan Sheet (Feature / Risk / Type / Test name + Expected result + Changes). Check against D:\\AGP_CA2_Prep\\README."),
-  tue2: T("Mobile CA quiz: weak areas", "Compose Units 1-4. Re-read quiz-notes-units-1-4.md for the topics you got wrong yesterday."),
+  tue2: T("Split_Shift streaming M1 step 4: teardown + ground-loaded gate", "D:\\Split_ShiftS9, branch RyanBarry(Car-AI). Unload chunks cleanly, and hold the car until the ground under it has loaded. Then play Assets/Scenes/Sandbox/RB_Streaming_Test.unity and drive across chunk edges. Commit. Last 10 min: write 3 lines for Thursday (what you'll show, and your 3 questions). If step 4 isn't done, step 3 with green tests is still a good demo."),
   tue3: T("Prof Dev report: finish Part A draft", "Done = every paragraph has a citation and the word budget fits."),
 });
 ev("2026-11-11", "16:00", "18:00", "event", "AGP CA2: Unity testing (15%), in class");
@@ -343,7 +361,7 @@ plan("2026-11-11", {
   wed2: T("Calm review before the CA", "Skim 1-Refresher. Eat something. No new material."),
   wed3: T("Mobile CA quiz: one 40-question mock", "Wrong-answers-only round after."),
 });
-ev("2026-11-12", "11:15", "12:30", "event", "Meeting with your lecturer");
+ev("2026-11-12", "11:15", "12:30", "event", "Project 300 (Split_Shift) meeting with your lecturer: show the chunk streaming working. Ask 1) the interim date + time, 2) is it 30% of the group mark or of the module, 3) is this meeting weekly or every sprint end");
 reshape("2026-11-12", ["11:00-travel", "11:10-gym", "12:05-break", "12:20-travel", "13:10-travel", "16:00-study", "17:30-flex"], [
   ["13:10", "13:45", "break", "Stay in college: library seat, typing practice here if you skipped it this morning"],
   ["16:00", "16:10", "travel", "Walk to the Clayton (10 min)"],
@@ -377,10 +395,10 @@ plan("2026-11-16", {
   mon2: T("Interview: learn the pitch", "D:\\ProfDevInterview\\Pitch Script.md. Out loud with a timer x5. Target 2:45-2:55."),
   mon3: T("Mobile: Penpot wireframes", "Every Questlog screen as a wireframe. Follow the brief's design section."),
   mon4: T("Mobile: Penpot clickable prototype", "Hi-fi screens linked into a working prototype."),
-  mon5: T("PM MCQ: Predictive (T5) on paper", "Forward pass, backward pass, float on the workshop network."),
+  mon5: T("Split_Shift: play test + review a teammate's PR", "T-013 manual play test, 20 min: keyboard and controller, Dee's race, pursuit, a junction. Log it in the test log. Then review and approve one teammate PR (PRs #1-#8 have 0 reviews; peer assessment counts this)."),
 });
 plan("2026-11-17", {
-  tue1: T("Split_Shift: next sprint card (guide mode)", "Streaming: ChunkLoadScheduler. Start a session in the Split_Shift folder and type it yourself."),
+  tue1: T("Split_Shift M4 cooker v1: town tile into chunk scenes", "US-13b (Must). D:\\Split_ShiftS9, branch RyanBarry(Car-AI). Cut Oisin R's 2.2 km urban FBX tile into 512 m chunk scenes and fill the chunk catalog, in guide mode. Done = RB_Streaming_Test streams real Sligo town chunks."),
   tue2: T("Mobile: IA diagram + instrumented tests", "Draw the information architecture. Run the 12 instrumented tests on your phone over USB and screenshot the results."),
   tue3: T("Interview: Hello Games research", "Section 3 of the prep pack. Know 5 facts cold, with sources."),
 });
@@ -392,7 +410,7 @@ plan("2026-11-18", {
 plan("2026-11-19", {
   thu1: T("RAD Week 8 lab: finish at home and push", RADD),
   thu2: T("Interview: full mock with Claude", "Ask for a mock interview from the prep pack. Then check your slides once more."),
-  thu3: T("Mobile: screenshots + report outline", "Screenshot every screen. Outline the 25-30 page report from the brief's headings."),
+  thu3: T("Split_Shift Sprint 5 review: Teams docs", "Sprint 5 ends today. In Teams (Student - Game Of the Year): Sprint History + velocity, your Sprint Retrospective tab (empty so far), the test log. Ask teammates to check their own bullets. Write a 5-line dev diary for the fortnight (raw material for your reflective report)."),
 });
 ev("2026-11-20", "10:00", "11:00", "event", "Prof Dev interview (Hello Games pitch + Q&A). Confirm your exact time");
 reshape("2026-11-20", ["09:00-study", "11:00-break", "11:15-study"], [
@@ -405,10 +423,10 @@ plan("2026-11-20", {
   fri1: T("Interview warm-up", "Pitch x2, eat, dress well, printed CV, phone off. No new prep."),
   fri2: T("Mobile report: chapters 1-2", "Intro + planning/requirements."),
 });
-SWAP["2026-11-16"] = T("Split_Shift sprint card", "Next streaming step in guide mode.");
+SWAP["2026-11-16"] = T("Split_Shift: streaming follows the player car in Gameplay", "Hook ChunkStreamer to the player car in the Gameplay scene, with fog at the streaming edge, so you can drive around Sligo town. This is the core of the interim prototype (20%).");
 plan("2026-11-21", {
   sat0: T("PM MCQ: Value (T9)", "WSJF, theme screening, risk/value quadrants. 20 practice Qs."),
-  sat1: T("Mobile report: design chapter", "Wireframes, prototype, IA diagram, design decisions."),
+  sat1: T("Mobile: screenshots + report outline, then design chapter", "Screenshot every screen and outline the 25-30 page report from the brief's headings (30 min). Then the design chapter: wireframes, prototype, IA diagram, design decisions."),
   sat2: T("Mobile report: design chapter, finish", ""),
 });
 plan("2026-11-22", {
@@ -424,8 +442,8 @@ plan("2026-11-23", {
   mon5: T("PM MCQ: Lean/Kanban (T8)", "Little's law, PCE, TIMWOOD."),
 });
 plan("2026-11-24", {
-  tue1: T("Split_Shift: sprint card", "Keep the interim prototype in mind: what must work for the demo?"),
-  tue2: T("Split_Shift: interim demo build", "Make a build that shows your streaming work. Test it end to end."),
+  tue1: T("Split_Shift US-18: profile hybrid LOD at 24 / 100 / 200 cars", "Unity Profiler in the city scene. Record frame time and the SimulationLODManager markers at each car count. Screenshot the graphs: these numbers are your evidence slide for the interim."),
+  tue2: T("Split_Shift: player research page (LO2)", "The LO2 gap: target audience and 3 comparable games, plus the Research tabs Technology Stack and World Streaming Research in Teams. Sources on everything."),
   tue3: T("Mobile report: evaluation + conclusion", ""),
 });
 plan("2026-11-25", {
@@ -435,35 +453,35 @@ plan("2026-11-25", {
 });
 plan("2026-11-26", {
   thu1: T("RAD Week 9 lab: finish at home and push", RADD),
-  thu2: T("Split_Shift: interim presentation slides with the team", "Your part: tech lead / architecture."),
+  thu2: T("Split_Shift: interim slides with the team", "Your part: tech lead, architecture (streaming + hybrid LOD with the profiling numbers), and the AI-use declaration. Rubric: LO1 agile evidence, LO2 research, LO3 skills/roles, LO4 prototypes + testing."),
   thu3: T("Mobile: video script (8 min max)", "Scene list: what to show, in what order, what you say."),
 });
 plan("2026-11-27", {
   fri1: T("Mobile report: full proofread + references", "Check page count 25-30."),
   fri2: T("Prof Dev slides: final, upload early", "Due Mon 9am. Upload today."),
 });
-SWAP["2026-11-23"] = T("Split_Shift: rehearse your interim part", "");
+SWAP["2026-11-23"] = T("Split_Shift US-17: stable interim build from main", "Merge your S9 work through a reviewed PR, then build from main only (Bootstrap.unity) plus a WebGL rebuild. Keep this build: from here it's a feature freeze, fixes only.");
 plan("2026-11-28", {
-  sat0: T("PM MCQ: weakest topic", "Use the Progress tab."),
+  sat0: T("PM MCQ: Predictive (T5) on paper + weakest topic", "Forward pass, backward pass, float on the workshop network. Then the topic the Progress tab suggests."),
   sat1: T("Mobile video: record", "Record in short clips, one per section."),
   sat2: T("Mobile video: edit", "Under 8 min. Captions where helpful."),
 });
 plan("2026-11-29", {
   sun1: T("PM MCQ: first 40-question mock (60 min)", "Baseline score. Note bottom 2 topics."),
 });
-ev("2026-11-30", "09:00", "09:00", "due", "DUE 9am: Group Project Presentation Slides");
+ev("2026-11-30", "09:00", "09:00", "due", "DUE 9am: Prof Dev Group Presentation Slides");
 
-/* Week 4: 30 Nov-6 Dec. Mobile due Thu 3 Dec 23:59. PM exam + Split_Shift interim likely around now */
+/* Week 4: 30 Nov-6 Dec. Mobile due Thu 3 Dec 23:59. PM exam + Project 300 interim likely around now */
 plan("2026-11-30", {
   mon1: T("Mobile: check report against the brief", "Every requirement in the brief ticked off with a page number."),
   mon2: T("Mobile: video final cut", ""),
-  mon3: T("Split_Shift: polish the interim prototype", ""),
-  mon4: T("Split_Shift: presentation rehearsal", ""),
+  mon3: T("Split_Shift: polish the interim prototype", "Fixes only (feature freeze). Every fix through a PR to main, then rebuild."),
+  mon4: T("Split_Shift: demo script + recorded fallback run", "Write the route you'll drive in the demo, then record a clean run of it. If the live build fails on the day, you play the video."),
   mon5: T("PM MCQ: drill weakest topic", ""),
 });
 plan("2026-12-01", {
   tue1: T("Mobile: package the submission", "Report PDF, video, repo link, APK. Everything the brief asks for."),
-  tue2: T("Split_Shift: test the demo build on a clean run", ""),
+  tue2: T("Split_Shift: clean-machine build test", "Copy the build to a college PC or a teammate's laptop and run it start to finish. Note anything that breaks."),
   tue3: T("PM MCQ: 40-question mock", ""),
 });
 plan("2026-12-02", {
@@ -474,20 +492,33 @@ plan("2026-12-02", {
 ev("2026-12-03", "23:59", "23:59", "due", "DUE 11:59pm: Mobile Application submission (should already be in)");
 plan("2026-12-03", {
   thu1: T("RAD Week 10 lab: finish at home and push", RADD),
-  thu2: T("Split_Shift: presentation run-through", ""),
+  thu2: T("Split_Shift: Sprint 6 docs + presentation run-through", "Sprint 6 should end today (two-week sprints). Update Sprint History, velocity, your retro tab and the test log. Then run through your part of the presentation with a timer."),
   thu3: T("PM MCQ: exam mode, full mock", ""),
 });
 plan("2026-12-04", {
   fri1: T("PM MCQ: drill 2 weakest + mock", ""),
-  fri2: T("Split_Shift: whatever the demo still needs", ""),
+  fri2: T("Split_Shift: rehearse your interim part", "Out loud, timed, twice. Have the demo build and the fallback video ready on the laptop."),
 });
 SWAP["2026-11-30"] = T("Irish Myth Game: your owed pad playtest", "First time back on the portfolio game. Play the opening, cave and moor with a pad and write notes.");
 plan("2026-12-05", {
   sat0: T("PM MCQ: \"last wrong\" mode", ""),
   sat1: T("PM MCQ: mock (aim 95%+)", ""),
-  sat2: T("Split_Shift or PM: whichever is sooner", ""),
+  sat2: T("Split_Shift or PM exam: whichever is sooner", "Check the Due tab. If the interim is first, run the demo once more on the build you'll use."),
 });
-plan("2026-12-06", { sun1: T("Weekly review: confirm exam + presentation dates", "") });
+plan("2026-12-06", { sun1: T("Weekly review: confirm exam + interim dates", "If the dates moved, tell Claude so next week gets re-planned.") });
+
+/* Week 5: 7-13 Dec. Interim and PM exam dates still to confirm */
+plan("2026-12-07", {
+  mon1: T("Split_Shift: interim, final run-through", "If the interim has already happened: write what went well and what to change in your retro tab while it's fresh."),
+  mon2: T("PM MCQ: mock (if the exam isn't done yet)", "Otherwise: next task for the nearest deadline."),
+});
+plan("2026-12-08", {
+  tue1: T("Split_Shift: dev diary + retro tab", "Bring the weekly dev diary up to date. It's the raw material for the end-of-year 3,000-word reflective report (your individual 20%)."),
+});
+plan("2026-12-10", {
+  thu2: T("Split_Shift: next sprint card", "After the interim: floating origin design, or teach a teammate to integrate (R-03, steps in the README)."),
+});
+SWAP["2026-12-07"] = T("Split_Shift: next sprint card", "Pick the top card from the Sprint 7 board.");
 
 const DEADLINES = [
   { d: "2026-11-11", t: "16:00", what: "AGP CA2: Unity testing (15%)", where: "D:\\AGP_CA2_Prep, mock D:\\AGP_CA2_Mock", tbc: false },
@@ -497,7 +528,12 @@ const DEADLINES = [
   { d: "2026-11-30", t: "09:00", what: "Prof Dev Presentation Slides. Aim: upload Fri 27", where: "D:\\ProfDev_Report\\05_Slides_Plan.md", tbc: false },
   { d: "2026-12-03", t: "23:59", what: "Mobile Application submission. Aim: submit Wed 2", where: "D:\\MobileApp\\Questlog", tbc: false },
   { d: "2026-12-07", t: "", what: "Software Project Mgmt MCQ exam (late Nov / early Dec)", where: "D:\\ProjMgmt_MCQ", tbc: true },
-  { d: "2026-12-07", t: "", what: "Split_Shift interim: presentation 10% + prototype 20%", where: "Split_Shift repo", tbc: true },
+  { d: "2026-12-07", t: "", what: "Project 300 interim (Split_Shift): presentation 10% + playable prototype 20% of the group mark. Date not announced (placeholder), ask on Thu 12 Nov", where: "D:\\Split_ShiftS9", tbc: true },
+  { d: "2026-11-12", t: "11:15", what: "Project 300 lecturer meeting: show the chunk streaming working", where: "D:\\Split_ShiftS9 (RB_Streaming_Test.unity)", tbc: false },
+  { d: "2026-11-19", t: "", what: "Project 300 Sprint 5 ends: review, retro, Teams docs (Sprint History, velocity, test log)", where: "Teams: Student - Game Of the Year", tbc: false },
+  { d: "2026-11-30", t: "", what: "Project 300 feature freeze (aim): interim build from main only, fixes only after this", where: "D:\\Split_ShiftS9", tbc: true },
+  { d: "2026-12-03", t: "", what: "Project 300 Sprint 6 ends (two-week sprints): review + Teams docs", where: "Teams", tbc: true },
+  { d: "weekly", t: "", what: "Project 300: about 6 h of group work a week (module descriptor). Sunday weekly review: 5-line dev diary + your retro tab", where: "Teams: Student - Game Of the Year", tbc: false },
   { d: "weekly", t: "", what: "RAD301 lab: start in Wednesday's class, finish at home Thursday 1:45pm (1-2 h), push to master", where: "D:\\RADWeek6 (Rad301Labs2627.sln)", tbc: false },
 ];
 
@@ -839,10 +875,18 @@ function renderDeadlines() {
   const all = DEADLINES.concat(S.extraDl.map((x, i) => Object.assign({ user: i }, x)));
   const dated = all.filter(x => x.d !== "weekly").sort((a, b) => (a.d + a.t).localeCompare(b.d + b.t));
   const today = keyOf(new Date());
+  const hitsBy = {};
   let h = `<div class="card"><h3 class="sec">Coming up</h3>` + dated.map(x => {
     const n = daysTo(x.d), past = x.d < today;
+    const topic = !past && TOPICS.find(t => t.re && !t.kinds && t.re.test(x.what + " " + (x.where || "")));
+    let left = "";
+    if (topic) {
+      const hits = hitsBy[topic.name] = hitsBy[topic.name] || upcoming(matcher(topic.name), FIND_DAYS);
+      const r = beforeDeadline(hits, x);
+      left = `<div class="small" style="margin-top:2px"><a href="#" data-a="findtopic" data-q="${esc(topic.name)}">${r.list.length} ${esc(topic.name)} session${r.list.length === 1 ? "" : "s"} left · ${dur(r.min)}</a></div>`;
+    }
     return `<div class="due-row" style="${past ? "opacity:.45" : ""}"><div><b>${esc(x.what)}</b> ${x.tbc ? '<span class="pill">date to confirm</span>' : ""}
-      <div class="small muted">${fmtDay(x.d)}${x.t ? " · " + fmtStr(x.t) : ""}${x.where ? " · " + esc(x.where) : ""}</div>
+      <div class="small muted">${fmtDay(x.d)}${x.t ? " · " + fmtStr(x.t) : ""}${x.where ? " · " + esc(x.where) : ""}</div>${left}
       ${x.user !== undefined ? `<div class="acts"><button class="btn small" data-a="deldl" data-i="${x.user}">Remove</button></div>` : ""}</div>
       <div class="n">${past ? "done" : n === 0 ? '<span class="pill red">TODAY</span>' : n + " d"}</div></div>`;
   }).join("") + `</div>`;
@@ -852,7 +896,7 @@ function renderDeadlines() {
     <label class="full">What<input name="what" required placeholder="e.g. PM MCQ exam"></label>
     <label>Date<input type="date" name="d" required></label><label>Time<input type="time" name="t"></label>
     <div class="full"><button class="btn primary">Add deadline</button></div></form>
-    <div class="small muted" style="margin-top:6px">Once you know the PM exam and Split_Shift interim dates, add them here and tell Claude too, so the study blocks get re-planned around them.</div></div>`;
+    <div class="small muted" style="margin-top:6px">Once you know the PM exam and Project 300 interim dates, add them here and tell Claude too, so the study blocks get re-planned around them.</div></div>`;
   return h;
 }
 
@@ -860,6 +904,7 @@ function renderRules() {
   return `<div class="card"><h3 class="sec">How to use it</h3><ul class="rules">
     <li>Open <b>Day</b> and do whatever the <b>Now</b> card says. Tap <b>✓ Done</b> when you finish a block.</li>
     <li><b>Ran late</b> pushes the rest of your day back. <b>Flex</b> blocks soak up the delay first, so a short overrun usually costs nothing.</li>
+    <li><b>🔍 Search</b> (top right) finds the next session of anything, e.g. AGP, streaming or gym, and counts the sessions you have left before each deadline. With nothing typed, it shows every module at a glance.</li>
     <li><b>+ Something came up</b> adds an event. Study blocks shrink around it, and anything squeezed out can go on the catch-up list.</li>
     <li><b>Can't do it</b> takes one block out and puts its task on the catch-up list. <b>I'm done for today</b> does that for everything left today (sick, wrecked, or life happened). No guilt: it's all still on the list.</li>
     <li>Pick <b>Surf Fri</b> or <b>Surf Sun</b> each week, depending on the forecast. The slot you don't use becomes a study block.</li>
@@ -959,9 +1004,118 @@ function renderSync() {
   <p class="small muted">The plan itself is the same on every device. Only your changes need moving.</p></div>`;
 }
 
+/* ---------- find: next session of anything, and how many sessions before each deadline ---------- */
+// a topic gathers every way the plan names one module, so "AGP" also finds "Advanced Games Programming"
+const TOPICS = [
+  { name: "Project 300", words: ["split_shift", "split shift", "project 300", "p300", "streaming", "chunk", "interim"] },
+  { name: "AGP", words: ["agp", "advanced games programming", "ca2"] },
+  { name: "RAD", words: ["rad", "rad301", "rich app dev"] },
+  { name: "Mobile", words: ["mobile", "questlog", "penpot"] },
+  { name: "Prof Dev", words: ["prof dev", "interview", "pitch"] },
+  { name: "PM exam", words: ["pm mcq", "pm exam", "project mgmt"] },
+  { name: "Gym", kinds: ["gym"] },
+  { name: "Run", words: ["run:"], kinds: ["cardio"] },
+  { name: "Swim", words: ["swim"] },
+  { name: "Jiu-jitsu", kinds: ["bjj"] },
+  { name: "Surf", kinds: ["surf"] },
+  { name: "Tesco", words: ["tesco"] },
+];
+const reEsc = s => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+TOPICS.forEach(t => { if (t.words) t.re = new RegExp("(^|[^a-z0-9])(" + t.words.map(reEsc).join("|") + ")(?![a-z0-9])", "i"); });
+const FIND_DAYS = 56;
+const blockText = b => [b.title, b.task && b.task.t, b.task && b.task.d, b.detail].filter(Boolean).join(" ");
+function matcher(q) {
+  q = q.trim();
+  if (q.length < 2) return null;
+  const topic = TOPICS.find(t => t.name.toLowerCase() === q.toLowerCase() || (t.words || []).includes(q.toLowerCase()));
+  if (topic) {
+    const both = topic.kinds && topic.re; // e.g. Run: a cardio block whose text says run
+    return {
+      topic,
+      block: b => both ? topic.kinds.includes(b.kind) && topic.re.test(blockText(b)) : topic.kinds ? topic.kinds.includes(b.kind) : topic.re.test(blockText(b)),
+      text: s => !!topic.re && topic.re.test(s),
+    };
+  }
+  const low = q.toLowerCase();
+  return { block: b => blockText(b).toLowerCase().includes(low), text: s => s.toLowerCase().includes(low) };
+}
+// every block from now on that matches, as [{k, b}] in time order
+function upcoming(mt, days) {
+  const today = keyOf(new Date()), now = nowMin(), out = [];
+  for (let i = 0; i < days; i++) {
+    const k = addDays(today, i);
+    buildDay(k).forEach(b => {
+      if (b.squeezed || b.e === b.s || (i === 0 && b.e <= now)) return;
+      if (mt.block(b)) out.push({ k, b });
+    });
+  }
+  return out;
+}
+const isSession = b => TASKED.has(b.kind) || b.kind === "class";
+// sessions that happen before a deadline (no time given = before that day starts)
+function beforeDeadline(hits, x) {
+  const cut = x.d + " " + (x.t ? x.t : "00:00");
+  const list = hits.filter(h => isSession(h.b) && !h.b.done && h.k + " " + hm(h.b.s) < cut);
+  return { list, min: list.reduce((a, h) => a + (h.b.e - h.b.s), 0) };
+}
+const allDeadlines = () => DEADLINES.filter(x => x.d !== "weekly").concat(S.extraDl)
+  .filter(x => x.d >= keyOf(new Date())).sort((a, b) => (a.d + a.t).localeCompare(b.d + b.t));
+const whenTxt = (k, b) => { const n = daysTo(k); return (n === 0 ? "Today" : n === 1 ? "Tomorrow" : fmtDay(k)) + " · " + fmt(b.s); };
+const dlWhen = x => fmtDay(x.d) + (x.t ? " " + fmtStr(x.t) : "") + " · " + (daysTo(x.d) === 0 ? "today" : daysTo(x.d) + " d");
+function frow(h) {
+  return `<div class="frow" data-a="open" data-k="${h.k}"><div class="tm">${fmtH(h.b.s)}</div><div class="stripe k-${h.b.kind}"></div>
+    <div class="x"><b>${esc(label(h.b))}</b>${h.b.done ? ' <span class="tag">done</span>' : ""}<div class="small muted">${h.b.task ? esc(h.b.title) + " · " : ""}${dur(h.b.e - h.b.s)}</div></div></div>`;
+}
+function findResults(q) {
+  const mt = matcher(q);
+  if (!mt) return findOverview();
+  const hits = upcoming(mt, FIND_DAYS);
+  const dls = allDeadlines().filter(x => mt.text(x.what + " " + (x.where || "")));
+  let h = "";
+  const next = hits.find(x => !x.b.done && isSession(x.b)) || hits.find(x => !x.b.done);
+  h +=`<div class="card nowcard"><div class="lbl">Next${mt.topic ? " · " + esc(mt.topic.name) : ""}</div>` +
+    (next ? `<div class="big">${whenTxt(next.k, next.b)}</div><div>${esc(label(next.b))}</div>
+      <div class="acts"><button class="btn small primary" data-a="open" data-k="${next.k}">Open that day</button></div>`
+      : `<div class="big">Nothing planned in the next ${FIND_DAYS / 7} weeks</div><div class="small muted">Try a shorter word, or a chip below the search box.</div>`) + `</div>`;
+  dls.forEach(x => {
+    const r = beforeDeadline(hits, x);
+    h += `<div class="card"><div class="small muted">Before ${esc(x.what.split(".")[0])} · ${dlWhen(x)}${x.tbc ? " · date to confirm" : ""}</div>
+      <div style="display:flex;align-items:baseline;gap:10px;margin-top:6px"><span class="big-n">${r.list.length}</span><span>session${r.list.length === 1 ? "" : "s"} left · <b>${dur(r.min)}</b></span></div>
+      ${r.list.length ? "" : '<div class="small muted" style="margin-top:4px">None planned. Tell Claude so the plan can make room.</div>'}</div>`;
+  });
+  if (hits.length) {
+    let last = "";
+    h += `<div class="card"><h3 class="sec">Coming up · ${hits.length}</h3>` + hits.map(x => {
+      const head = x.k !== last ? `<div class="fday">${daysTo(x.k) === 0 ? "Today" : daysTo(x.k) === 1 ? "Tomorrow" : fmtDay(x.k)}</div>` : "";
+      last = x.k; return head + frow(x);
+    }).join("") + `</div>`;
+  }
+  return h;
+}
+// no search yet: one line per module with its next session and the sessions left before its next deadline
+function findOverview() {
+  const dls = allDeadlines();
+  const rows = TOPICS.filter(t => t.re && !t.kinds).map(t => {
+    const mt = matcher(t.name), hits = upcoming(mt, FIND_DAYS);
+    const next = hits.find(x => !x.b.done && isSession(x.b));
+    const dl = dls.find(x => mt.text(x.what + " " + (x.where || "")));
+    const r = dl ? beforeDeadline(hits, dl) : null;
+    return `<div class="trow" data-a="fq" data-q="${esc(t.name)}"><div><b>${esc(t.name)}</b><div class="small muted">${next ? "Next: " + whenTxt(next.k, next.b) : "Nothing planned"}</div></div>
+      <div style="text-align:right">${dl ? `<b>${r.list.length}</b> <span class="small muted">left</span><div class="small muted">before ${fmtDay(dl.d)}</div>` : ""}</div></div>`;
+  }).join("");
+  return `<div class="card"><h3 class="sec">At a glance</h3><div class="small muted" style="margin-bottom:6px">Sessions left = study blocks and classes planned before that module's next deadline. Tap a row for the full list.</div><div class="tgrid">${rows}</div></div>`;
+}
+let findQ = "";
+function renderFind() {
+  const chips = TOPICS.map(t => `<button data-a="fq" data-q="${esc(t.name)}" class="${findQ.toLowerCase() === t.name.toLowerCase() ? "on" : ""}">${esc(t.name)}</button>`).join("");
+  return `<div class="card"><input id="q" type="search" enterkeyhint="search" autocomplete="off" placeholder="Search the plan: AGP, streaming, gym…" value="${esc(findQ)}">
+    <div class="chips">${chips}${findQ ? '<button data-a="fq" data-q="">Clear</button>' : ""}</div></div><div id="findres">${findResults(findQ)}</div>`;
+}
+
 function render() {
   document.querySelectorAll("#tabs button").forEach(b => b.classList.toggle("on", b.dataset.v === view));
-  app.innerHTML = view === "today" ? renderToday() : view === "week" ? renderWeek() : view === "deadlines" ? renderDeadlines() : view === "rules" ? renderRules() : view === "shop" ? renderShop() : renderSync();
+  document.getElementById("findbtn").classList.toggle("on", view === "find");
+  app.innerHTML = view === "today" ? renderToday() : view === "find" ? renderFind() : view === "week" ? renderWeek() : view === "deadlines" ? renderDeadlines() : view === "rules" ? renderRules() : view === "shop" ? renderShop() : renderSync();
   const d = new Date();
   document.getElementById("clock").textContent = DAYS[d.getDay()] + " " + fmt(d.getHours() * 60 + d.getMinutes());
   drawToast();
@@ -993,6 +1147,8 @@ app.addEventListener("click", e => {
   else if (a === "nweek") cur = addDays(cur, 7);
   else if (a === "open") { cur = el.dataset.k; view = "today"; showPast = false; window.scrollTo(0, 0); scrollToNow = cur === keyOf(new Date()); }
   else if (a === "past") showPast = !showPast;
+  else if (a === "fq") { findQ = el.dataset.q; window.scrollTo(0, 0); }
+  else if (a === "findtopic") { e.preventDefault(); findQ = el.dataset.q; view = "find"; window.scrollTo(0, 0); }
   else if (a === "addev") openForm = openForm === "ev" ? null : "ev";
   else if (a === "cancel") openForm = null;
   else if (a === "surf") { S.surf[mondayOf(cur)] = el.dataset.v; save(); }
@@ -1054,7 +1210,13 @@ app.addEventListener("change", e => {
   S[bucket][key] = t.checked ? list.concat(t.dataset.item) : list.filter(x => x !== t.dataset.item);
   save(); render();
 });
+document.getElementById("findbtn").addEventListener("click", () => {
+  view = "find"; openForm = null; render(); window.scrollTo(0, 0);
+  if (!findQ) { const q = document.getElementById("q"); if (q) q.focus(); }
+});
 app.addEventListener("input", e => {
+  // only the results redraw while typing, so the search box keeps focus and the keyboard stays up
+  if (e.target.id === "q") { findQ = e.target.value; document.getElementById("findres").innerHTML = findResults(findQ); return; }
   if (e.target.id === "note") { S.notes = S.notes || {}; const v = e.target.value; if (v) S.notes[cur] = v; else delete S.notes[cur]; save(); }
 });
 app.addEventListener("submit", e => {
