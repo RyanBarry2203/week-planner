@@ -334,14 +334,18 @@ const RESHAPE = {}; // per date: routine blocks to drop (by "start-kind" id) and
 function reshape(k, drop, add) { RESHAPE[k] = { drop, add }; }
 
 /* Week 1: 9-15 Nov. AGP CA2 Wed, Mobile quiz Thu, Prof Dev report due Mon 16, 9am */
-reshape("2026-11-09", ["07:30-wake", "07:40-cardio", "08:15-break", "12:45-meal", "13:30-study", "17:15-flex"], [
+reshape("2026-11-09", ["07:30-wake", "07:40-cardio", "08:15-break", "11:00-break", "11:15-study", "12:45-meal", "13:30-study", "15:30-break", "15:45-study", "17:15-flex"], [
   ["07:30", "07:40", "wake", "Up, glass of water"],
-  ["07:40", "08:40", "break", "Shower, dressed, coffee, skim CA2 notes", "", "Read D:\\AGP_CA2_Prep README so the mock starts warm (no coding yet). Today's run moves to 5:15pm so you can wear the new shoes."],
-  ["12:45", "13:15", "errand", "Buy running shoes (Elverys, The Canopy)", "", "5 min walk, open 9:30am-6pm, has foot scanning. RunPod on your road is probably closed Mondays (Tue-Sat 10:30am-6pm): ring 086 455 0167 before walking over. Ask for a gait check."],
-  ["13:15", "13:45", "meal", "Lunch at home, glass of milk"],
-  ["13:45", "15:30", "study", "Deep work 3", "mon3"],
-  ["17:15", "17:45", "cardio", "Run: easy 5 km in the new shoes", "", "Keep it short, jiu-jitsu tonight."],
-  ["17:45", "18:00", "break", "Shower"],
+  ["07:40", "08:40", "break", "Shower, dressed, coffee, skim CA2 notes", "", "Read D:\\AGP_CA2_Prep README so the mock starts warm (no coding yet). Today's run is straight after the mock, in the new shoes."],
+  ["11:00", "11:30", "errand", "Buy running shoes (Elverys, The Canopy)", "", "5 min walk, open 9:30am-6pm, has foot scanning. Ask for a gait check. Wear running gear there and leave straight from the shop if you can."],
+  ["11:30", "12:05", "cardio", "Run: easy 5 km in the new shoes", "", "Chatting pace, it's their first run and jiu-jitsu is tonight. Finish the loop near where you'll get lunch."],
+  ["12:05", "12:20", "errand", "Pick up lunch on the way back", "", "High protein (e.g. Ibby's Kitchen on your road). Glass of milk at home."],
+  ["12:20", "13:00", "meal", "Home: shower, then eat", "", "Then grade the mock with a clear head."],
+  ["13:00", "14:30", "study", "Deep work 2", "mon2"],
+  ["14:30", "14:40", "break", "Break: stand up, water"],
+  ["14:40", "16:10", "study", "Deep work 3", "mon3"],
+  ["16:10", "16:20", "break", "Break: outside for 10 min"],
+  ["16:20", "18:00", "study", "Deep work 4", "mon4"],
 ]);
 plan("2026-11-09", {
   mon1: T("AGP CA2 mock exam, timed", "D:\\AGP_CA2_Mock (Meteor Defence). Treat it as the real thing: 2 h, no notes. Plan sheet first, then EditMode tests, then 1 PlayMode test. Commit \"CA2 mock submission\"."),
