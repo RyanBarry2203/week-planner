@@ -524,7 +524,297 @@ plan("2026-12-10", {
 });
 SWAP["2026-12-07"] = T("Split_Shift: next sprint card", "Pick the top card from the Sprint 7 board.");
 
+/* ---------- fitness: Half on the Head (Sat 12 Jun 2027, 11am) under 2:00 + 2 km open water under 45 min ---------- */
+// Targets that predict the goals (VDOT / Riegel): 5 km 26:05 = exactly 2:00, so aim for 25:30 or better by March;
+// 10 km 53:00. Swim: 1000 m in 21:30 and 2 km in the pool in 43:00 leave room for sighting in the sea.
+const GOALS = {
+  race: "2027-06-12",
+  note: "Paces (update after each test): easy = you can talk in full sentences, about 6:15-6:45/km. Half pace (HMP) 5:41/km. " +
+    "Threshold (T) = comfortably hard, about 5:25/km. Intervals (I) = 5 km race pace, about 5:13/km. Swim race pace 2:15 per 100 m.",
+};
+// one entry per week (its Monday); each session is [minutes, title, details]. Phases follow the 2-week taper research
+// (Bosquet 2007) with an easier "cutback" week every 3-4 weeks. Exam weeks in May are a guess: move them when ATU publishes dates.
+const TRAIN = {};
+const R = (min, t, d) => [min, t, d || ""];
+function train(k, phase, s) { TRAIN[k] = Object.assign({ phase }, s); }
+const EASY = "Conversational pace: you could talk in full sentences. Slower than you think.";
+const STRIDES = "Strides: 20 s of smooth fast running, not a sprint, walk back between.";
+const DRILLS = "Drills: catch-up, fingertip drag, 6-kick side kick. Breathe every 3 strokes. Swim hat is compulsory at the Clayton.";
+const SWIMTEST = (n) => R(45, `Swim: test ${n}: 400 m + 200 m time trials`,
+  "200 m easy, then 400 m flat out and note the time. Rest 5 min, then 200 m flat out. Write both in today's notes. " +
+  "Your threshold pace (CSS) per 100 m = (400 time - 200 time) / 2. Aim for 2:05/100 m or faster by the spring.");
+const LEGS = "Legs with the long run tomorrow: heavy, 3-5 reps, 2-3 sets, 2-3 reps left in the tank, never to failure. " +
+  "No new or eccentric-heavy exercises (Nordics, deep walking lunges). Keep calves and hips.";
+const LEGS_CUT = "Cutback week: half the sets. " + LEGS;
+const LONG_BJJ = " Eat carbs + protein within an hour of finishing. Jiu-jitsu tonight: drilling or flow rolls only, no hard sparring.";
+const FUEL = " Bring 1-2 gels (30-60 g carbs an hour) and practise taking them: your gut learns too.";
+
+/* Base 1: easy volume, technique, baseline tests */
+train("2026-11-09", "Base 1", {
+  tue: R(40, "Swim: technique + first timings", "200 m easy. Then swim 400 m as steady as you can (stop if you must, note where) and time it. Rest, then 10 min of drills. " + DRILLS),
+  fri: R(50, "Run: 5 km time trial (your baseline)", "15 min easy warm-up, then 5 km at the hardest pace you can hold evenly, 5 min easy. Flat route. Write the time in today's notes: 26:05 already predicts a 2:00 half."),
+});
+train("2026-11-16", "Base 1", {
+  mon: R(45, "Run: easy 45 min", EASY),
+  tue: R(45, "Swim: technique 45 min", "200 m easy, 4 × 50 m drills, 6 × 100 m easy with 30 s rest. " + DRILLS),
+  fri: R(40, "Run: easy 35 min + 6 strides", STRIDES),
+});
+train("2026-11-23", "Base 1", {
+  mon: R(50, "Run: easy 50 min", EASY),
+  tue: R(50, "Swim: technique 50 min", "200 m easy, 4 × 50 m drills, 8 × 100 m easy with 25 s rest, 100 m easy. " + DRILLS),
+  fri: R(40, "Run: easy 35 min + 6 strides", STRIDES),
+});
+train("2026-11-30", "Base 1 · cutback", {
+  mon: R(40, "Run: easy 40 min", "Cutback week: easier on purpose, so the last three weeks sink in. " + EASY),
+  tue: R(45, "Swim: easy 45 min", "Mostly easy 100s and drills. Try 300 m nonstop. " + DRILLS),
+  fri: R(35, "Run: easy 30 min + 6 strides", STRIDES),
+});
+train("2026-12-07", "Base 1", {
+  mon: R(55, "Run: easy 55 min", EASY),
+  tue: R(50, "Swim: 50 min, longer swims", "200 m easy, 4 × 50 m drills, 3 × 200 m steady with 40 s rest, 4 × 50 m easy. " + DRILLS),
+  thu: R(30, "Swim: drills 30 min", "Easy and technical: drills and easy 50s. " + DRILLS),
+  fri: R(35, "Run: 6 × 1 min fast", "10 min easy, then 6 × (1 min fast, 1 min easy jog), 10 min easy. Fast = hard but controlled, not a sprint."),
+  sat: R(25, "Run: easy 25 min", "Your new third run. " + EASY),
+});
+train("2026-12-14", "Base 1", {
+  mon: R(60, "Run: easy 60 min", EASY),
+  tue: R(55, "Swim: 55 min, 400 m nonstop", "200 m easy, drills, then 400 m nonstop at a pace you can keep, rest 1 min, 4 × 100 m steady. " + DRILLS),
+  thu: R(30, "Swim: drills 30 min", DRILLS),
+  fri: R(40, "Run: 8 × 1 min fast", "10 min easy, then 8 × (1 min fast, 1 min easy jog), 10 min easy."),
+  sat: R(25, "Run: easy 25 min", EASY),
+});
+train("2026-12-21", "Base 1 · Christmas", {
+  mon: R(50, "Run: easy 50 min", "Christmas week: keep it easy and enjoy it. " + EASY),
+  tue: R(45, "Swim: easy 45 min", "If the Clayton is open. Easy swimming and drills."),
+  thu: R(30, "Swim: easy 30 min (optional)", "Christmas Eve: only if the Clayton is open and you want to."),
+  fri: R(30, "Run: optional 30 min easy + strides", "Christmas Day. A short run before the day starts, or skip it. " + STRIDES),
+  sat: R(25, "Run: easy 25 min (optional)", EASY),
+});
+train("2026-12-28", "Base 1 · cutback", {
+  mon: R(45, "Run: easy 45 min", EASY),
+  tue: R(45, "Swim: easy 45 min", "Check the Clayton's holiday hours. " + DRILLS),
+  thu: R(30, "Swim: drills 30 min", DRILLS),
+  fri: R(35, "Run: easy 30 min + strides", "New Year's Day. " + STRIDES),
+  sat: R(25, "Run: easy 25 min", EASY),
+});
+
+/* Base 2: longer long runs, threshold running, steady swim pace */
+train("2027-01-04", "Base 2", {
+  mon: R(60, "Run: easy 60 min", EASY),
+  tue: R(55, "Swim: 400 m + 8 × 100 m at CSS", "Warm up, 400 m continuous, then 8 × 100 m at your CSS pace with 15 s rest, easy cool-down."),
+  thu: R(35, "Swim: easy pull + drills 35 min", DRILLS),
+  fri: R(45, "Run: threshold 3 × 6 min", "10 min easy, 3 × 6 min at T with 2 min jog, 10 min easy. T = comfortably hard, about 5:25/km."),
+  sat: R(30, "Run: easy 30 min", EASY),
+  sun: LEGS,
+});
+train("2027-01-11", "Base 2", {
+  mon: R(65, "Run: easy 65 min", EASY),
+  tue: R(60, "Swim: 500 m + 10 × 100 m at CSS", "Warm up, 500 m continuous, 10 × 100 m at CSS with 15 s rest, cool-down."),
+  thu: R(35, "Swim: easy pull + drills 35 min", DRILLS),
+  fri: R(50, "Run: threshold 3 × 8 min", "10 min easy, 3 × 8 min at T with 2 min jog, 8 min easy."),
+  sat: R(30, "Run: easy 30 min", EASY),
+  sun: LEGS,
+});
+train("2027-01-18", "Base 2", {
+  mon: R(70, "Run: easy 70 min", EASY),
+  tue: R(60, "Swim: 600 m + 12 × 100 m at CSS", "Warm up, 600 m continuous, 12 × 100 m at CSS with 15 s rest, cool-down."),
+  thu: R(40, "Swim: easy pull + drills 40 min", DRILLS),
+  fri: R(50, "Run: threshold 2 × 12 min", "10 min easy, 2 × 12 min at T with 3 min jog, 8 min easy."),
+  sat: R(35, "Run: easy 35 min", EASY),
+  sun: LEGS,
+});
+train("2027-01-25", "Base 2 · cutback + tests", {
+  mon: R(55, "Run: easy 55 min", EASY),
+  tue: SWIMTEST(2),
+  thu: R(30, "Swim: easy 30 min", DRILLS),
+  fri: R(50, "Run: 5 km time trial (checkpoint 1)", "15 min easy, 5 km hard and even, 5 min easy. Same route as November. Note the time: aim to be a minute faster than your baseline."),
+  sat: R(25, "Run: easy 25 min", EASY),
+  sun: LEGS_CUT,
+});
+train("2027-02-01", "Base 2", {
+  mon: R(75, "Run: easy 75 min", EASY + FUEL),
+  tue: R(65, "Swim: 800 m + 5 × 200 m at CSS", "Warm up, 800 m continuous, 5 × 200 m at CSS with 20 s rest, cool-down."),
+  thu: R(40, "Swim: easy 40 min", DRILLS),
+  fri: R(45, "Run: intervals 5 × 3 min", "10 min easy, 5 × 3 min at I (about 5:13/km) with 2 min jog, 10 min easy."),
+  sat: R(35, "Run: easy 35 min", EASY),
+  sun: LEGS,
+});
+train("2027-02-08", "Base 2", {
+  mon: R(80, "Run: easy 80 min", EASY + FUEL),
+  tue: R(65, "Swim: 800 m + 5 × 200 m at CSS", "Same as last week, a little quicker on the 200s."),
+  thu: R(40, "Swim: easy 40 min", DRILLS),
+  fri: R(45, "Run: hills 6 × 90 s", "10 min easy to a steady hill, 6 × 90 s uphill hard, jog back down, 10 min easy. The race is one long climb: this is for it."),
+  sat: R(40, "Run: easy 40 min", EASY),
+  sun: LEGS,
+});
+train("2027-02-15", "Base 2", {
+  mon: R(85, "Run: easy 85 min", "7am start this week. " + EASY + FUEL),
+  tue: R(65, "Swim: 3 × 400 m steady", "Warm up, 3 × 400 m at a pace you could hold for 2 km, 45 s rest, cool-down. Practise breathing both sides."),
+  thu: R(40, "Swim: easy 40 min", DRILLS),
+  fri: R(45, "Run: 20 min threshold", "10 min easy, 20 min continuous at T, 10 min easy + 4 strides."),
+  sat: R(40, "Run: easy 40 min", EASY),
+  sun: LEGS,
+});
+train("2027-02-22", "Base 2 · cutback", {
+  mon: R(65, "Run: easy 65 min", EASY),
+  tue: R(50, "Swim: easy 50 min", DRILLS),
+  thu: R(30, "Swim: easy 30 min", DRILLS),
+  fri: R(40, "Run: easy 30 min + 6 strides", STRIDES),
+  sat: R(30, "Run: easy 30 min", EASY),
+  sun: LEGS_CUT,
+});
+
+/* Build: long run to 105 min, half-pace blocks, hills; swims become long and continuous */
+train("2027-03-01", "Build", {
+  mon: R(85, "Run: easy 85 min", "7am start. " + EASY + FUEL),
+  tue: R(65, "Swim: 3 × 500 m at race pace", "Warm up, 3 × 500 m at 2:15/100 m or quicker, 1 min rest, cool-down."),
+  thu: R(40, "Swim: easy 40 min + sighting", "Every 6-9 strokes lift just your eyes (\"crocodile eyes\") to look forward, then breathe to the side. " + DRILLS),
+  fri: R(50, "Run: intervals 4 × 5 min", "10 min easy, 4 × 5 min at I with 2.5 min jog, 10 min easy."),
+  sat: R(40, "Run: easy 40 min", EASY),
+  sun: LEGS,
+});
+train("2027-03-08", "Build", {
+  mon: R(90, "Run: easy 90 min", "7am start. " + EASY + FUEL + LONG_BJJ),
+  tue: R(70, "Swim: 2 × 800 m", "Warm up, 2 × 800 m at race pace with 1 min rest, cool-down."),
+  thu: R(40, "Swim: easy 40 min + sighting", DRILLS),
+  fri: R(50, "Run: threshold 2 × 15 min", "10 min easy, 2 × 15 min at T with 3 min jog, 7 min easy."),
+  sat: R(40, "Run: easy 40 min", EASY),
+  sun: LEGS,
+});
+train("2027-03-15", "Build", {
+  mon: R(95, "Run: easy 95 min, hilly", "7am start. Pick a hilly route and run the downhills relaxed: the race finishes on a long descent. " + FUEL + LONG_BJJ),
+  tue: R(70, "Swim: 1000 m continuous + sighting", "Warm up, 1000 m nonstop at race pace, sighting every 6-9 strokes, then 4 × 100 m steady."),
+  thu: R(40, "Swim: easy 40 min", DRILLS),
+  fri: R(50, "Run: intervals 5 × 4 min", "10 min easy, 5 × 4 min at I with 3 min jog, 8 min easy."),
+  sat: R(40, "Run: easy 40 min", EASY),
+  sun: LEGS,
+});
+train("2027-03-22", "Build · cutback + tests", {
+  mon: R(70, "Run: easy 70 min", EASY),
+  tue: SWIMTEST(3),
+  thu: R(30, "Swim: easy 30 min", DRILLS),
+  fri: R(50, "Run: 5 km time trial (checkpoint 2)", "15 min easy, 5 km hard and even, 5 min easy. Same route. Target 25:30 or faster: that predicts about 1:57."),
+  sat: R(30, "Run: easy 30 min", EASY),
+  sun: LEGS_CUT,
+});
+train("2027-03-29", "Build", {
+  mon: R(95, "Run: 95 min, last 15 at half pace", "7am start. Easy, then the last 15 min at 5:41/km." + FUEL + LONG_BJJ),
+  tue: R(70, "Swim: 1200 m continuous", "Warm up, 1200 m nonstop at race pace with sighting, cool-down."),
+  thu: R(40, "Swim: easy 40 min", DRILLS),
+  fri: R(50, "Run: half pace 3 × 10 min", "10 min easy, 3 × 10 min at 5:41/km with 2 min jog, 6 min easy."),
+  sat: R(40, "Run: easy 40 min", EASY),
+  sun: LEGS,
+});
+train("2027-04-05", "Build", {
+  mon: R(100, "Run: easy 100 min", "7am start. " + EASY + FUEL + LONG_BJJ),
+  tue: R(70, "Swim: 1500 m continuous", "Warm up, 1500 m nonstop at race pace with sighting. Target about 33:00."),
+  thu: R(40, "Swim: easy 40 min", DRILLS),
+  fri: R(50, "Run: half pace 2 × 15 min", "10 min easy, 2 × 15 min at 5:41/km with 2 min jog, 6 min easy."),
+  sat: R(40, "Run: easy 40 min", EASY),
+  sun: LEGS,
+});
+train("2027-04-12", "Build", {
+  mon: R(105, "Run: 105 min with 2 × 15 min at half pace", "7am start. Easy, with two 15 min blocks at 5:41/km in the second half." + FUEL + LONG_BJJ),
+  tue: R(70, "Swim: 1500 m continuous", "Same as last week. Try to swim it 30 s quicker."),
+  thu: R(45, "Swim: easy 45 min", DRILLS),
+  fri: R(45, "Run: 25 min progression", "10 min easy, 25 min starting at half pace and finishing at T, 10 min easy."),
+  sat: R(40, "Run: easy 40 min", EASY),
+  sun: LEGS,
+});
+train("2027-04-19", "Build · cutback + tests", {
+  mon: R(75, "Run: 10 km time trial (checkpoint 3)", "15 min easy, 10 km hard and even, 5 min easy. Target 53:00 or faster."),
+  tue: R(50, "Swim: 1000 m time trial", "Warm up, then 1000 m flat out. Target 21:30 or faster. Write it in today's notes."),
+  thu: R(30, "Swim: easy 30 min", DRILLS),
+  fri: R(35, "Run: easy 30 min + strides", STRIDES),
+  sat: R(30, "Run: easy 30 min", EASY),
+  sun: LEGS_CUT,
+});
+
+/* Specific: race pace on hills, the longest runs, 2 km swims, then open water from mid-May */
+train("2027-04-26", "Race-specific", {
+  mon: R(100, "Run: 100 min hilly, 3 × 15 min at half pace", "7am start. Put the half-pace blocks on the climbs, by effort." + FUEL + LONG_BJJ),
+  tue: R(70, "Swim: 1600 m continuous", "Warm up, 1600 m nonstop at race pace with sighting."),
+  thu: R(45, "Swim: easy 45 min", DRILLS),
+  fri: R(50, "Run: 30 min at half pace, hilly", "10 min easy, 30 min at half-pace effort on a hilly route, 8 min easy."),
+  sat: R(40, "Run: easy 40 min", EASY),
+  sun: LEGS,
+});
+train("2027-05-03", "Race-specific", {
+  mon: R(110, "Run: 110 min with 30 min at half pace", "Bank holiday. 7am start. The last 30 min at 5:41/km." + FUEL + LONG_BJJ),
+  tue: R(70, "Swim: 1800 m continuous", "Warm up, 1800 m nonstop at race pace."),
+  thu: R(45, "Swim: easy 45 min", DRILLS),
+  fri: R(50, "Run: threshold 4 × 6 min", "10 min easy, 4 × 6 min at T with 2 min jog, 8 min easy."),
+  sat: R(40, "Run: easy 40 min", EASY),
+  sun: LEGS,
+});
+train("2027-05-10", "Race-specific · exam hold", {
+  mon: R(90, "Run: easy 90 min", "Exams (dates to confirm): keep the long run, everything else is maintenance. 7am start." + FUEL + LONG_BJJ),
+  tue: R(60, "Swim: 2000 m continuous, easy", "Your first 2 km nonstop. Easy pace: just finish it."),
+  thu: R(40, "Swim: easy 40 min", DRILLS),
+  fri: R(40, "Run: easy 35 min + 6 strides", STRIDES),
+  sat: R(30, "Run: easy 30 min (optional in exams)", EASY),
+  sun: LEGS,
+});
+train("2027-05-17", "Race-specific · exam hold", {
+  mon: R(100, "Run: dress rehearsal 100 min, 40 at half pace", "7am start. Race kit, race shoes, race breakfast, gels at the times you'll take them. The middle 40 min at 5:41/km." + LONG_BJJ),
+  tue: R(60, "Swim: 2000 m continuous", "Aim for about 45 min. Sight every 6-9 strokes."),
+  thu: R(40, "Swim: easy 40 min", DRILLS),
+  fri: R(50, "Run: half pace 3 × 8 min", "10 min easy, 3 × 8 min at 5:41/km with 2 min jog, 8 min easy."),
+  sat: R(75, "Swim: first open water, Rosses Point", "With a buddy, never alone. Swim wetsuit, bright cap, tow float. The sea is about 11-12°C: walk in slowly and let your breathing settle before you swim. 15-20 min in the water, parallel to the shore. The 75 min includes getting there and back. Not Strandhill: it's unsafe for swimming."),
+  sun: "Half the usual sets. " + LEGS,
+});
+train("2027-05-24", "Peak", {
+  mon: R(110, "Run: 110 min with 30 min at half pace (your longest)", "7am start. Last long run. Gels as on race day." + LONG_BJJ),
+  tue: R(55, "Swim: 2 km pool time trial", "Warm up 200 m, then 2 km nonstop and time it. Target 43:00 or faster in the pool: that leaves room for the sea."),
+  thu: R(40, "Swim: easy 40 min", DRILLS),
+  fri: R(45, "Run: half pace 2 × 12 min", "10 min easy, 2 × 12 min at 5:41/km with 2 min jog, 8 min easy."),
+  sat: R(75, "Swim: open water 25-30 min, Rosses Point", "With a buddy, wetsuit, bright cap, tow float. Practise sighting on a fixed point and swimming straight. Includes travel."),
+  sun: "Light legs: 1-2 sets at a moderate weight, no jumps. Last legs session before the race. " + LEGS,
+});
+train("2027-05-31", "Taper", {
+  mon: R(75, "Run: 75 min with 15 min at half pace", "Taper: less running, same sharpness. You won't lose fitness in two weeks." + FUEL),
+  tue: R(40, "Swim: taper 40 min, 4 × 200 m at race pace", "Easy warm-up, 4 × 200 m at 2:15/100 m with 30 s rest, easy cool-down."),
+  thu: R(30, "Swim: easy 30 min", DRILLS),
+  fri: R(40, "Run: half pace 3 × 6 min", "10 min easy, 3 × 6 min at 5:41/km with 2 min jog, 8 min easy."),
+  sat: R(90, "Swim: 2 km open water, timed (the swim goal)", "Rosses Point with a buddy, or the Sligo Metalman Swim Series 2 km if its 2027 date is this weekend (2026's was Sat 6 June at Mullaghmore). Target under 45:00. Includes travel."),
+});
+train("2027-06-07", "Race week", {
+  mon: R(40, "Run: easy 35 min + 3 × 3 min at half pace", "Bank holiday. Jiu-jitsu this week: technique only, no sparring."),
+  tue: R(25, "Swim: easy 20 min + 4 × 100 m at race pace", "Short and loose."),
+  fri: R(25, "Run: 20 min easy + 4 strides", "Before the drive. Legs should feel springy, not tired."),
+});
+// race weekend: no legs 6 days out, Friday off work to drive down, race day replaces Saturday
+reshape("2027-06-06", ["08:30-wake", "08:45-travel", "09:05-gym", "10:15-break", "10:30-travel"], [
+  ["08:30", "08:45", "wake", "Up, glass of water"],
+  ["09:00", "09:40", "free", "Rest day: easy 30 min walk, no legs this week", "", "The race is Saturday. Fresh legs beat one more session."],
+]);
+reshape("2027-06-11", ["13:15-surfopt", "15:45-meal", "16:15-travel", "16:45-work"], [
+  ["13:15", "14:00", "errand", "Pack for Kerry", "", "Race kit and the shoes you trained in, 3-4 gels, race breakfast, safety pins, warm layers, recovery food. Nothing new on race day."],
+  ["14:00", "18:00", "travel", "Drive to Ballyheigue (about 3 h 50)", "", "Stop halfway and walk around for 10 min."],
+  ["19:00", "19:45", "errand", "Collect your race number", "", "Community Centre, Ballyheigue, 7-8:30pm."],
+  ["19:45", "20:30", "meal", "Dinner: carb-heavy, nothing new", "", "Rice or pasta with chicken, plenty of water. Thursday and Friday are both high-carb days."],
+  ["21:45", "22:30", "bed", "In bed, kit laid out, alarm for 7am", ""],
+  ["22:30", "22:30", "bed", "Lights out", ""],
+]);
+reshape("2027-06-12", ["00:00-bed", "00:45-bed", "09:00-wake", "09:15-typing", "09:30-light", "10:20-break", "10:40-travel", "11:00-bjj", "12:00-travel", "12:20-break", "12:35-meal", "13:10-study", "15:00-break", "15:15-study", "17:00-free"], [
+  ["07:00", "07:15", "wake", "Race day. Up, glass of water"],
+  ["07:30", "08:00", "meal", "Race breakfast, 3+ h before the start", "", "Exactly what you ate before the dress rehearsal, e.g. porridge, banana, honey."],
+  ["08:00", "09:45", "free", "Relax. Toilet early, the queues build", "", "If you use caffeine, have it about 10am."],
+  ["09:45", "10:30", "travel", "To the start: beach car park by the community centre"],
+  ["10:30", "10:50", "break", "Warm-up: 10 min easy jog + 4 strides"],
+  ["13:00", "14:00", "meal", "Recovery: eat, drink, stretch, celebrate"],
+  ["14:00", "18:00", "travel", "Drive home (about 3 h 50)", "", "Or stay over and drive Sunday."],
+  ["18:00", "23:00", "free", "Evening off. You earned it"],
+]);
+ev("2027-06-12", "10:50", "11:00", "event", "Race briefing at the start");
+ev("2027-06-12", "11:00", "13:00", "event", "Half on the Head: under 2:00 = 5:41/km. Run the long climb by effort, not pace, and make it back on the descent. Gels at about 5, 10 and 15 km; water at miles 3.5, 7 and 10");
+
 const DEADLINES = [
+  { d: "2027-06-12", t: "11:00", what: "Half on the Head half marathon: under 2:00 (5:41/km)", where: "Ballyheigue, Co. Kerry. Start at the beach car park by the community centre", tbc: false },
+  { d: "2027-06-05", t: "", what: "2 km open-water swim under 45 min (Rosses Point, or the Metalman Swim Series if its date fits)", where: "With a buddy, wetsuit + tow float", tbc: true },
+  { d: "2026-11-15", t: "", what: "Enter Half on the Head 2027 (the half is €40; €25 is the 10K). Entries close when it's full", where: "halfonthehead.com → Register", tbc: false },
+  { d: "2026-11-13", t: "", what: "Ask work for Fri 11 June 2027 off (drive to Kerry, collect your number 7-8:30pm)", where: "Work", tbc: false },
+  { d: "2027-04-30", t: "", what: "Get a swim wetsuit (not your surf one: it tires your shoulders). Buy about €200, or season hire", where: "Before open water starts mid-May", tbc: false },
   { d: "2026-11-11", t: "16:00", what: "AGP CA2: Unity testing (15%)", where: "D:\\AGP_CA2_Prep, mock D:\\AGP_CA2_Mock", tbc: false },
   { d: "2026-11-12", t: "15:00", what: "Mobile App CA quiz (Moodle MCQ)", where: "D:\\MobileApp\\study", tbc: true },
   { d: "2026-11-16", t: "09:00", what: "Prof Dev Group Project Report (Turnitin). Aim: submit Sun 15", where: "D:\\ProfDev_Report", tbc: false },
@@ -555,6 +845,69 @@ function defaultTask(kind, slot) {
   if (kind === "light") return T("PM MCQ: 20-question practice", "D:\\ProjMgmt_MCQ\\quiz.html, the topic the Progress tab suggests.");
   return T("Next task for the nearest deadline", "Catch-up list first, then the Deadlines tab.");
 }
+/* ---------- training layer: each week's runs and swims, fitted into the routine ---------- */
+// where each day's session sits, and how long it can get before it would cost study time:
+// Monday absorbs the 5:15pm flex (45 min) plus a 7:00am start once the long run passes 80 min,
+// Tuesday and Thursday each absorb that evening's flex, Friday only has a 20 min gap before the shift,
+// Saturday's run comes out of the start of the evening off.
+const TRAIN_SLOTS = {
+  1: { key: "mon", id: "07:40-cardio", max: 110, early: { over: 80, wake: "07:30-wake", by: 30 } },
+  2: { key: "tue", id: "13:50-cardio", max: 70 },
+  4: { key: "thu", after: "11:10-gym", max: 50 },
+  5: { key: "fri", id: "07:40-cardio", max: 55 },
+  6: { key: "sat", at: "17:00-free", max: 90, shower: 10 },
+  0: { key: "sun", id: "09:05-gym", note: true }, // legs stays; the note says how hard, given Monday's long run
+};
+const trainWeeks = () => Object.keys(TRAIN).sort();
+function trainLabel(week) {
+  const i = trainWeeks().indexOf(week);
+  return i < 0 ? "" : `Week ${i + 1} of ${trainWeeks().length} · ${TRAIN[week].phase}`;
+}
+function applyTraining(k, dow, blocks, ripple) {
+  const week = mondayOf(k), wk = TRAIN[week], slot = TRAIN_SLOTS[dow];
+  if (!wk || !slot || !(slot.key in wk)) return;
+  const ses = wk[slot.key];
+  const fill = (b, [min, title, detail]) => {
+    b.title = title; b.detail = trainLabel(week) + (detail ? ". " + detail : ""); b.e = b.s + Math.min(min, slot.max); b.train = true;
+  };
+  if (slot.note) {
+    const b = blocks.find(x => x.id === slot.id);
+    if (b && ses) b.detail = trainLabel(week) + ". " + ses;
+    return;
+  }
+  if (slot.id) {
+    const b = blocks.find(x => x.id === slot.id);
+    if (!b) return; // a one-off reshape already rewrote this day
+    if (!ses) { b.gone = true; return; }
+    const oldEnd = b.e;
+    if (slot.early && ses[0] > slot.early.over) {
+      const w = blocks.find(x => x.id === slot.early.wake);
+      if (w) { w.s -= slot.early.by; w.e -= slot.early.by; }
+      b.s -= slot.early.by;
+    }
+    fill(b, ses);
+    if (b.e > oldEnd) ripple(b);
+    return;
+  }
+  if (!ses) return;
+  if (slot.after) {
+    const g = blocks.find(x => x.id === slot.after);
+    if (!g) return;
+    const b = { id: hm(g.e) + "-cardio-t", s: g.e, e: g.e, kind: "cardio" };
+    fill(b, ses);
+    blocks.push(b);
+    ripple(b);
+    return;
+  }
+  const f = blocks.find(x => x.id === slot.at);
+  if (!f) return;
+  const b = { id: hm(f.s) + "-cardio-t", s: f.s, e: f.s, kind: "cardio" };
+  fill(b, ses);
+  const sh = { id: hm(b.e) + "-break-t", s: b.e, e: b.e + slot.shower, kind: "break", title: "Shower" };
+  f.s = sh.e;
+  blocks.push(b, sh);
+}
+
 function buildDay(k) {
   const dow = parseKey(k).getDay();
   const week = mondayOf(k);
@@ -584,12 +937,9 @@ function buildDay(k) {
 
   const hard = blocks.filter(b => FIXED.has(b.kind) && b.e > b.s).concat(fixedEv, userEv).filter(b => b.e > b.s);
 
-  // ran late: extend that block, then ripple forward. Gaps and flex blocks absorb the delay,
+  // ripple forward from a block that now ends later. Gaps and flex blocks absorb the delay,
   // and the ripple stops at the next fixed thing (class, jiu-jitsu, work, exam, bed).
-  ds.late.forEach(L => {
-    const target = blocks.find(b => b.id === L.id);
-    if (!target || FIXED.has(target.kind)) return;
-    target.e += L.min; target.late = (target.late || 0) + L.min;
+  const ripple = target => {
     let prevEnd = target.e;
     const later = blocks.filter(b => b !== target && b.s >= target.s && !b.gone && !FIXED.has(b.kind) && b.e > b.s)
       .concat(hard.filter(h => h.s >= target.s))
@@ -604,6 +954,16 @@ function buildDay(k) {
         b.s = b.e; b.gone = true; prevEnd = ns;
       } else { b.s += shift; b.e += shift; prevEnd = b.e; }
     }
+  };
+
+  applyTraining(k, dow, blocks, ripple);
+
+  // ran late: extend that block, then ripple forward
+  ds.late.forEach(L => {
+    const target = blocks.find(b => b.id === L.id);
+    if (!target || FIXED.has(target.kind)) return;
+    target.e += L.min; target.late = (target.late || 0) + L.min;
+    ripple(target);
   });
 
   // fixed things win: trim flexible blocks around them, keeping the longer part
@@ -671,9 +1031,11 @@ function packList(k) {
   const has = f => bl.some(f);
   const dow = parseKey(k).getDay();
   if (has(b => b.kind === "class")) items.push("Laptop + charger in your bag");
-  if (has(b => b.kind === "gym" && /Clayton/.test(b.title))) items.push("Gym bag: clothes, towel, shower stuff" + (has(b => /Swim/.test(b.title)) ? ", togs + goggles" : ""));
+  if (has(b => b.kind === "gym" && /Clayton/.test(b.title))) items.push("Gym bag: clothes, towel, shower stuff" + (has(b => /Swim/.test(b.title)) ? ", togs, goggles + swim hat" : ""));
   if (has(b => b.kind === "gym" && /ROM/.test(b.title))) items.push("Gym bag for ROM: clothes, towel, shower stuff");
   if (has(b => b.kind === "cardio" && /Run/.test(b.title))) items.push("Running gear + shoes out");
+  if (has(b => b.kind === "cardio" && /Run/.test(b.title) && b.e - b.s >= 75)) items.push("Gels for the long run + breakfast carbs");
+  if (has(b => b.kind === "cardio" && /open water/i.test(b.title))) items.push("Open water: swim wetsuit, bright cap, tow float, goggles, warm clothes. Buddy confirmed");
   if (has(b => b.kind === "bjj")) items.push("Gi + belt clean and dry");
   if (has(b => b.kind === "surf")) items.push("Wetsuit + board ready");
   if (has(b => b.kind === "work")) items.push("Work clothes ready");
@@ -874,17 +1236,45 @@ function renderWeek() {
   return h + "</div>";
 }
 
+// the two fitness goals: countdown, target paces, this week's sessions and the next test
+function goalsCard() {
+  const today = keyOf(new Date());
+  if (today > GOALS.race) return "";
+  const week = mondayOf(today);
+  const days = Array.from({ length: 7 }, (_, i) => addDays(week, i));
+  const sessions = days.flatMap(k => buildDay(k).filter(b => b.train).map(b => ({ k, b })));
+  let test = null;
+  for (let i = 0; i < horizonFor([{ d: GOALS.race }]) && !test; i++) {
+    const k = addDays(today, i);
+    const b = buildDay(k).find(b => b.train && /time trial|test/i.test(b.title) && !b.done && !(i === 0 && b.e <= nowMin()));
+    if (b) test = { k, b };
+  }
+  const row = x => `<div class="frow" data-a="open" data-k="${x.k}"><div class="tm">${fmtDay(x.k).split(" ")[0]}</div><div class="stripe k-cardio"></div>
+    <div class="x"><b>${esc(x.b.title)}</b>${x.b.done ? ' <span class="tag">done</span>' : ""}<div class="small muted">${dur(x.b.e - x.b.s)}</div></div></div>`;
+  return `<div class="card nowcard"><div class="lbl">Fitness goals · ${daysTo(GOALS.race)} days</div>
+    <div class="big">Half on the Head · Sat 12 June 2027</div>
+    <div class="stats" style="margin-top:8px">
+      <div class="stat"><b>&lt;2:00</b><span>half · 5:41/km</span></div>
+      <div class="stat"><b>&lt;45:00</b><span>2 km swim · 2:15/100m</span></div>
+    </div>
+    <div class="small muted" style="margin-top:8px">${esc(trainLabel(week) || "Training starts Monday 16 November")}</div>
+    ${sessions.map(row).join("")}
+    ${test ? `<div class="next">Next test: <b>${esc(test.b.title)}</b> · ${whenTxt(test.k, test.b)}</div>` : ""}
+    <div class="small muted" style="margin-top:6px">${esc(GOALS.note)}</div></div>`;
+}
+
 function renderDeadlines() {
   const all = DEADLINES.concat(S.extraDl.map((x, i) => Object.assign({ user: i }, x)));
   const dated = all.filter(x => x.d !== "weekly").sort((a, b) => (a.d + a.t).localeCompare(b.d + b.t));
   const today = keyOf(new Date());
   const hitsBy = {};
-  let h = `<div class="card"><h3 class="sec">Coming up</h3>` + dated.map(x => {
+  let h = goalsCard() + `<div class="card"><h3 class="sec">Coming up</h3>` + dated.map(x => {
     const n = daysTo(x.d), past = x.d < today;
-    const topic = !past && TOPICS.find(t => t.re && !t.kinds && t.re.test(x.what + " " + (x.where || "")));
+    const topic = !past && dlTopic(x);
     let left = "";
     if (topic) {
-      const hits = hitsBy[topic.name] = hitsBy[topic.name] || upcoming(matcher(topic.name), FIND_DAYS);
+      const days = horizonFor([x]), key = topic.name + "|" + days;
+      const hits = hitsBy[key] = hitsBy[key] || upcoming(matcher(topic.name), days);
       const r = beforeDeadline(hits, x);
       left = `<div class="small" style="margin-top:2px"><a href="#" data-a="findtopic" data-q="${esc(topic.name)}">${r.list.length} ${esc(topic.name)} session${r.list.length === 1 ? "" : "s"} left · ${dur(r.min)}</a></div>`;
     }
@@ -907,6 +1297,7 @@ function renderRules() {
   return `<div class="card"><h3 class="sec">How to use it</h3><ul class="rules">
     <li>Open <b>Day</b> and do whatever the <b>Now</b> card says. Tap <b>✓ Done</b> when you finish a block.</li>
     <li><b>Ran late</b> pushes the rest of your day back. <b>Flex</b> blocks soak up the delay first, so a short overrun usually costs nothing.</li>
+    <li><b>Fitness goals</b> (top of the Due tab): Half on the Head on Sat 12 June 2027 under 2:00, and 2 km open water under 45 min. Each week's runs and swims are already in the days: they grow week by week and push the rest of the day later, using up that day's flex slot so no study is lost. Once the Monday long run goes past 80 min you start at 7am. Write every test time in that day's notes.</li>
     <li><b>🔍 Search</b> (top right) finds the next session of anything, e.g. AGP, streaming or gym, and counts the sessions you have left before each deadline. With nothing typed, it shows every module at a glance.</li>
     <li><b>+ Something came up</b> adds an event. Study blocks shrink around it, and anything squeezed out can go on the catch-up list.</li>
     <li><b>Can't do it</b> takes one block out and puts its task on the catch-up list. <b>I'm done for today</b> does that for everything left today (sick, wrecked, or life happened). No guilt: it's all still on the list.</li>
@@ -1017,15 +1408,20 @@ const TOPICS = [
   { name: "Prof Dev", words: ["prof dev", "interview", "pitch"] },
   { name: "PM exam", words: ["pm mcq", "pm exam", "project mgmt"] },
   { name: "Gym", kinds: ["gym"] },
-  { name: "Run", words: ["run:"], kinds: ["cardio"] },
-  { name: "Swim", words: ["swim"] },
+  { name: "Run", words: ["run:"], kinds: ["cardio"], due: ["half marathon"] },
+  { name: "Swim", words: ["swim"], due: ["open-water swim"] },
   { name: "Jiu-jitsu", kinds: ["bjj"] },
   { name: "Surf", kinds: ["surf"] },
   { name: "Tesco", words: ["tesco"] },
 ];
 const reEsc = s => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-TOPICS.forEach(t => { if (t.words) t.re = new RegExp("(^|[^a-z0-9])(" + t.words.map(reEsc).join("|") + ")(?![a-z0-9])", "i"); });
+const wordRe = words => new RegExp("(^|[^a-z0-9])(" + words.map(reEsc).join("|") + ")(?![a-z0-9])", "i");
+TOPICS.forEach(t => { if (t.words) t.re = wordRe(t.words); if (t.due) t.dueRe = wordRe(t.due); });
+// which topic a deadline belongs to: its own words, or for sport topics the race/goal words
+const dlTopic = x => TOPICS.find(t => (t.dueRe && t.dueRe.test(x.what)) || (t.re && !t.kinds && t.re.test(x.what + " " + (x.where || ""))));
 const FIND_DAYS = 56;
+// look far enough ahead to count every session before a deadline months away
+const horizonFor = dls => Math.max(FIND_DAYS, ...dls.map(x => daysTo(x.d) + 1));
 const blockText = b => [b.title, b.task && b.task.t, b.task && b.task.d, b.detail].filter(Boolean).join(" ");
 function matcher(q) {
   q = q.trim();
@@ -1036,7 +1432,7 @@ function matcher(q) {
     return {
       topic,
       block: b => both ? topic.kinds.includes(b.kind) && topic.re.test(blockText(b)) : topic.kinds ? topic.kinds.includes(b.kind) : topic.re.test(blockText(b)),
-      text: s => !!topic.re && topic.re.test(s),
+      text: s => (!!topic.re && topic.re.test(s)) || (!!topic.dueRe && topic.dueRe.test(s)),
     };
   }
   const low = q.toLowerCase();
@@ -1054,7 +1450,7 @@ function upcoming(mt, days) {
   }
   return out;
 }
-const isSession = b => TASKED.has(b.kind) || b.kind === "class";
+const isSession = b => TASKED.has(b.kind) || b.kind === "class" || SPORT.has(b.kind);
 // sessions that happen before a deadline (no time given = before that day starts)
 function beforeDeadline(hits, x) {
   const cut = x.d + " " + (x.t ? x.t : "00:00");
@@ -1072,8 +1468,9 @@ function frow(h) {
 function findResults(q) {
   const mt = matcher(q);
   if (!mt) return findOverview();
-  const hits = upcoming(mt, FIND_DAYS);
   const dls = allDeadlines().filter(x => mt.text(x.what + " " + (x.where || "")));
+  const all = upcoming(mt, horizonFor(dls));
+  const hits = all.filter(x => daysTo(x.k) < FIND_DAYS);
   let h = "";
   const next = hits.find(x => !x.b.done && isSession(x.b)) || hits.find(x => !x.b.done);
   h +=`<div class="card nowcard"><div class="lbl">Next${mt.topic ? " · " + esc(mt.topic.name) : ""}</div>` +
@@ -1081,7 +1478,7 @@ function findResults(q) {
       <div class="acts"><button class="btn small primary" data-a="open" data-k="${next.k}">Open that day</button></div>`
       : `<div class="big">Nothing planned in the next ${FIND_DAYS / 7} weeks</div><div class="small muted">Try a shorter word, or a chip below the search box.</div>`) + `</div>`;
   dls.forEach(x => {
-    const r = beforeDeadline(hits, x);
+    const r = beforeDeadline(all, x);
     h += `<div class="card"><div class="small muted">Before ${esc(x.what.split(".")[0])} · ${dlWhen(x)}${x.tbc ? " · date to confirm" : ""}</div>
       <div style="display:flex;align-items:baseline;gap:10px;margin-top:6px"><span class="big-n">${r.list.length}</span><span>session${r.list.length === 1 ? "" : "s"} left · <b>${dur(r.min)}</b></span></div>
       ${r.list.length ? "" : '<div class="small muted" style="margin-top:4px">None planned. Tell Claude so the plan can make room.</div>'}</div>`;
@@ -1098,10 +1495,11 @@ function findResults(q) {
 // no search yet: one line per module with its next session and the sessions left before its next deadline
 function findOverview() {
   const dls = allDeadlines();
-  const rows = TOPICS.filter(t => t.re && !t.kinds).map(t => {
-    const mt = matcher(t.name), hits = upcoming(mt, FIND_DAYS);
+  const rows = TOPICS.filter(t => (t.re && !t.kinds) || t.dueRe).map(t => {
+    const mt = matcher(t.name);
+    const dl = dls.find(x => dlTopic(x) === t);
+    const hits = upcoming(mt, dl ? horizonFor([dl]) : FIND_DAYS);
     const next = hits.find(x => !x.b.done && isSession(x.b));
-    const dl = dls.find(x => mt.text(x.what + " " + (x.where || "")));
     const r = dl ? beforeDeadline(hits, dl) : null;
     return `<div class="trow" data-a="fq" data-q="${esc(t.name)}"><div><b>${esc(t.name)}</b><div class="small muted">${next ? "Next: " + whenTxt(next.k, next.b) : "Nothing planned"}</div></div>
       <div style="text-align:right">${dl ? `<b>${r.list.length}</b> <span class="small muted">left</span><div class="small muted">before ${fmtDay(dl.d)}</div>` : ""}</div></div>`;
