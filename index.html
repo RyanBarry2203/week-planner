@@ -368,7 +368,7 @@ plan("2026-11-11", {
   wed2: T("Calm review before the CA", "Skim 1-Refresher. Eat something. No new material."),
   wed3: T("Mobile CA quiz: one 40-question mock", "Wrong-answers-only round after."),
 });
-ev("2026-11-12", "11:15", "12:30", "event", "Project 300 (Split_Shift) meeting with your lecturer: show the chunk streaming working. Ask 1) the interim date + time, 2) is it 30% of the group mark or of the module, 3) is this meeting weekly or every sprint end");
+ev("2026-11-12", "11:15", "12:30", "event", "Project 300 meeting: CANCELLED (now Thu 19, to confirm). You met the Arkade gun CEO instead");
 reshape("2026-11-12", ["11:00-travel", "11:10-gym", "12:05-break", "12:20-travel", "13:10-travel", "16:00-study", "17:30-flex"], [
   ["13:10", "13:45", "break", "Stay in college: library seat, typing practice here if you skipped it this morning"],
   ["16:00", "16:10", "travel", "Walk to the Clayton (10 min)"],
@@ -376,14 +376,25 @@ reshape("2026-11-12", ["11:00-travel", "11:10-gym", "12:05-break", "12:20-travel
   ["17:05", "17:20", "break", "Shower at the Clayton"],
   ["17:20", "17:50", "travel", "Walk home from the Clayton (25-30 min). Tesco top-up on the way if needed"],
 ]);
-ev("2026-11-12", "15:00", "16:00", "event", "Mobile App CA quiz (Moodle MCQ, Compose Units 1-4). Check the exact time on Moodle");
+ev("2026-11-12", "15:00", "16:00", "event", "Mobile CA quiz: MOVED to Thu 19 Nov");
 plan("2026-11-12", {
   thu1: T("Mobile quiz: last review", "Only the questions you've got wrong before. Then go do it."),
   thu3: T("RAD Week 7 lab: finish at home and push", "Quiz day moves RAD to tonight (1.5 h). If it is a big lab, finish it in Friday morning first block. Autograder green before you stop."),
 });
+// re-planned Fri 13 Nov: slept in, no surf this weekend (bad forecast), leave for work at 4 to get work stuff in the shop
+reshape("2026-11-13", ["07:30-wake", "07:40-cardio", "08:15-break", "08:45-typing", "09:00-study", "11:00-break", "11:15-study", "12:30-meal", "13:15-surfopt", "15:45-meal", "16:15-travel"], [
+  ["10:45", "11:15", "wake", "Up, shower, coffee", "", "Wednesday and Thursday are done. This plan starts from now: nothing to catch up on that isn't already below."],
+  ["11:15", "11:30", "typing", "Typing practice 15 min"],
+  ["11:30", "13:30", "study", "Deep work 1", "fri1"],
+  ["13:30", "14:10", "meal", "Lunch: mackerel on toast + 3 eggs, milk"],
+  ["14:10", "15:20", "study", "Deep work 2", "fri2"],
+  ["15:20", "15:50", "meal", "Dinner before the shift: pot + rice + veg. Pack 2 peanut butter sandwiches + a banana"],
+  ["15:50", "16:00", "break", "Get ready for work"],
+  ["16:00", "16:45", "errand", "Leave for work: get the work stuff in the shop on the way"],
+]);
 plan("2026-11-13", {
-  fri1: T("Prof Dev editor: pull it together + consistency", "First pull every teammate's section into the live doc and message anyone missing (G1-G9 in D:\\ProfDev_Report\\01_Rubric_Checklist.md). Then: Harvard references only, figure captions + sources, headings numbered by style, TNR 12."),
-  fri2: T("Prof Dev editor: structure", "Contents page matches sections, word count 5,000-7,000 on the cover, editor named in 2.4."),
+  fri1: T("Prof Dev: Part A done, then pull the report together", "If your Part A isn't finished, finish it first (every paragraph cited, word budget fits). Then pull every teammate's section into the live doc and message anyone missing today (G1-G9 in D:\\ProfDev_Report\\01_Rubric_Checklist.md)."),
+  fri2: T("Prof Dev editor: references + structure", "Harvard references only, figure captions + sources, numbered headings, TNR 12. Contents page matches the sections, word count 5,000-7,000 on the cover, editor named in 2.4."),
 });
 SWAP["2026-11-09"] = T("Prof Dev report buffer", "Whatever is left on the report. Being ahead here protects Sunday.");
 plan("2026-11-14", {
@@ -393,31 +404,48 @@ plan("2026-11-14", {
 });
 plan("2026-11-15", {
   sun1: T("Prof Dev: final proof and SUBMIT TODAY", "Final proof, run Turnitin, submit by 5pm Sunday. Don't leave it for Monday 9am."),
+  sun2: T("RAD Week 6 lab: finish + push", "D:\\RADWeek6. Wednesday's lab was cancelled, so this one is still open. Autograder green on master before you stop. If the Prof Dev report isn't submitted yet, that comes first."),
+  sun3: T("RAD Week 7 lab: start", "Get the Week 7 sheet from Moodle, make the Week 7 project, and get as far as you can. You finish it Monday."),
 });
+// no surf this weekend: the surf slot becomes two RAD blocks (Wednesday's lab was cancelled, so two labs are owed)
+reshape("2026-11-15", ["13:00-surfopt"], [
+  ["13:00", "14:30", "study", "Deep work 2", "sun2"],
+  ["14:30", "14:45", "break", "Break"],
+  ["14:45", "16:15", "study", "Deep work 3", "sun3"],
+]);
 ev("2026-11-16", "09:00", "09:00", "due", "DUE 9am: Prof Dev Group Project Report (Turnitin)");
 
 /* Week 2: 16-22 Nov. Interview Fri 20. Start Mobile deliverables. PM phase 2 */
 plan("2026-11-16", {
   mon1: T("Interview prep: fill every [RYAN: ...]", "D:\\ProfDevInterview\\Interview Prep.md. Real stories only (a real bug, a real team moment)."),
   mon2: T("Interview: learn the pitch", "D:\\ProfDevInterview\\Pitch Script.md. Out loud with a timer x5. Target 2:45-2:55."),
-  mon3: T("Mobile: Penpot wireframes", "Every Questlog screen as a wireframe. Follow the brief's design section."),
-  mon4: T("Mobile: Penpot clickable prototype", "Hi-fi screens linked into a working prototype."),
-  mon5: T("Split_Shift: play test + review a teammate's PR", "T-013 manual play test, 20 min: keyboard and controller, Dee's race, pursuit, a junction. Log it in the test log. Then review and approve one teammate PR (PRs #1-#8 have 0 reviews; peer assessment counts this)."),
+  mon3: T("RAD Week 7 lab: finish + push", "Carry on from Sunday. Autograder green on master. That clears both labs before Wednesday's class brings Week 8."),
+  mon4: T("Mobile: Penpot wireframes", "Every Questlog screen as a wireframe. Follow the brief's design section."),
+  mon5: T("Mobile CA quiz: 40-question mock", "The quiz moved to Thu 19 Nov. D:\\MobileApp\\study\\quiz\\mobile-ca-quiz.html. Note every wrong one."),
 });
 plan("2026-11-17", {
   tue1: T("Split_Shift M4 cooker v1: town tile into chunk scenes", "US-13b (Must). D:\\Split_ShiftS9, branch RyanBarry(Car-AI). Cut Oisin R's 2.2 km urban FBX tile into 512 m chunk scenes and fill the chunk catalog, in guide mode. Done = RB_Streaming_Test streams real Sligo town chunks."),
-  tue2: T("Mobile: IA diagram + instrumented tests", "Draw the information architecture. Run the 12 instrumented tests on your phone over USB and screenshot the results."),
+  tue2: T("Mobile: Penpot clickable prototype", "Hi-fi screens linked into a working prototype."),
   tue3: T("Interview: Hello Games research", "Section 3 of the prep pack. Know 5 facts cold, with sources."),
 });
 plan("2026-11-18", {
   wed1: T("Interview: technical answers", "Section 5. Pick one Paradox of Justice system and learn it line by line."),
-  wed2: T("PM MCQ: Selection (T3) calcs", "PV, NPV, ROI, payback, n(n-1)/2 by hand."),
-  wed3: T("Pitch out loud x2", "Timer on."),
+  wed2: T("Interview: full mock with Claude", "Ask for a mock interview from the prep pack. Then pitch out loud once with a timer."),
+  wed3: T("Mobile CA quiz: wrong answers only", "Re-read quiz-notes-units-1-4.md for every topic you got wrong on Monday."),
 });
+// Thursday 19: Mobile quiz at 3pm (moved from the 12th) and maybe the P300 meeting at 11:15, so stay in college and gym after
+ev("2026-11-19", "11:15", "12:30", "event", "Project 300 meeting with your lecturer (12 Nov one was cancelled: confirm it's on). Show the chunk streaming. Ask 1) the interim date + time, 2) is it 30% of the group mark or of the module, 3) is this meeting weekly or every sprint end");
+reshape("2026-11-19", ["11:00-travel", "11:10-gym", "12:05-break", "12:20-travel", "13:10-travel", "16:00-study", "17:30-flex"], [
+  ["13:10", "13:45", "break", "Stay in college: library seat"],
+  ["16:00", "16:10", "travel", "Walk to the Clayton (10 min)"],
+  ["16:10", "17:05", "gym", "Gym at the Clayton: Back & Biceps (moved from the morning)"],
+  ["17:05", "17:20", "break", "Shower at the Clayton"],
+  ["17:20", "17:50", "travel", "Walk home from the Clayton (25-30 min)"],
+]);
+ev("2026-11-19", "15:00", "16:00", "event", "Mobile App CA quiz (Moodle MCQ, Compose Units 1-4), moved from the 12th. Check the exact time on Moodle");
 plan("2026-11-19", {
-  thu1: T("RAD Week 8 lab: finish at home and push", RADD),
-  thu2: T("Interview: full mock with Claude", "Ask for a mock interview from the prep pack. Then check your slides once more."),
-  thu3: T("Split_Shift Sprint 5 review: Teams docs", "Sprint 5 ends today. In Teams (Student - Game Of the Year): Sprint History + velocity, your Sprint Retrospective tab (empty so far), the test log. Ask teammates to check their own bullets. Write a 5-line dev diary for the fortnight (raw material for your reflective report)."),
+  thu1: T("Mobile quiz: last review", "Only the questions you've got wrong before. Then go do it."),
+  thu3: T("Split_Shift Sprint 5 review + play test", "Sprint 5 ends today. In Teams (Student - Game Of the Year): Sprint History + velocity, your Sprint Retrospective tab, the test log. Do the 20 min T-013 play test (keyboard + controller, Dee's race, pursuit, a junction) and log it. Review one teammate PR (peer assessment counts it)."),
 });
 ev("2026-11-20", "10:00", "11:00", "event", "Prof Dev interview (Hello Games pitch + Q&A). Confirm your exact time");
 reshape("2026-11-20", ["09:00-study", "11:00-break", "11:15-study"], [
@@ -428,25 +456,25 @@ reshape("2026-11-20", ["09:00-study", "11:00-break", "11:15-study"], [
 ]);
 plan("2026-11-20", {
   fri1: T("Interview warm-up", "Pitch x2, eat, dress well, printed CV, phone off. No new prep."),
-  fri2: T("Mobile report: chapters 1-2", "Intro + planning/requirements."),
+  fri2: T("RAD Week 8 lab: finish + push", "Started in Wednesday's class. " + RADD),
 });
 SWAP["2026-11-16"] = T("Split_Shift: streaming follows the player car in Gameplay", "Hook ChunkStreamer to the player car in the Gameplay scene, with fog at the streaming edge, so you can drive around Sligo town. This is the core of the interim prototype (20%).");
 plan("2026-11-21", {
-  sat0: T("PM MCQ: Value (T9)", "WSJF, theme screening, risk/value quadrants. 20 practice Qs."),
-  sat1: T("Mobile: screenshots + report outline, then design chapter", "Screenshot every screen and outline the 25-30 page report from the brief's headings (30 min). Then the design chapter: wireframes, prototype, IA diagram, design decisions."),
-  sat2: T("Mobile report: design chapter, finish", ""),
+  sat0: T("PM MCQ: Selection (T3) calcs", "PV, NPV, ROI, payback, n(n-1)/2 by hand. 20 practice Qs."),
+  sat1: T("Mobile: IA diagram, tests, screenshots + report outline", "Draw the information architecture. Run the 12 instrumented tests on your phone over USB and screenshot the results. Screenshot every screen and outline the 25-30 page report from the brief's headings."),
+  sat2: T("Mobile report: chapters 1-2", "Intro + planning/requirements."),
 });
 plan("2026-11-22", {
-  sun1: T("Weekly review + Mobile report: implementation", "Architecture, data layer, key screens. Explain why, not just what."),
+  sun1: T("Weekly review + Mobile report: design chapter", "Wireframes, prototype, IA diagram, design decisions."),
 });
 
 /* Week 3: 23-29 Nov. Slides due Mon 30. Mobile report + video. PM mock Sun 29 */
 plan("2026-11-23", {
   mon1: T("Prof Dev slides: build your 4", "D:\\ProfDev_Report\\05_Slides_Plan.md. One idea per slide, one big number."),
   mon2: T("Prof Dev slides: sources + send to team", "Caption and source on every figure. Share with the team so the deck matches the report."),
-  mon3: T("Mobile report: implementation, finish", ""),
+  mon3: T("Mobile report: implementation", "Architecture, data layer, key screens. Explain why, not just what."),
   mon4: T("Mobile report: testing chapter", "The 12 instrumented tests: what each proves, results screenshot."),
-  mon5: T("PM MCQ: Lean/Kanban (T8)", "Little's law, PCE, TIMWOOD."),
+  mon5: T("PM MCQ: Value (T9) + Lean/Kanban (T8)", "WSJF, theme screening, risk/value quadrants; Little's law, PCE, TIMWOOD."),
 });
 plan("2026-11-24", {
   tue1: T("Split_Shift US-18: profile hybrid LOD at 24 / 100 / 200 cars", "Unity Profiler in the city scene. Record frame time and the SimulationLODManager markers at each car count. Screenshot the graphs: these numbers are your evidence slide for the interim."),
@@ -555,7 +583,8 @@ const FUEL = " Bring 1-2 gels (30-60 g carbs an hour) and practise taking them: 
 /* Base 1: easy volume, technique, baseline tests */
 train("2026-11-09", "Base 1", {
   tue: R(40, "Swim: technique + first timings", "200 m easy. Then swim 400 m as steady as you can (stop if you must, note where) and time it. Rest, then 10 min of drills. " + DRILLS),
-  fri: R(50, "Run: 5 km time trial (your baseline)", "15 min easy warm-up, then 5 km at the hardest pace you can hold evenly, 5 min easy. Flat route. Write the time in today's notes: 26:05 already predicts a 2:00 half."),
+  // the Friday baseline moved to Saturday 5pm: Friday 13th was a sleep-in before an early start at work
+  sat: R(50, "Run: 5 km time trial (your baseline)", "15 min easy warm-up, then 5 km at the hardest pace you can hold evenly, 5 min easy. Flat route. Write the time in today's notes: 26:05 already predicts a 2:00 half."),
 });
 train("2026-11-16", "Base 1", {
   mon: R(45, "Run: easy 45 min", EASY),
@@ -818,15 +847,16 @@ const DEADLINES = [
   { d: "2026-11-15", t: "", what: "Enter Half on the Head 2027 (the half is €40; €25 is the 10K). Entries close when it's full", where: "halfonthehead.com → Register", tbc: false },
   { d: "2026-11-13", t: "", what: "Ask work for Fri 11 June 2027 off (drive to Kerry, collect your number 7-8:30pm)", where: "Work", tbc: false },
   { d: "2027-04-30", t: "", what: "Get a swim wetsuit (not your surf one: it tires your shoulders). Buy about €200, or season hire", where: "Before open water starts mid-May", tbc: false },
-  { d: "2026-11-11", t: "16:00", what: "AGP CA2: Unity testing (15%)", where: "D:\\AGP_CA2_Prep, mock D:\\AGP_CA2_Mock", tbc: false },
-  { d: "2026-11-12", t: "15:00", what: "Mobile App CA quiz (Moodle MCQ)", where: "D:\\MobileApp\\study", tbc: true },
+  { d: "2026-11-11", t: "16:00", what: "AGP CA2: Unity testing (15%). Done", where: "D:\\AGP_CA2_Prep, mock D:\\AGP_CA2_Mock", tbc: false },
+  { d: "2026-11-19", t: "15:00", what: "Mobile App CA quiz (Moodle MCQ), moved from the 12th", where: "D:\\MobileApp\\study", tbc: true },
+  { d: "2026-11-16", t: "", what: "RAD301 Week 6 + Week 7 labs pushed (Wednesday's class was cancelled). Your aim", where: "D:\\RADWeek6, Week 7 sheet on Moodle", tbc: false },
   { d: "2026-11-16", t: "09:00", what: "Prof Dev Group Project Report (Turnitin). Aim: submit Sun 15", where: "D:\\ProfDev_Report", tbc: false },
   { d: "2026-11-20", t: "10:00", what: "Prof Dev interview (pitch + Q&A)", where: "D:\\ProfDevInterview", tbc: true },
   { d: "2026-11-30", t: "09:00", what: "Prof Dev Presentation Slides. Aim: upload Fri 27", where: "D:\\ProfDev_Report\\05_Slides_Plan.md", tbc: false },
   { d: "2026-12-03", t: "23:59", what: "Mobile Application submission. Aim: submit Wed 2", where: "D:\\MobileApp\\Questlog", tbc: false },
   { d: "2026-12-07", t: "", what: "Software Project Mgmt MCQ exam (late Nov / early Dec)", where: "D:\\ProjMgmt_MCQ", tbc: true },
   { d: "2026-12-07", t: "", what: "Project 300 interim (Split_Shift): presentation 10% + playable prototype 20% of the group mark. Date not announced (placeholder), ask on Thu 12 Nov", where: "D:\\Split_ShiftS9", tbc: true },
-  { d: "2026-11-12", t: "11:15", what: "Project 300 lecturer meeting: show the chunk streaming working", where: "D:\\Split_ShiftS9 (RB_Streaming_Test.unity)", tbc: false },
+  { d: "2026-11-19", t: "11:15", what: "Project 300 lecturer meeting (12 Nov was cancelled): show the chunk streaming working", where: "D:\\Split_ShiftS9 (RB_Streaming_Test.unity)", tbc: true },
   { d: "2026-11-19", t: "", what: "Project 300 Sprint 5 ends: review, retro, Teams docs (Sprint History, velocity, test log)", where: "Teams: Student - Game Of the Year", tbc: false },
   { d: "2026-11-30", t: "", what: "Project 300 feature freeze (aim): interim build from main only, fixes only after this", where: "D:\\Split_ShiftS9", tbc: true },
   { d: "2026-12-03", t: "", what: "Project 300 Sprint 6 ends (two-week sprints): review + Teams docs", where: "Teams", tbc: true },
