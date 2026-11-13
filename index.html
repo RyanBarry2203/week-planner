@@ -427,7 +427,13 @@ plan("2026-11-17", {
   tue1: T("Split_Shift M4 cooker v1: town tile into chunk scenes", "US-13b (Must). D:\\Split_ShiftS9, branch RyanBarry(Car-AI). Cut Oisin R's 2.2 km urban FBX tile into 512 m chunk scenes and fill the chunk catalog, in guide mode. Done = RB_Streaming_Test streams real Sligo town chunks."),
   tue2: T("Mobile: Penpot clickable prototype", "Hi-fi screens linked into a working prototype."),
   tue3: T("Interview: Hello Games research", "Section 3 of the prep pack. Know 5 facts cold, with sources."),
+  tue4: T("Mobile: IA diagram, tests + screenshots (banked for GTA)", "Draw the information architecture. Run the 12 instrumented tests on your phone over USB and screenshot the results. Screenshot every screen and outline the report from the brief's headings. This is Saturday's work done early so Saturday is free."),
 });
+// GTA 6 comes out Thu 19: Tuesday's free time is traded for a free Thursday evening to Sunday afternoon
+reshape("2026-11-17", ["21:00-free"], [
+  ["21:00", "22:15", "study", "Bonus block: banked for GTA weekend", "tue4"],
+  ["22:15", "22:30", "free", "Free time"],
+]);
 plan("2026-11-18", {
   wed1: T("Interview: technical answers", "Section 5. Pick one Paradox of Justice system and learn it line by line."),
   wed2: T("Interview: full mock with Claude", "Ask for a mock interview from the prep pack. Then pitch out loud once with a timer."),
@@ -435,8 +441,9 @@ plan("2026-11-18", {
 });
 // Thursday 19: Mobile quiz at 3pm (moved from the 12th) and maybe the P300 meeting at 11:15, so stay in college and gym after
 ev("2026-11-19", "11:15", "12:30", "event", "Project 300 meeting with your lecturer (12 Nov one was cancelled: confirm it's on). Show the chunk streaming. Ask 1) the interim date + time, 2) is it 30% of the group mark or of the module, 3) is this meeting weekly or every sprint end");
-reshape("2026-11-19", ["11:00-travel", "11:10-gym", "12:05-break", "12:20-travel", "13:10-travel", "16:00-study", "17:30-flex"], [
-  ["13:10", "13:45", "break", "Stay in college: library seat"],
+reshape("2026-11-19", ["11:00-travel", "11:10-gym", "12:05-break", "12:20-travel", "13:10-travel", "16:00-study", "17:30-flex", "19:00-study", "20:30-free"], [
+  ["13:10", "13:45", "light", "Library: quiz last look", "thu0"],
+  ["19:00", "22:30", "free", "GTA 6 is out. Play it, guilt-free", "", "Everything due before the weekend is done. Lights out 11:15 still: the interview is at 10am tomorrow."],
   ["16:00", "16:10", "travel", "Walk to the Clayton (10 min)"],
   ["16:10", "17:05", "gym", "Gym at the Clayton: Back & Biceps (moved from the morning)"],
   ["17:05", "17:20", "break", "Shower at the Clayton"],
@@ -444,11 +451,12 @@ reshape("2026-11-19", ["11:00-travel", "11:10-gym", "12:05-break", "12:20-travel
 ]);
 ev("2026-11-19", "15:00", "16:00", "event", "Mobile App CA quiz (Moodle MCQ, Compose Units 1-4), moved from the 12th. Check the exact time on Moodle");
 plan("2026-11-19", {
-  thu1: T("Mobile quiz: last review", "Only the questions you've got wrong before. Then go do it."),
-  thu3: T("Split_Shift Sprint 5 review + play test", "Sprint 5 ends today. In Teams (Student - Game Of the Year): Sprint History + velocity, your Sprint Retrospective tab, the test log. Do the 20 min T-013 play test (keyboard + controller, Dee's race, pursuit, a junction) and log it. Review one teammate PR (peer assessment counts it)."),
+  thu0: T("Mobile quiz: last look", "Only the questions you've got wrong before."),
+  thu1: T("Split_Shift Sprint 5 review + play test, in the library", "Sprint 5 ends today, and this clears your evening for GTA. In Teams (Student - Game Of the Year): Sprint History + velocity, your Sprint Retrospective tab, the test log. 20 min T-013 play test on the laptop (Dee's race, pursuit, a junction) and log it. Review one teammate PR. Then the quiz at 3."),
 });
 ev("2026-11-20", "10:00", "11:00", "event", "Prof Dev interview (Hello Games pitch + Q&A). Confirm your exact time");
-reshape("2026-11-20", ["09:00-study", "11:00-break", "11:15-study"], [
+reshape("2026-11-20", ["09:00-study", "11:00-break", "11:15-study", "13:15-surfopt"], [
+  ["13:15", "15:30", "free", "GTA 6", "", "Interview done, RAD pushed. Play until it's time to get ready for work."],
   ["09:00", "09:25", "study", "Interview warm-up", "fri1"],
   ["09:25", "10:00", "travel", "Walk to college", "", "Dressed well, printed CV, phone on silent"],
   ["11:00", "11:30", "travel", "Walk home"],
@@ -458,31 +466,36 @@ plan("2026-11-20", {
   fri1: T("Interview warm-up", "Pitch x2, eat, dress well, printed CV, phone off. No new prep."),
   fri2: T("RAD Week 8 lab: finish + push", "Started in Wednesday's class. " + RADD),
 });
-SWAP["2026-11-16"] = T("Split_Shift: streaming follows the player car in Gameplay", "Hook ChunkStreamer to the player car in the Gameplay scene, with fog at the streaming edge, so you can drive around Sligo town. This is the core of the interim prototype (20%).");
 plan("2026-11-21", {
-  sat0: T("PM MCQ: Selection (T3) calcs", "PV, NPV, ROI, payback, n(n-1)/2 by hand. 20 practice Qs."),
-  sat1: T("Mobile: IA diagram, tests, screenshots + report outline", "Draw the information architecture. Run the 12 instrumented tests on your phone over USB and screenshot the results. Screenshot every screen and outline the 25-30 page report from the brief's headings."),
-  sat2: T("Mobile report: chapters 1-2", "Intro + planning/requirements."),
+  sat0: T("PM MCQ: Selection (T3) calcs", "PV, NPV, ROI, payback, n(n-1)/2 by hand. 20 practice Qs. Then GTA."),
 });
+reshape("2026-11-21", ["13:10-study", "15:00-break", "15:15-study"], [
+  ["13:10", "17:00", "free", "GTA 6", "", "Saturday's study was done early on Tuesday night."],
+]);
 plan("2026-11-22", {
-  sun1: T("Weekly review + Mobile report: design chapter", "Wireframes, prototype, IA diagram, design decisions."),
+  sun1: T("Weekly review (15 min)", "Tick off the week, glance at the Due tab, then back to GTA."),
 });
+reshape("2026-11-22", ["11:05-study", "13:00-surfopt"], [
+  ["11:05", "11:20", "light", "Weekly review", "sun1"],
+  ["11:20", "12:20", "free", "GTA 6"],
+  ["13:00", "16:15", "free", "GTA 6 (or surf, if the forecast is good)"],
+]);
 
 /* Week 3: 23-29 Nov. Slides due Mon 30. Mobile report + video. PM mock Sun 29 */
 plan("2026-11-23", {
-  mon1: T("Prof Dev slides: build your 4", "D:\\ProfDev_Report\\05_Slides_Plan.md. One idea per slide, one big number."),
-  mon2: T("Prof Dev slides: sources + send to team", "Caption and source on every figure. Share with the team so the deck matches the report."),
+  mon1: T("Prof Dev slides: build your 4 + sources, send to team", "D:\\ProfDev_Report\\05_Slides_Plan.md. One idea per slide, one big number. Caption and source on every figure. Share with the team so the deck matches the report."),
+  mon2: T("Mobile report: chapters 1-2", "Intro + planning/requirements. Moved from GTA weekend."),
   mon3: T("Mobile report: implementation", "Architecture, data layer, key screens. Explain why, not just what."),
   mon4: T("Mobile report: testing chapter", "The 12 instrumented tests: what each proves, results screenshot."),
   mon5: T("PM MCQ: Value (T9) + Lean/Kanban (T8)", "WSJF, theme screening, risk/value quadrants; Little's law, PCE, TIMWOOD."),
 });
 plan("2026-11-24", {
   tue1: T("Split_Shift US-18: profile hybrid LOD at 24 / 100 / 200 cars", "Unity Profiler in the city scene. Record frame time and the SimulationLODManager markers at each car count. Screenshot the graphs: these numbers are your evidence slide for the interim."),
-  tue2: T("Split_Shift: player research page (LO2)", "The LO2 gap: target audience and 3 comparable games, plus the Research tabs Technology Stack and World Streaming Research in Teams. Sources on everything."),
+  tue2: T("Split_Shift: streaming follows the player car in Gameplay", "Hook ChunkStreamer to the player car in the Gameplay scene, with fog at the streaming edge, so you can drive around Sligo town. This is the core of the interim prototype (20%). Moved from GTA weekend, and it has to land before the stable build."),
   tue3: T("Mobile report: evaluation + conclusion", ""),
 });
 plan("2026-11-25", {
-  wed1: T("Slides: rehearse 3 min, no notes", ""),
+  wed1: T("Mobile report: design chapter", "Wireframes, prototype, IA diagram, design decisions. Moved from GTA weekend."),
   wed2: T("PM MCQ: T5 practice set to 100%", ""),
   wed3: T("Mobile report: figures + captions", ""),
 });
@@ -493,7 +506,7 @@ plan("2026-11-26", {
 });
 plan("2026-11-27", {
   fri1: T("Mobile report: full proofread + references", "Check page count 25-30."),
-  fri2: T("Prof Dev slides: final, upload early", "Due Mon 9am. Upload today."),
+  fri2: T("Prof Dev slides: rehearse 3 min, final, upload early", "Rehearse your part out loud, no notes. Due Mon 9am: upload today."),
 });
 SWAP["2026-11-23"] = T("Split_Shift US-17: stable interim build from main", "Merge your S9 work through a reviewed PR, then build from main only (Bootstrap.unity) plus a WebGL rebuild. Keep this build: from here it's a feature freeze, fixes only.");
 plan("2026-11-28", {
@@ -534,7 +547,7 @@ plan("2026-12-04", {
   fri1: T("PM MCQ: drill 2 weakest + mock", ""),
   fri2: T("Split_Shift: rehearse your interim part", "Out loud, timed, twice. Have the demo build and the fallback video ready on the laptop."),
 });
-SWAP["2026-11-30"] = T("Irish Myth Game: your owed pad playtest", "First time back on the portfolio game. Play the opening, cave and moor with a pad and write notes.");
+SWAP["2026-11-30"] = T("Split_Shift: player research page (LO2)", "The LO2 gap: target audience and 3 comparable games, plus the Research tabs Technology Stack and World Streaming Research in Teams. Sources on everything. (The Irish Myth pad playtest moves to after the interim.)");
 plan("2026-12-05", {
   sat0: T("PM MCQ: \"last wrong\" mode", ""),
   sat1: T("PM MCQ: mock (aim 95%+)", ""),
